@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura Sites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!--
+  Static form for Netlify Forms detection. Netlify's build step parses this
+  file's raw HTML (not the JS-driven modal below) to learn the form's name
+  and field list, so every field the questionnaire can ever submit must be
+  listed here even though this form is never shown or submitted directly.
+  The actual submission is a JS fetch() POST from quiz.js.
+-->
+<form name="project-inquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="project-inquiry">
+  <input type="hidden" name="submission-stage">
+  <p hidden><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
+  <input type="text" name="business-name">
+  <input type="text" name="description">
+  <input type="text" name="has-logo">
+  <input type="text" name="size">
+  <input type="text" name="pages">
+  <input type="text" name="complexity">
+  <input type="text" name="complexity-detail">
+  <input type="text" name="vibe">
+  <input type="text" name="timeline">
+  <input type="text" name="recommended-tier">
+  <input type="text" name="name">
+  <input type="email" name="email">
+  <input type="text" name="logo-design-request">
+  <input type="text" name="logo-files">
+  <input type="text" name="photo-choice">
+  <input type="text" name="files">
+  <input type="text" name="domain">
+  <input type="text" name="hosting-interest">
+</form>
+
+<nav>
+  <div class="logo">Aura Sites</div>
+  <div class="nav-links">
+    <a href="#work" data-i18n="nav.work">Work</a>
+    <a href="#process" data-i18n="nav.process">Process</a>
+    <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
+    <a href="#" class="js-open-quiz" data-i18n="nav.contact">Contact</a>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" class="lang-btn" data-lang="en">EN</button>
+      <span class="lang-sep">/</span>
+      <button type="button" class="lang-btn" data-lang="ja">JP</button>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-stage" id="hero-stage">
+    <canvas id="aura-canvas"></canvas>
+    <div class="light-wash" id="light-wash"></div>
+
+    <div class="intro-caption" id="intro-caption">
+      <div class="word display" data-i18n="hero.introCaption">Aura Sites</div>
+    </div>
+
+    <div class="hero-content" id="hero-content">
+      <h1 class="display" data-i18n="hero.h1">Websites that feel <em>handcrafted</em>,<br>at a pace that isn't</h1>
+      <p class="sub" data-i18n="hero.sub">Studio-quality design, delivered in days, not months.</p>
+      <div class="cta-row">
+        <button class="btn primary js-open-quiz" data-i18n="hero.ctaPrimary">Start a project</button>
+        <button class="btn" data-i18n="hero.ctaSecondary">See the work</button>
+      </div>
+    </div>
+
+    <div class="scroll-cue" id="scroll-cue">
+      <span data-i18n="hero.scrollCue">scroll to enter</span>
+      <div class="line"></div>
+    </div>
+  </div>
+</section>
+
+<section class="assembly" id="process">
+  <div class="assembly-head">
+    <h2 class="display" data-i18n="process.heading">Watch a site come together</h2>
+    <p data-i18n="process.body">Every project starts from a blank canvas and takes shape in front of you. No templates, no recycled layouts.</p>
+  </div>
+
+  <div class="tier-toggle" role="tablist" data-i18n-aria-label="process.tierToggleAriaLabel" aria-label="Pricing tier">
+    <button class="tier-tab" data-tier="launch" role="tab" data-i18n="process.tabLaunch">Launch</button>
+    <button class="tier-tab active" data-tier="grow" role="tab" aria-selected="true" data-i18n="process.tabGrow">Grow</button>
+    <button class="tier-tab" data-tier="studio" role="tab" data-i18n="process.tabStudio">Studio</button>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-step">
+      <span class="step-num">1</span>
+      <span class="step-label" data-i18n="process.stepDiscovery">Discovery call</span>
+      <span class="step-day">Day 1</span>
+    </div>
+    <div class="timeline-step">
+      <span class="step-num">2</span>
+      <span class="step-label" data-i18n="process.stepFirstLook">First look</span>
+      <span class="step-day">Day 5</span>
+    </div>
+    <div class="timeline-step">
+      <span class="step-num">3</span>
+      <span class="step-label" data-i18n="process.stepLive">Live</span>
+      <span class="step-day">Day 10–14</span>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="block filled b-nav"></div>
+    <div class="block tint-violet b-cta"></div>
+    <div class="block b-head"></div>
+    <div class="block b-sub"></div>
+    <div class="block tint-coral b-btn"></div>
+    <div class="block tint-teal b-hero-img"></div>
+    <div class="block b-card1"></div>
+    <div class="block b-card2"></div>
+    <div class="block b-card3"></div>
+  </div>
+</section>
+
+<section class="work" id="work">
+  <div class="work-head">
+    <h2 class="display" data-i18n="work.heading">Recent work</h2>
+    <p data-i18n="work.body">A few examples of how far the same process can stretch, from editorial and warm to clean and functional.</p>
+  </div>
+  <div class="work-grid">
+
+    <div class="work-card">
+      <div class="mock">
+        <div class="mock-chrome"><span></span><span></span><span></span></div>
+        <picture class="mock-shot">
+          <source srcset="assets/work/jingu.webp" type="image/webp">
+          <img src="assets/work/jingu.jpg" alt="JINGŪ homepage hero, an editorial matcha brand site with a bowl of whisked matcha" data-i18n-alt="work.jinguAlt" loading="lazy">
+        </picture>
+      </div>
+      <div class="work-meta">
+        <h3 data-i18n="work.jinguTitle">JINGŪ</h3>
+        <p data-i18n="work.jinguDesc">Premium matcha brand, editorial Japanese aesthetic, multi-page.</p>
+        <div class="tags"><span data-i18n="work.jinguTag1">Brand</span><span data-i18n="work.jinguTag2">E-commerce</span></div>
+        <a class="work-link" href="https://jingumatcha.netlify.app" target="_blank" rel="noopener" data-i18n="work.jinguLinkText">jingumatcha.netlify.app ↗</a>
+      </div>
+    </div>
+
+    <div class="work-card">
+      <div class="mock">
+        <div class="mock-chrome"><span></span><span></span><span></span></div>
+        <picture class="mock-shot">
+          <source srcset="assets/work/pec.webp" type="image/webp">
+          <img src="assets/work/pec.jpg" alt="PEC homepage hero, a private education concierge site for Tokyo families" data-i18n-alt="work.pecAlt" loading="lazy">
+        </picture>
+      </div>
+      <div class="work-meta">
+        <h3 data-i18n="work.pecTitle">PEC</h3>
+        <p data-i18n="work.pecDesc">Private education concierge for tutoring, IELTS/EIKEN, study abroad.</p>
+        <div class="tags"><span data-i18n="work.pecTag1">Education</span><span data-i18n="work.pecTag2">Concierge</span></div>
+        <a class="work-link" href="https://exquisite-gecko-c965c4.netlify.app/" target="_blank" rel="noopener" data-i18n="work.pecLinkText">View site ↗</a>
+      </div>
+    </div>
+
+    <div class="work-card">
+      <div class="mock">
+        <div class="mock-chrome"><span></span><span></span><span></span></div>
+        <picture class="mock-shot">
+          <source srcset="assets/work/luxury-japan.webp" type="image/webp">
+          <img src="assets/work/luxury-japan.jpg" alt="Luxury Japan homepage hero, a Zen rock garden with a blossoming weeping cherry tree beside a traditional plaster wall" data-i18n-alt="work.ljAlt" loading="lazy">
+        </picture>
+      </div>
+      <div class="work-meta">
+        <h3 data-i18n="work.ljTitle">Luxury Japan</h3>
+        <p data-i18n="work.ljDesc">Bespoke inbound travel concierge. AI/DX tooling and workflow automation for their team.</p>
+        <div class="tags"><span data-i18n="work.ljTag1">Travel</span><span data-i18n="work.ljTag2">AI/DX</span></div>
+        <a class="work-link" href="https://luxuryjapan.tv" target="_blank" rel="noopener" data-i18n="work.ljLinkText">luxuryjapan.tv ↗</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="social-proof">
+  <div class="social-stats">
+    <div class="stat-item">
+      <div class="stat-number display" data-i18n="socialProof.stat1Number">3 to 14</div>
+      <div class="stat-label" data-i18n="socialProof.stat1Label">days from kickoff to launch</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number display" data-i18n="socialProof.stat2Number">100%</div>
+      <div class="stat-label" data-i18n="socialProof.stat2Label">custom-designed, no templates</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number display" data-i18n="socialProof.stat3Number">3</div>
+      <div class="stat-label" data-i18n="socialProof.stat3Label">fixed pricing tiers, no surprises</div>
+    </div>
+  </div>
+  <div class="quote-grid">
+    <div class="quote-card">
+      <p class="quote-text" data-i18n="socialProof.quote1Text">"They took a vague idea and gave it shape in days, not months. It felt like working with a design studio, not a software vendor."</p>
+      <div class="quote-attr" data-i18n="socialProof.quote1Attr">Founder, independent retail brand</div>
+    </div>
+    <div class="quote-card">
+      <p class="quote-text" data-i18n="socialProof.quote2Text">"The process was refreshingly simple. One call, a few quiet days of progress, then a site that actually looked like us."</p>
+      <div class="quote-attr" data-i18n="socialProof.quote2Attr">Operator, hospitality business</div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="pricing-head">
+    <h2 class="display" data-i18n="pricing.heading">Pricing</h2>
+    <p data-i18n="pricing.body">Fixed packages, not open-ended quotes, so you know what you're getting before we start.</p>
+  </div>
+  <div class="pricing-grid">
+
+    <div class="price-card">
+      <div class="price-name" data-i18n="pricing.launch.name">Launch</div>
+      <div class="price-desc" data-i18n="pricing.launch.desc">A single-page or small brand site, done right.</div>
+      <div class="price-amount" data-i18n="pricing.launch.price">¥180,000<span>〜</span></div>
+      <div class="price-turnaround" data-i18n="pricing.launch.turnaround">~3 day turnaround</div>
+      <ul class="price-features">
+        <li data-i18n="pricing.launch.feature1">Up to 3 pages</li>
+        <li data-i18n="pricing.launch.feature2">Custom design, no templates</li>
+        <li data-i18n="pricing.launch.feature3">Mobile-optimized</li>
+        <li data-i18n="pricing.launch.feature4">1 revision round</li>
+      </ul>
+      <button class="btn price-btn js-open-quiz" data-i18n="pricing.launch.cta">Get started</button>
+    </div>
+
+    <div class="price-card featured">
+      <div class="price-badge" data-i18n="pricing.grow.badge">Most popular</div>
+      <div class="price-name" data-i18n="pricing.grow.name">Grow</div>
+      <div class="price-desc" data-i18n="pricing.grow.desc">A full multi-page site for a growing business.</div>
+      <div class="price-amount" data-i18n="pricing.grow.price">¥480,000<span>〜</span></div>
+      <div class="price-turnaround" data-i18n="pricing.grow.turnaround">~1–2 week turnaround</div>
+      <ul class="price-features">
+        <li data-i18n="pricing.grow.feature1">Up to 8 pages</li>
+        <li data-i18n="pricing.grow.feature2">Custom design, no templates</li>
+        <li><span data-i18n="pricing.grow.feature3Pre">CMS</span> <button class="info-tap" type="button" aria-label="What's a CMS?" data-i18n-aria-label="tooltips.cmsAriaLabel" data-tooltip="A simple dashboard for editing your own text and photos later, no coding needed." data-i18n-tooltip="tooltips.cms"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button> <span data-i18n="pricing.grow.feature3Post">for easy updates</span></li>
+        <li data-i18n="pricing.grow.feature4">Copywriting support</li>
+        <li data-i18n="pricing.grow.feature5">3 revision rounds</li>
+      </ul>
+      <button class="btn primary price-btn js-open-quiz" data-i18n="pricing.grow.cta">Get started</button>
+    </div>
+
+    <div class="price-card">
+      <div class="price-name" data-i18n="pricing.studio.name">Studio</div>
+      <div class="price-desc" data-i18n="pricing.studio.desc">Complex builds, e-commerce, or bespoke interaction.</div>
+      <div class="price-amount" data-i18n="pricing.studio.price">Custom quote</div>
+      <div class="price-turnaround" data-i18n="pricing.studio.turnaround">Scoped per project</div>
+      <ul class="price-features">
+        <li data-i18n="pricing.studio.feature1">Unlimited pages</li>
+        <li data-i18n="pricing.studio.feature2">E-commerce &amp; integrations</li>
+        <li data-i18n="pricing.studio.feature3">Bespoke interaction &amp; motion</li>
+        <li data-i18n="pricing.studio.feature4">Dedicated support</li>
+      </ul>
+      <button class="btn price-btn js-open-quiz" data-i18n="pricing.studio.cta">Talk to us</button>
+    </div>
+
+  </div>
+
+  <div class="hosting-addon">
+    <div class="hosting-addon-text">
+      <h3 class="hosting-addon-title"><span data-i18n="hosting.title">Hosting</span> <button class="info-tap" type="button" aria-label="What's hosting?" data-i18n-aria-label="tooltips.hostingAriaLabel" data-tooltip="Where your website actually lives online. Without it, your site can't go live." data-i18n-tooltip="tooltips.hosting"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></h3>
+      <p><span data-i18n="hosting.bodyPre">An optional add-on, independent of your plan. Turn it on now or add it later. You'll also need a domain</span> <button class="info-tap" type="button" aria-label="What's a domain?" data-i18n-aria-label="tooltips.domainAriaLabel" data-tooltip="Your website's address, what people type to find you, like aurasites.com." data-i18n-tooltip="tooltips.domain"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button> <span data-i18n="hosting.bodyPost">pointing at your site.</span></p>
+    </div>
+    <div class="hosting-addon-price">
+      <span class="hosting-amount" data-i18n="hosting.amount">¥3,500–5,000</span>
+      <span class="hosting-period" data-i18n="hosting.period">/month</span>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="faq-head">
+    <h2 class="display" data-i18n="faq.heading">Questions, answered</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false">
+        <span data-i18n="faq.q1">How fast can you actually turn this around?</span>
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq.a1">Turnaround depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false">
+        <span data-i18n="faq.q2">How many rounds of revisions do I get?</span>
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq.a2">Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit the project's needs. Additional rounds can always be added if required.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false">
+        <span data-i18n="faq.q3">What do you need from me to get started?</span>
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq.a3">We begin with a short discovery call to understand your goals. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps.</p>
+      </div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false">
+        <span data-i18n="faq.q4">What's your refund policy?</span>
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq.a4">If you cancel before we deliver the first design concept, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why-not-template">
+  <h2 class="display" data-i18n="whyNotTemplate.heading">Not another template</h2>
+  <p data-i18n="whyNotTemplate.body">Templates start with someone else's decisions already made. We start with yours, then build backward into a site shaped entirely around your business, not a theme you're renting.</p>
+</section>
+
+<footer id="site-footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo display">Aura Sites</div>
+      <p class="footer-tagline" data-i18n="footer.tagline">Websites that feel handcrafted. At a pace that isn't.</p>
+    </div>
+    <div class="footer-links">
+      <a href="#work" data-i18n="nav.work">Work</a>
+      <a href="#process" data-i18n="nav.process">Process</a>
+      <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
+      <a href="#" class="js-open-quiz" data-i18n="nav.contact">Contact</a>
+    </div>
+    <a class="footer-email" href="mailto:hello@aurasites.com">hello@aurasites.com</a>
+  </div>
+  <div class="footer-bottom">
+    <span data-i18n="footer.copyright">© 2026 Aura Sites. All rights reserved.</span>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="quiz-overlay">
+  <div class="modal" id="quiz-modal" role="dialog" aria-modal="true" aria-label="Start a project" data-i18n-aria-label="quiz.modalAriaLabel">
+    <button class="modal-close" id="quiz-close" type="button" aria-label="Close" data-i18n-aria-label="quiz.closeAriaLabel">&times;</button>
+
+    <div class="quiz-progress-track"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
+    <div class="quiz-phase" id="quiz-phase">Basics</div>
+
+    <div class="quiz-body" id="quiz-body">
+
+      <div class="quiz-step" data-step="business-name">
+        <div class="quiz-question" data-i18n="quiz.businessName.question">What's your business called?</div>
+        <input type="text" class="quiz-input" data-field="businessName" placeholder="e.g. Aura Sites" data-i18n-placeholder="quiz.businessName.placeholder" autocomplete="off">
+        <div class="quiz-nav"><span></span><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+      </div>
+
+      <div class="quiz-step" data-step="description">
+        <div class="quiz-question" data-i18n="quiz.description.question">Describe it in one line</div>
+        <input type="text" class="quiz-input" data-field="description" placeholder="e.g. A cozy neighborhood bakery specializing in sourdough" data-i18n-placeholder="quiz.description.placeholder" autocomplete="off">
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+      </div>
+
+      <div class="quiz-step" data-step="size">
+        <div class="quiz-question" data-i18n="quiz.size.question">Roughly how big is this?</div>
+        <div class="quiz-options quiz-options-stack" data-field="size">
+          <button class="option-card" data-value="one" data-i18n="quiz.size.one">One page</button>
+          <button class="option-card" data-value="few" data-i18n="quiz.size.few">A few pages (3 to 5)</button>
+          <button class="option-card" data-value="full" data-i18n="quiz.size.full">A full site (6+, maybe a blog)</button>
+          <button class="option-card" data-value="notsure" data-i18n="quiz.common.notSure">Not sure</button>
+        </div>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><span></span></div>
+      </div>
+
+      <div class="quiz-step" data-step="pages-checklist">
+        <div class="quiz-question" data-i18n="quiz.pagesChecklist.question">Which pages do you think you'll need?</div>
+        <div class="quiz-checklist" id="quiz-pages-checklist">
+          <label class="check-card"><input type="checkbox" value="Home"><span data-i18n="quiz.pagesChecklist.home">Home</span></label>
+          <label class="check-card"><input type="checkbox" value="About"><span data-i18n="quiz.pagesChecklist.about">About</span></label>
+          <label class="check-card"><input type="checkbox" value="Services"><span data-i18n="quiz.pagesChecklist.services">Services</span></label>
+          <label class="check-card"><input type="checkbox" value="Pricing"><span data-i18n="quiz.pagesChecklist.pricing">Pricing</span></label>
+          <label class="check-card"><input type="checkbox" value="Testimonials"><span data-i18n="quiz.pagesChecklist.testimonials">Testimonials</span></label>
+          <label class="check-card"><input type="checkbox" value="Contact"><span data-i18n="quiz.pagesChecklist.contact">Contact</span></label>
+          <label class="check-card"><input type="checkbox" value="Blog"><span data-i18n="quiz.pagesChecklist.blog">Blog</span></label>
+          <label class="check-card"><input type="checkbox" value="FAQ"><span data-i18n="quiz.pagesChecklist.faq">FAQ</span></label>
+        </div>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+      </div>
+
+      <div class="quiz-step" data-step="complexity">
+        <div class="quiz-question" data-i18n="quiz.complexity.question">Do you need online payments, bookings, or user logins?</div>
+        <div class="quiz-options" data-field="complexity">
+          <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">Yes</button>
+          <button class="option-card" data-value="no" data-i18n="quiz.common.no">No</button>
+        </div>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><span></span></div>
+      </div>
+
+      <div class="quiz-step" data-step="complexity-detail">
+        <div class="quiz-question" data-i18n="quiz.complexityDetail.question">Tell us a bit about that</div>
+        <input type="text" class="quiz-input" data-field="complexityDetail" placeholder="e.g. Stripe checkout for 3 products, or a booking calendar" data-i18n-placeholder="quiz.complexityDetail.placeholder" autocomplete="off">
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+      </div>
+
+      <div class="quiz-step" data-step="vibe">
+        <div class="quiz-question" data-i18n="quiz.vibe.question">Pick the vibe you're going for</div>
+        <div class="quiz-options quiz-options-grid" data-field="vibe">
+          <button class="option-card" data-value="clean" data-i18n="quiz.vibe.clean">Clean &amp; minimal</button>
+          <button class="option-card" data-value="warm" data-i18n="quiz.vibe.warm">Warm &amp; friendly</button>
+          <button class="option-card" data-value="bold" data-i18n="quiz.vibe.bold">Bold &amp; modern</button>
+          <button class="option-card" data-value="corporate" data-i18n="quiz.vibe.corporate">Professional &amp; corporate</button>
+        </div>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><span></span></div>
+      </div>
+
+      <div class="quiz-step" data-step="timeline">
+        <div class="quiz-question" data-i18n="quiz.timeline.question">When do you need it live?</div>
+        <div class="quiz-options" data-field="timeline">
+          <button class="option-card" data-value="asap" data-i18n="quiz.timeline.asap">ASAP</button>
+          <button class="option-card" data-value="month" data-i18n="quiz.timeline.month">Within a month</button>
+          <button class="option-card" data-value="flexible" data-i18n="quiz.timeline.flexible">Flexible</button>
+        </div>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><span></span></div>
+      </div>
+
+      <div class="quiz-step" data-step="recommendation">
+        <div class="quiz-question" data-i18n="quiz.recommendation.question">Here's what we'd suggest</div>
+        <div class="recommend-card" id="recommend-card">
+          <div class="recommend-tier" id="recommend-tier">Grow</div>
+          <div class="recommend-price" id="recommend-price">¥480,000〜</div>
+          <div class="recommend-turnaround" id="recommend-turnaround">~1–2 week turnaround</div>
+          <p class="recommend-blurb" id="recommend-blurb">A multi-page site with room to grow fits the Grow tier well.</p>
+        </div>
+        <input type="text" class="quiz-input" id="quiz-name" placeholder="Your name" data-i18n-placeholder="quiz.recommendation.namePlaceholder" autocomplete="name" style="margin-top:24px;">
+        <input type="email" class="quiz-input" id="quiz-email" placeholder="Your email" data-i18n-placeholder="quiz.recommendation.emailPlaceholder" autocomplete="email" style="margin-top:12px;">
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary" id="quiz-submit" data-i18n="quiz.recommendation.submit">Submit</button></div>
+      </div>
+
+      <div class="quiz-step" data-step="post-submit">
+        <div class="quiz-question" data-i18n="quiz.postSubmit.question">You're in</div>
+
+        <div class="quiz-subtext" data-i18n="quiz.hasLogo.question">Do you have a logo already?</div>
+        <div class="quiz-options" data-field="hasLogo" id="post-submit-logo-options">
+          <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">Yes</button>
+          <button class="option-card" data-value="no" data-i18n="quiz.common.no">No</button>
+        </div>
+
+        <div class="dropzone" id="quiz-logo-dropzone" hidden style="margin-top:16px;">
+          <input type="file" id="quiz-logo-file-input" multiple hidden>
+          <span class="dropzone-label" data-i18n="quiz.postSubmit.dropzoneLabel">Drag &amp; drop files here, or click to choose</span>
+          <div class="dropzone-files" id="logo-dropzone-files"></div>
+        </div>
+
+        <div id="quiz-logo-design-block" hidden style="margin-top:16px;">
+          <div class="quiz-subtext" data-i18n="quiz.postSubmit.logoDesignQuestion">Would you like us to design one for you?</div>
+          <div class="quiz-options" data-field="logoDesignRequest">
+            <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">Yes</button>
+            <button class="option-card" data-value="no" data-i18n="quiz.common.no">No</button>
+          </div>
+        </div>
+
+        <p class="quiz-subtext" style="margin-top:24px;" data-i18n="quiz.postSubmit.subtext">Got any photos handy? Drop them now to speed things up, or skip and we'll sort it when we talk.</p>
+
+        <div class="dropzone" id="quiz-dropzone">
+          <input type="file" id="quiz-file-input" multiple hidden>
+          <span class="dropzone-label" data-i18n="quiz.postSubmit.dropzoneLabel">Drag &amp; drop files here, or click to choose</span>
+          <div class="dropzone-files" id="dropzone-files"></div>
+        </div>
+
+        <div id="quiz-no-photos">
+          <div class="quiz-subtext" style="margin-top:20px;" data-i18n="quiz.postSubmit.noPhotosLabel">Don't have photos yet?</div>
+          <div class="quiz-options" data-field="photoChoice">
+            <button class="option-card" data-value="stock" data-i18n="quiz.postSubmit.stockOption">Use stock photos</button>
+            <button class="option-card" data-value="ai" data-i18n="quiz.postSubmit.aiOption">Use AI-generated</button>
+          </div>
+        </div>
+
+        <input type="text" class="quiz-input" id="quiz-domain" placeholder="Domain name, if you have one (optional)" data-i18n-placeholder="quiz.postSubmit.domainPlaceholder" autocomplete="off" style="margin-top:20px;">
+
+        <div class="quiz-subtext" style="margin-top:20px;" data-i18n="quiz.postSubmit.hostingQuestion">Interested in hosting?</div>
+        <div class="quiz-options" data-field="hostingInterest">
+          <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">Yes</button>
+          <button class="option-card" data-value="no" data-i18n="quiz.common.no">No</button>
+          <button class="option-card" data-value="notsure" data-i18n="quiz.common.notSure">Not sure</button>
+        </div>
+
+        <div class="quiz-nav"><button class="btn" id="quiz-skip-extras" data-i18n="quiz.postSubmit.skipBtn">Skip for now</button><button class="btn primary" id="quiz-finish-extras" data-i18n="quiz.postSubmit.finishBtn">Finish</button></div>
+      </div>
+
+      <div class="quiz-step" data-step="thanks">
+        <div class="quiz-question" id="quiz-thanks-heading">Thanks! We'll be in touch soon</div>
+        <p class="quiz-subtext" data-i18n="quiz.thanks.subtext">Usually within one business day.</p>
+        <div class="quiz-nav"><span></span><button class="btn primary" id="quiz-done" data-i18n="quiz.thanks.closeBtn">Close</button></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/scene.js"></script>
+<script src="js/i18n-strings.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/main.js"></script>
+<script src="js/reveal.js"></script>
+<script src="js/quiz.js"></script>
+
+</body>
+</html>
