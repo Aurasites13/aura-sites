@@ -21,7 +21,7 @@
   }
 
   const BUILD_GROUPS = [
-    { id: 'nav', container: document.querySelector('nav'), items: document.querySelectorAll('nav .nav-links > a') },
+    { id: 'nav', container: document.querySelector('nav'), items: document.querySelectorAll('nav .aura-logo, nav .nav-links > a') },
     { id: 'process-head', container: document.querySelector('.assembly-head'), items: document.querySelectorAll('.assembly-head > *') },
     { id: 'process-tabs', container: document.querySelector('.tier-toggle'), items: document.querySelectorAll('.tier-toggle > .tier-tab') },
     { id: 'process-timeline', container: document.querySelector('.timeline'), items: document.querySelectorAll('.timeline > .timeline-step') },
