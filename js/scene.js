@@ -152,23 +152,77 @@ const lightWash = document.getElementById('light-wash');
 const heroContent = document.getElementById('hero-content');
 const introCaption = document.getElementById('intro-caption');
 const scrollCue = document.getElementById('scroll-cue');
+const navLogo = document.querySelector('nav .aura-logo');
 
 function easeInOutCubic(x) {
   return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 }
+
+// --- shared-element transition: the centered hero logo travels into the nav logo's spot ---
+// Both #intro-caption (inside the position:sticky hero-stage) and nav .aura-logo
+// (position:fixed) hold a stable viewport position while the hero is pinned, so their
+// getBoundingClientRect()s only need to be recomputed on resize / font load / language change,
+// not on every scroll tick.
+const LOGO_TRAVEL_START = 0.68;
+const LOGO_TRAVEL_END = 0.90;
+const LOGO_CROSSFADE_AT = 0.75; // fraction of the travel itself, not of raw scroll
+
+let introStartRect = null;
+let navTargetRect = null;
+function measureLogoRects() {
+  if (introCaption) {
+    const prevTransform = introCaption.style.transform;
+    introCaption.style.transform = 'translate(-50%,-50%)';
+    introStartRect = introCaption.getBoundingClientRect();
+    introCaption.style.transform = prevTransform;
+  }
+  if (navLogo) navTargetRect = navLogo.getBoundingClientRect();
+}
+measureLogoRects();
+window.addEventListener('resize', measureLogoRects);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureLogoRects);
+window.addEventListener('load', () => {
+  measureLogoRects();
+  if (window.AuraI18n && typeof window.AuraI18n.onChange === 'function') {
+    window.AuraI18n.onChange(measureLogoRects);
+  }
+});
 
 let flyProgress = 0;
 function updateScrollProgress() {
   if (prefersReducedMotion) { flyProgress = 0; return; }
   const rect = heroSection.getBoundingClientRect();
   const scrollable = heroSection.offsetHeight - window.innerHeight;
-  let raw = -rect.top / scrollable;
+  let raw = scrollable > 0 ? -rect.top / scrollable : 0;
   raw = Math.max(0, Math.min(1, raw));
   flyProgress = easeInOutCubic(raw);
 
   lightWash.style.opacity = Math.min(1, flyProgress * 1.6) * (flyProgress > 0.92 ? Math.max(0, 1 - (flyProgress - 0.92) / 0.08) : 1);
 
-  introCaption.style.opacity = raw < 0.06 ? 1 : Math.max(0, 1 - (raw - 0.06) / 0.1);
+  const travelRaw = raw < LOGO_TRAVEL_START ? 0
+    : raw > LOGO_TRAVEL_END ? 1
+    : (raw - LOGO_TRAVEL_START) / (LOGO_TRAVEL_END - LOGO_TRAVEL_START);
+  const travelT = easeInOutCubic(travelRaw);
+
+  if (introStartRect && navTargetRect && introStartRect.width > 0) {
+    const startCx = introStartRect.left + introStartRect.width / 2;
+    const startCy = introStartRect.top + introStartRect.height / 2;
+    const endCx = navTargetRect.left + navTargetRect.width / 2;
+    const endCy = navTargetRect.top + navTargetRect.height / 2;
+    const targetScale = Math.max(0.3, Math.min(1, navTargetRect.width / introStartRect.width));
+
+    const dx = (endCx - startCx) * travelT;
+    const dy = (endCy - startCy) * travelT;
+    const scale = 1 + (targetScale - 1) * travelT;
+    introCaption.style.transform = `translate(-50%,-50%) translate3d(${dx}px, ${dy}px, 0) scale(${scale})`;
+
+    const capOpacity = travelT < LOGO_CROSSFADE_AT ? 1
+      : Math.max(0, 1 - (travelT - LOGO_CROSSFADE_AT) / (1 - LOGO_CROSSFADE_AT));
+    const navOpacity = travelT < LOGO_CROSSFADE_AT ? 0
+      : Math.min(1, (travelT - LOGO_CROSSFADE_AT) / (1 - LOGO_CROSSFADE_AT));
+    introCaption.style.opacity = capOpacity;
+    if (navLogo) navLogo.style.opacity = navOpacity;
+  }
 
   const contentReveal = raw > 0.78 ? Math.min(1, (raw - 0.78) / 0.22) : 0;
   heroContent.style.opacity = contentReveal;

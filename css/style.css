@@ -59,6 +59,7 @@
 .aura-logo__mark {
   display: block;
   flex-shrink: 0;
+  filter: drop-shadow(0 0 7px rgba(77,232,255,0.45));
 }
 .aura-logo__word {
   font-weight: 600;
@@ -91,8 +92,11 @@ nav{
   position:fixed; top:0; left:0; right:0; z-index:50;
   display:flex; align-items:center; justify-content:space-between;
   padding: 28px 48px;
-  mix-blend-mode: difference;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.28) 65%, rgba(0,0,0,0) 100%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
+nav .aura-logo{ opacity:0; }
 .nav-links{ display:flex; gap:36px; font-size:14px; color: var(--ink-dim); }
 .nav-links a{ color: var(--ink); text-decoration:none; opacity:0.7; transition: opacity 0.3s ease; }
 .nav-links a:hover{ opacity:1; }
@@ -108,17 +112,16 @@ nav{
   font-family:'Inter', sans-serif;
   font-size:13px;
   font-weight:500;
-  color: var(--ink-dim);
+  color: rgba(234,246,255,0.62);
   background:transparent;
   border:none;
   padding:0;
   cursor:pointer;
-  opacity:0.7;
-  transition: color 0.3s ease, opacity 0.3s ease;
+  transition: color 0.3s ease;
 }
-.lang-btn:hover{ opacity:1; }
-.lang-btn.active{ color: var(--cyan); opacity:1; }
-.lang-sep{ color: var(--ink-dim); opacity:0.4; font-size:12px; }
+.lang-btn:hover{ color: var(--ink); }
+.lang-btn.active{ color: var(--cyan); }
+.lang-sep{ color: rgba(234,246,255,0.32); font-size:12px; }
 
 /* ---- hero: fly through the aura ---- */
 .hero{
@@ -214,7 +217,7 @@ h1 em{
   top:44%; left:50%;
   transform: translate(-50%,-50%);
   text-align:center;
-  transition: opacity 0.3s ease;
+  will-change: transform, opacity;
   perspective: 600px;
 }
 .intro-caption .word{
@@ -1194,4 +1197,6 @@ footer{
   .hero-content{ opacity:1; transform:none; pointer-events:all; }
   .light-wash{ display:none; }
   .build-el{ opacity:1 !important; transform:none !important; transition:none !important; }
+  #intro-caption{ display:none; }
+  nav .aura-logo{ opacity:1; }
 }
