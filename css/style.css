@@ -9,6 +9,72 @@
   --line: rgba(77,232,255,0.14);
   --ink-dim-hero: #B7CCD9;
 }
+
+/* ---- Aura Sites brand tokens (logo kit, tokens.css) ---- */
+:root {
+  --aura-void: #0A0C10;      /* primary dark background */
+  --aura-void-soft: #12161D; /* elevated dark surface */
+  --aura-cyan: #4DE8FF;      /* accent — signal, hot end of the gradient */
+  --aura-blue: #1F8FE8;      /* accent — signal, cool end of the gradient */
+  --aura-line: #242B34;      /* hairlines / borders on dark */
+  --aura-dim: #4A5A6B;       /* unlit ring ticks */
+  --aura-ink: #F4F6F8;       /* primary text on dark */
+  --aura-ink-dim: #8A94A0;   /* secondary text on dark ("SITES") */
+  --aura-ink-faint: #565F6B; /* tertiary / captions on dark */
+
+  /* on-light equivalents */
+  --aura-ink-on-light: #12161D;
+  --aura-ink-dim-on-light: #6B7482;
+  --aura-line-on-light: #D7DCE2;
+}
+
+.aura-font-display {
+  font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+}
+
+.aura-ring--spin {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .aura-ring--spin {
+    animation: aura-spin 90s linear infinite;
+  }
+}
+@keyframes aura-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Aura Sites logo lockup (icon + wordmark), from logo-vanilla.html */
+.aura-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+}
+.aura-logo--stacked {
+  flex-direction: column;
+  gap: 8px;
+}
+.aura-logo__mark {
+  display: block;
+  flex-shrink: 0;
+}
+.aura-logo__word {
+  font-weight: 600;
+  font-size: 14.5px;
+  letter-spacing: 0.06em;
+  color: var(--aura-ink);
+  white-space: nowrap;
+  text-shadow: 0 0 18px rgba(77,232,255,0.35);
+}
+.aura-logo__word--dim {
+  font-weight: 500;
+  color: var(--aura-ink-dim);
+}
+.aura-logo--on-light .aura-logo__word{ color: var(--aura-ink-on-light); text-shadow:none; }
+.aura-logo--on-light .aura-logo__word--dim{ color: var(--aura-ink-dim-on-light); }
+
 *{box-sizing:border-box; margin:0; padding:0;}
 html{scroll-behavior:smooth;}
 body{
@@ -27,7 +93,6 @@ nav{
   padding: 28px 48px;
   mix-blend-mode: difference;
 }
-.logo{ font-family:'Space Grotesk', sans-serif; font-size:18px; font-weight:600; letter-spacing:-0.01em; }
 .nav-links{ display:flex; gap:36px; font-size:14px; color: var(--ink-dim); }
 .nav-links a{ color: var(--ink); text-decoration:none; opacity:0.7; transition: opacity 0.3s ease; }
 .nav-links a:hover{ opacity:1; }
@@ -110,7 +175,6 @@ h1 em{
   background-clip:text;
   -webkit-text-fill-color: transparent;
 }
-.logo{ text-shadow: 0 0 18px rgba(77,232,255,0.35); }
 .intro-caption .word{ text-shadow: 0 0 24px rgba(77,232,255,0.4); }
 .sub{
   font-size:18px;
@@ -829,11 +893,7 @@ footer{
   margin:0 auto 40px;
 }
 .footer-logo{
-  font-size:18px;
-  font-weight:600;
-  letter-spacing:-0.01em;
   margin-bottom:8px;
-  text-shadow: 0 0 18px rgba(77,232,255,0.35);
 }
 .footer-tagline{
   color: var(--ink-dim);
