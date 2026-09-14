@@ -59,7 +59,9 @@
 .aura-logo__mark {
   display: block;
   flex-shrink: 0;
-  filter: drop-shadow(0 0 7px rgba(77,232,255,0.45));
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(77,232,255,0.22) 0%, transparent 70%);
+  filter: drop-shadow(0 0 4px rgba(77,232,255,0.75)) brightness(1.25);
 }
 .aura-logo__word {
   font-weight: 600;
@@ -216,9 +218,20 @@ h1 em{
   z-index:2;
   top:44%; left:50%;
   transform: translate(-50%,-50%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
   text-align:center;
   will-change: transform, opacity;
   perspective: 600px;
+}
+.intro-caption__mark{
+  display:block;
+  width:56px; height:56px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(77,232,255,0.26) 0%, transparent 70%);
+  filter: drop-shadow(0 0 6px rgba(77,232,255,0.7)) brightness(1.25);
 }
 .intro-caption .word{
   display:inline-block;
