@@ -59,9 +59,6 @@
 .aura-logo__mark {
   display: block;
   flex-shrink: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(77,232,255,0.22) 0%, transparent 70%);
-  filter: drop-shadow(0 0 4px rgba(77,232,255,0.75)) brightness(1.25);
 }
 .aura-logo__word {
   font-weight: 600;
@@ -229,9 +226,6 @@ h1 em{
 .intro-caption__mark{
   display:block;
   width:56px; height:56px;
-  border-radius:50%;
-  background: radial-gradient(circle, rgba(77,232,255,0.26) 0%, transparent 70%);
-  filter: drop-shadow(0 0 6px rgba(77,232,255,0.7)) brightness(1.25);
 }
 .intro-caption .word{
   display:inline-block;
