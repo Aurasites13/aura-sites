@@ -38,9 +38,9 @@ const FIELD_DEFS = [
   { key: 'vibe', label: 'Vibe', enum: true },
   { key: 'recommended-tier', label: 'Recommended tier', enum: true },
   { key: 'logo-design-request', label: 'Wants a logo designed', enum: true },
-  { key: 'logo-files', label: 'Logo files uploaded' },
+  { key: 'logo-files', label: 'Logo files uploaded', file: true },
   { key: 'photo-choice', label: 'Photo choice', enum: true },
-  { key: 'files', label: 'Photo files uploaded' },
+  { key: 'files', label: 'Photo files uploaded', file: true },
   { key: 'domain', label: 'Domain' },
   { key: 'hosting-interest', label: 'Interested in hosting', enum: true }
 ];
@@ -83,14 +83,45 @@ function humanizeEnum(value) {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-function fieldRowHtml(label, value) {
+function fieldRowHtml(label, value, opts = {}) {
+  const content = opts.raw ? value : escapeHtml(value);
   return `
     <tr>
       <td style="padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06);">
         <div style="font-family:Helvetica,Arial,sans-serif; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:#6E8291; margin-bottom:3px;">${escapeHtml(label)}</div>
-        <div style="font-family:Helvetica,Arial,sans-serif; font-size:15px; line-height:1.5; color:#EAF6FF;">${escapeHtml(value)}</div>
+        <div style="font-family:Helvetica,Arial,sans-serif; font-size:15px; line-height:1.5; color:#EAF6FF;">${content}</div>
       </td>
     </tr>`;
+}
+
+// Netlify's own default notification email resolves a file field straight to
+// its stored-file URL as a plain string (confirmed against a real submission:
+// same field, same file, shown correctly there). This function's webhook
+// payload apparently doesn't always hand us that same plain string though -
+// that's what was producing the literal "[object Object]" text, so this
+// handles a string, a { url, filename } style object, or an array of either
+// (for the `multiple` file inputs), and falls back to the raw JSON instead of
+// a useless "[object Object]" for any shape not accounted for here.
+function fileLinksHtml(value) {
+  const files = Array.isArray(value) ? value : [value];
+  return files
+    .map((f) => {
+      if (typeof f === 'string') {
+        let label = f;
+        try { label = decodeURIComponent(f.split('/').pop()); } catch (e) { /* keep raw */ }
+        return `<a href="${escapeHtml(f)}" style="color:#4DE8FF; text-decoration:none;">${escapeHtml(label)}</a>`;
+      }
+      if (f && typeof f === 'object') {
+        const url = f.url || f.Url || f.link || f.path;
+        if (url) {
+          const label = f.filename || f.name || url;
+          return `<a href="${escapeHtml(url)}" style="color:#4DE8FF; text-decoration:none;">${escapeHtml(label)}</a>`;
+        }
+        return escapeHtml(JSON.stringify(f));
+      }
+      return escapeHtml(String(f));
+    })
+    .join('<br>');
 }
 
 function buildEmailHtml(data) {
@@ -102,7 +133,10 @@ function buildEmailHtml(data) {
 
   const rows = FIELD_DEFS
     .filter((f) => data[f.key] && String(data[f.key]).trim() !== '')
-    .map((f) => fieldRowHtml(f.label, f.enum ? humanizeEnum(data[f.key]) : data[f.key]))
+    .map((f) => {
+      if (f.file) return fieldRowHtml(f.label, fileLinksHtml(data[f.key]), { raw: true });
+      return fieldRowHtml(f.label, f.enum ? humanizeEnum(data[f.key]) : data[f.key]);
+    })
     .join('');
 
   return `<!DOCTYPE html>
