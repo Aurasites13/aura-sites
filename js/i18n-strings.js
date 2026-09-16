@@ -228,7 +228,10 @@ window.AURA_I18N = {
       booking: {
         heading: "Let's talk it through",
         subtext: "Book a quick discovery call, no obligation.",
-        skipBtn: "Skip for now, I'll book later"
+        confirmedHeading: "You're all set",
+        confirmedSubtext: "Check your email for the confirmation and calendar invite.",
+        skipBtn: "Skip for now, I'll book later",
+        doneBtn: "Done"
       }
     }
   },
@@ -457,7 +460,10 @@ window.AURA_I18N = {
       booking: {
         heading: "詳しくお話ししましょう",
         subtext: "気軽なディスカバリーコールを予約しましょう。参加は任意です。",
-        skipBtn: "今はスキップして、後で予約する"
+        confirmedHeading: "予約が完了しました",
+        confirmedSubtext: "確認メールとカレンダー招待をご確認ください。",
+        skipBtn: "今はスキップして、後で予約する",
+        doneBtn: "完了"
       }
     }
   }

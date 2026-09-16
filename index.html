@@ -492,10 +492,16 @@
       </div>
 
       <div class="quiz-step" data-step="booking">
-        <div class="quiz-question" data-i18n="quiz.booking.heading">Let's talk it through</div>
-        <p class="quiz-subtext" data-i18n="quiz.booking.subtext">Book a quick discovery call, no obligation.</p>
+        <div class="quiz-question" id="quiz-booking-heading" data-i18n="quiz.booking.heading">Let's talk it through</div>
+        <p class="quiz-subtext" id="quiz-booking-subtext" data-i18n="quiz.booking.subtext">Book a quick discovery call, no obligation.</p>
+        <div class="quiz-question" id="quiz-booking-confirmed-heading" data-i18n="quiz.booking.confirmedHeading" hidden>You're all set</div>
+        <p class="quiz-subtext" id="quiz-booking-confirmed-subtext" data-i18n="quiz.booking.confirmedSubtext" hidden>Check your email for the confirmation and calendar invite.</p>
         <div class="quiz-cal-embed" id="quiz-cal-embed"></div>
-        <div class="quiz-nav"><span></span><button class="btn" id="quiz-skip-booking" data-i18n="quiz.booking.skipBtn">Skip for now, I'll book later</button></div>
+        <div class="quiz-nav">
+          <span></span>
+          <button class="btn" id="quiz-skip-booking" data-i18n="quiz.booking.skipBtn">Skip for now, I'll book later</button>
+          <button class="btn primary" id="quiz-booking-done" data-i18n="quiz.booking.doneBtn" hidden>Done</button>
+        </div>
       </div>
 
     </div>

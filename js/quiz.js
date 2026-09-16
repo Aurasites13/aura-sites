@@ -128,6 +128,12 @@ function openQuiz() {
   document.getElementById('logo-dropzone-files').innerHTML = '';
   document.getElementById('quiz-logo-dropzone').hidden = true;
   document.getElementById('quiz-logo-design-block').hidden = true;
+  document.getElementById('quiz-booking-heading').hidden = false;
+  document.getElementById('quiz-booking-subtext').hidden = false;
+  document.getElementById('quiz-booking-confirmed-heading').hidden = true;
+  document.getElementById('quiz-booking-confirmed-subtext').hidden = true;
+  document.getElementById('quiz-skip-booking').hidden = false;
+  document.getElementById('quiz-booking-done').hidden = true;
   renderStep(quiz.currentStepId);
   overlay.classList.add('open');
   requestAnimationFrame(() => overlay.classList.add('show'));
@@ -372,6 +378,21 @@ document.getElementById('quiz-thanks-continue').addEventListener('click', () => 
 // a visible container to size itself into, so it's initialized lazily on
 // first activation rather than eagerly on page load.
 let calEmbedInitialized = false;
+
+// Swap the booking step into its post-booking state: hide the "book later"
+// escape hatch (no longer relevant once a call is on the calendar) and
+// replace the heading/subtext with a brief confirmation, matching the
+// pattern used elsewhere in the quiz of two static, i18n-bound blocks with
+// only one visible at a time rather than mutating text at runtime.
+function onBookingSuccessful() {
+  document.getElementById('quiz-booking-heading').hidden = true;
+  document.getElementById('quiz-booking-subtext').hidden = true;
+  document.getElementById('quiz-booking-confirmed-heading').hidden = false;
+  document.getElementById('quiz-booking-confirmed-subtext').hidden = false;
+  document.getElementById('quiz-skip-booking').hidden = true;
+  document.getElementById('quiz-booking-done').hidden = false;
+}
+
 function initCalEmbed() {
   if (calEmbedInitialized || typeof Cal !== 'function') return;
   calEmbedInitialized = true;
@@ -379,6 +400,10 @@ function initCalEmbed() {
     elementOrSelector: '#quiz-cal-embed',
     config: { layout: 'month_view', theme: 'dark' },
     calLink: 'maximilien-cat-ljsq1g/discovery-call'
+  });
+  Cal.ns['discovery-call']('on', {
+    action: 'bookingSuccessful',
+    callback: onBookingSuccessful
   });
 }
 
@@ -389,3 +414,4 @@ const bookingObserver = new MutationObserver(() => {
 bookingObserver.observe(bookingStepEl, { attributes: true, attributeFilter: ['class'] });
 
 document.getElementById('quiz-skip-booking').addEventListener('click', closeQuiz);
+document.getElementById('quiz-booking-done').addEventListener('click', closeQuiz);
