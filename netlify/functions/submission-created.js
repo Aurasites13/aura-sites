@@ -127,9 +127,18 @@ function fileLinksHtml(value) {
 function buildEmailHtml(data) {
   const name = data.name || '(no name given)';
   const email = data.email || '';
-  const isExtras = data['submission-stage'] === 'extras';
-  const stageBadgeColor = isExtras ? '#4DE8FF' : '#FF9F45';
-  const stageBadgeText = isExtras ? 'Includes post-submit extras' : 'Initial submission';
+  const stage = data['submission-stage'];
+  let stageBadgeColor = '#FF9F45';
+  let stageBadgeText = 'Initial submission';
+  if (stage === 'extras') {
+    stageBadgeColor = '#4DE8FF';
+    stageBadgeText = 'Includes post-submit extras';
+  } else if (stage === 'partial') {
+    // Fired right after Phase 1 (business name, description, email) so
+    // there's a contactable record even if the visitor never finishes.
+    stageBadgeColor = '#1F8FE8';
+    stageBadgeText = 'Early capture (left after phase 1)';
+  }
 
   const rows = FIELD_DEFS
     .filter((f) => data[f.key] && String(data[f.key]).trim() !== '')

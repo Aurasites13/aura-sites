@@ -198,11 +198,16 @@ window.AURA_I18N = {
       },
       businessName: {
         question: "What's your business called?",
-        placeholder: "e.g. Aura Sites"
+        placeholder: "e.g. Aura Sites",
+        skipToBooking: "Already know what you need? Skip straight to booking a call"
       },
       description: {
         question: "Describe it in one line",
         placeholder: "e.g. A cozy neighborhood bakery specializing in sourdough"
+      },
+      email: {
+        question: "What's the best email to reach you at?",
+        placeholder: "you@example.com"
       },
       hasLogo: {
         question: "Do you have a logo already?"
@@ -241,7 +246,6 @@ window.AURA_I18N = {
       recommendation: {
         question: "Here's what we'd suggest",
         namePlaceholder: "Your name",
-        emailPlaceholder: "Your email",
         consent: "By submitting, you agree to our <a href=\"/privacy\" target=\"_blank\" rel=\"noopener\">privacy policy</a>.",
         submit: "Submit",
         blurbComplex: "Payments, bookings, or logins need some custom scoping, so Studio is the right fit.",
@@ -472,11 +476,16 @@ window.AURA_I18N = {
       },
       businessName: {
         question: "屋号やビジネス名を教えてください。",
-        placeholder: "例：Aura Sites"
+        placeholder: "例：Aura Sites",
+        skipToBooking: "すでにご要望がお決まりの方は、質問をスキップして通話を予約できます"
       },
       description: {
         question: "ひとことで説明してください",
         placeholder: "例：こだわりのサワードウを扱う、街の小さなベーカリー"
+      },
+      email: {
+        question: "ご連絡先のメールアドレスを教えてください",
+        placeholder: "you@example.com"
       },
       hasLogo: {
         question: "すでにロゴをお持ちですか？"
@@ -515,7 +524,6 @@ window.AURA_I18N = {
       recommendation: {
         question: "こちらのプランをご提案します",
         namePlaceholder: "お名前",
-        emailPlaceholder: "メールアドレス",
         consent: "送信すると、<a href=\"/privacy\" target=\"_blank\" rel=\"noopener\">プライバシーポリシー</a>に同意したものとみなされます。",
         submit: "送信",
         blurbComplex: "決済・予約・ログイン機能には個別の設計が必要なため、Studioプランが最適です。",

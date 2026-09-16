@@ -55,6 +55,7 @@ function buildFormFields() {
 const STEP_DEFS = [
   { id: 'business-name', phaseKey: 'quiz.phaseBasics' },
   { id: 'description', phaseKey: 'quiz.phaseBasics' },
+  { id: 'email', phaseKey: 'quiz.phaseBasics' },
   { id: 'size', phaseKey: 'quiz.phaseScope' },
   { id: 'pages-checklist', phaseKey: 'quiz.phaseScope', when: a => a.size === 'notsure' },
   { id: 'complexity', phaseKey: 'quiz.phaseScope' },
@@ -154,6 +155,12 @@ document.querySelectorAll('.js-open-quiz').forEach(el => {
 });
 
 document.getElementById('quiz-close').addEventListener('click', closeQuiz);
+
+// First-screen shortcut for visitors who don't want the guided questions at
+// all: jump straight to the booking step, skipping every phase and the
+// post-submit extras step. Cal's own booker form collects name/email itself,
+// so no contact info is lost even though our own fields are bypassed.
+document.getElementById('quiz-skip-to-booking').addEventListener('click', () => goToStep('booking'));
 overlay.addEventListener('click', (e) => {
   if (e.target === overlay) closeQuiz();
 });
@@ -175,6 +182,21 @@ document.querySelectorAll('.quiz-step .quiz-next').forEach(btn => {
   btn.addEventListener('click', () => {
     const step = btn.closest('.quiz-step');
     const input = step.querySelector('.quiz-input[data-field]');
+
+    if (step.dataset.step === 'email') {
+      const email = input.value.trim();
+      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      input.style.borderColor = emailValid ? '' : 'rgba(255,120,120,0.6)';
+      if (!emailValid) return;
+      quiz.answers.email = email;
+      // Captured as soon as Phase 1 is done, so an inquiry with just a
+      // business name, description, and email on file isn't lost entirely
+      // if the visitor abandons the questionnaire before ever hitting Submit.
+      submitToNetlify({ 'submission-stage': 'partial', ...buildFormFields() });
+      goNext();
+      return;
+    }
+
     if (input) quiz.answers[input.dataset.field] = input.value.trim();
     if (step.dataset.step === 'pages-checklist') {
       quiz.answers.pages = Array.from(step.querySelectorAll('input:checked')).map(el => el.value);
@@ -261,18 +283,15 @@ window.AuraI18n.onChange(() => {
 
 document.getElementById('quiz-submit').addEventListener('click', () => {
   const nameInput = document.getElementById('quiz-name');
-  const emailInput = document.getElementById('quiz-email');
   const name = nameInput.value.trim();
-  const email = emailInput.value.trim();
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   nameInput.style.borderColor = name ? '' : 'rgba(255,120,120,0.6)';
-  emailInput.style.borderColor = emailValid ? '' : 'rgba(255,120,120,0.6)';
-  if (!name || !emailValid) return;
+  if (!name) return;
 
   quiz.answers.name = name;
-  quiz.answers.email = email;
 
+  // email was already captured (and validated) at the end of Phase 1; this
+  // submission just carries the fuller answer set now that Phase 4 is done.
   // Captured now so the lead isn't lost even if the visitor closes the modal
   // before reaching (or instead of completing) the optional extras step.
   submitToNetlify({ 'submission-stage': 'initial', ...buildFormFields() });

@@ -363,11 +363,18 @@
         <div class="quiz-question" data-i18n="quiz.businessName.question">What's your business called?</div>
         <input type="text" class="quiz-input" data-field="businessName" placeholder="e.g. Aura Sites" data-i18n-placeholder="quiz.businessName.placeholder" autocomplete="off">
         <div class="quiz-nav"><span></span><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+        <button type="button" class="quiz-skip-to-booking" id="quiz-skip-to-booking" data-i18n="quiz.businessName.skipToBooking">Already know what you need? Skip straight to booking a call</button>
       </div>
 
       <div class="quiz-step" data-step="description">
         <div class="quiz-question" data-i18n="quiz.description.question">Describe it in one line</div>
         <input type="text" class="quiz-input" data-field="description" placeholder="e.g. A cozy neighborhood bakery specializing in sourdough" data-i18n-placeholder="quiz.description.placeholder" autocomplete="off">
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+      </div>
+
+      <div class="quiz-step" data-step="email">
+        <div class="quiz-question" data-i18n="quiz.email.question">What's the best email to reach you at?</div>
+        <input type="email" class="quiz-input" id="quiz-email" data-field="email" placeholder="you@example.com" data-i18n-placeholder="quiz.email.placeholder" autocomplete="email">
         <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
       </div>
 
@@ -432,7 +439,6 @@
           <p class="recommend-blurb" id="recommend-blurb">A multi-page site with room to grow fits the Grow tier well.</p>
         </div>
         <input type="text" class="quiz-input" id="quiz-name" placeholder="Your name" data-i18n-placeholder="quiz.recommendation.namePlaceholder" autocomplete="name" style="margin-top:24px;">
-        <input type="email" class="quiz-input" id="quiz-email" placeholder="Your email" data-i18n-placeholder="quiz.recommendation.emailPlaceholder" autocomplete="email" style="margin-top:12px;">
         <p class="quiz-consent" data-i18n="quiz.recommendation.consent">By submitting, you agree to our <a href="/privacy" target="_blank" rel="noopener">privacy policy</a>.</p>
         <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary" id="quiz-submit" data-i18n="quiz.recommendation.submit">Submit</button></div>
       </div>

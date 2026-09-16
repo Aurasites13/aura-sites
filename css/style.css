@@ -1122,6 +1122,24 @@ footer{
   margin-top:32px;
 }
 
+.quiz-skip-to-booking{
+  display:block;
+  width:100%;
+  margin-top:20px;
+  padding:0;
+  background:none;
+  border:none;
+  font-family:'Inter', sans-serif;
+  font-size:13px;
+  color: var(--ink-dim);
+  text-align:center;
+  text-decoration:underline;
+  text-decoration-color:rgba(110,130,145,0.4);
+  cursor:pointer;
+  transition: color 0.3s ease;
+}
+.quiz-skip-to-booking:hover{ color: var(--cyan); }
+
 .recommend-card{
   border:1px solid rgba(77,232,255,0.4);
   border-radius:14px;
