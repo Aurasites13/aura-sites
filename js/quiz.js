@@ -3,15 +3,28 @@ const t = (key) => window.AuraI18n.t(key);
 
 // --- Netlify Forms submission ---
 // Posts to the static form declared in index.html (name="project-inquiry").
+// Always sent as multipart/form-data (via FormData) rather than urlencoded,
+// since the logo/photo fields carry actual File objects and Netlify Forms
+// requires multipart for any submission that includes a file upload; plain
+// text fields are just as happy to travel this way, so one encoding covers
+// both stages. The Content-Type header is left for the browser to set, since
+// it must include the multipart boundary fetch/FormData generates.
 // Outside of Netlify hosting (e.g. the local dev server) this endpoint doesn't
 // exist, so failures are expected there and are swallowed rather than shown
 // to the user; the questionnaire flow never blocks on this.
 function submitToNetlify(fields) {
-  const body = new URLSearchParams({ 'form-name': 'project-inquiry', ...fields }).toString();
+  const formData = new FormData();
+  formData.append('form-name', 'project-inquiry');
+  Object.entries(fields).forEach(([key, value]) => {
+    if (Array.isArray(value)) {
+      value.forEach(v => formData.append(key, v));
+    } else {
+      formData.append(key, value);
+    }
+  });
   fetch('/', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body
+    body: formData
   }).catch((err) => {
     console.warn('Netlify Forms submission failed (expected when not hosted on Netlify):', err);
   });
@@ -31,9 +44,9 @@ function buildFormFields() {
     'name': quiz.answers.name || '',
     'email': quiz.answers.email || '',
     'logo-design-request': quiz.answers.logoDesignRequest || '',
-    'logo-files': (quiz.answers.logoFileNames || []).join(', '),
+    'logo-files': quiz.answers.logoFileObjects || [],
     'photo-choice': quiz.answers.photoChoice || '',
-    'files': (quiz.answers.fileNames || []).join(', '),
+    'files': quiz.answers.fileObjects || [],
     'domain': quiz.answers.domain || '',
     'hosting-interest': quiz.answers.hostingInterest || ''
   };
@@ -275,13 +288,14 @@ function setupDropzone(dropzoneEl, fileInputEl, filesContainerEl, onFilesChosen)
     if (!files || !files.length) return;
     filesContainerEl.innerHTML = '';
     const names = [];
-    Array.from(files).forEach(f => {
+    const fileObjects = Array.from(files);
+    fileObjects.forEach(f => {
       const tag = document.createElement('span');
       tag.textContent = f.name;
       filesContainerEl.appendChild(tag);
       names.push(f.name);
     });
-    onFilesChosen(names);
+    onFilesChosen(names, fileObjects);
   }
   dropzoneEl.addEventListener('click', () => fileInputEl.click());
   fileInputEl.addEventListener('change', () => handleFiles(fileInputEl.files));
@@ -300,9 +314,10 @@ setupDropzone(
   document.getElementById('quiz-dropzone'),
   document.getElementById('quiz-file-input'),
   document.getElementById('dropzone-files'),
-  (names) => {
+  (names, fileObjects) => {
     quiz.answers.fileCount = names.length;
     quiz.answers.fileNames = names;
+    quiz.answers.fileObjects = fileObjects;
     noPhotos.style.display = 'none';
   }
 );
@@ -311,8 +326,9 @@ setupDropzone(
   document.getElementById('quiz-logo-dropzone'),
   document.getElementById('quiz-logo-file-input'),
   document.getElementById('logo-dropzone-files'),
-  (names) => {
+  (names, fileObjects) => {
     quiz.answers.logoFileNames = names;
+    quiz.answers.logoFileObjects = fileObjects;
   }
 );
 
