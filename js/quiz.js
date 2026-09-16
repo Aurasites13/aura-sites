@@ -27,7 +27,6 @@ function buildFormFields() {
     'complexity': quiz.answers.complexity || '',
     'complexity-detail': quiz.answers.complexityDetail || '',
     'vibe': quiz.answers.vibe || '',
-    'timeline': quiz.answers.timeline || '',
     'recommended-tier': quiz.answers.recommendedTier || '',
     'name': quiz.answers.name || '',
     'email': quiz.answers.email || '',
@@ -48,7 +47,6 @@ const STEP_DEFS = [
   { id: 'complexity', phaseKey: 'quiz.phaseScope' },
   { id: 'complexity-detail', phaseKey: 'quiz.phaseScope', when: a => a.complexity === 'yes' },
   { id: 'vibe', phaseKey: 'quiz.phaseStyleTimeline' },
-  { id: 'timeline', phaseKey: 'quiz.phaseStyleTimeline' },
   { id: 'recommendation', phaseKey: 'quiz.phaseRecommendation' }
 ];
 

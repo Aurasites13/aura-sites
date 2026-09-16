@@ -25,7 +25,7 @@ const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 
 // Fields shown in the email body, in display order. `enum: true` fields get
 // light formatting (hyphens to spaces, capitalized) since their values are
-// fixed option-card choices like "few" or "asap"; everything else is shown
+// fixed option-card choices like "few" or "notsure"; everything else is shown
 // exactly as submitted since it's free text the visitor typed themselves.
 const FIELD_DEFS = [
   { key: 'business-name', label: 'Business name' },
@@ -36,7 +36,6 @@ const FIELD_DEFS = [
   { key: 'complexity', label: 'Needs payments, bookings, or logins', enum: true },
   { key: 'complexity-detail', label: 'Complexity details' },
   { key: 'vibe', label: 'Vibe', enum: true },
-  { key: 'timeline', label: 'Timeline', enum: true },
   { key: 'recommended-tier', label: 'Recommended tier', enum: true },
   { key: 'logo-design-request', label: 'Wants a logo designed', enum: true },
   { key: 'logo-files', label: 'Logo files uploaded' },
@@ -56,7 +55,7 @@ function escapeHtml(str) {
 
 // Known option-card values, matching the questionnaire's own English labels
 // (js/i18n-strings.js) so the email reads naturally instead of showing raw
-// values like "notsure" or "asap". Anything not in this map falls back to a
+// values like "notsure" or "corporate". Anything not in this map falls back to a
 // simple hyphen-to-space, capitalized rendering.
 const VALUE_LABELS = {
   yes: 'Yes',
@@ -69,9 +68,6 @@ const VALUE_LABELS = {
   warm: 'Warm & friendly',
   bold: 'Bold & modern',
   corporate: 'Professional & corporate',
-  asap: 'ASAP',
-  month: 'Within a month',
-  flexible: 'Flexible',
   launch: 'Launch',
   grow: 'Grow',
   studio: 'Studio',

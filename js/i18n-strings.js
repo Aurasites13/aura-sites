@@ -146,7 +146,7 @@ window.AURA_I18N = {
       closeAriaLabel: "Close",
       phaseBasics: "Basics",
       phaseScope: "Scope",
-      phaseStyleTimeline: "Style & timeline",
+      phaseStyleTimeline: "Style",
       phaseRecommendation: "Recommendation",
       common: {
         back: "Back",
@@ -196,12 +196,6 @@ window.AURA_I18N = {
         warm: "Warm &amp; friendly",
         bold: "Bold &amp; modern",
         corporate: "Professional &amp; corporate"
-      },
-      timeline: {
-        question: "When do you need it live?",
-        asap: "ASAP",
-        month: "Within a month",
-        flexible: "Flexible"
       },
       recommendation: {
         question: "Here's what we'd suggest",
@@ -376,7 +370,7 @@ window.AURA_I18N = {
       closeAriaLabel: "閉じる",
       phaseBasics: "基本情報",
       phaseScope: "規模",
-      phaseStyleTimeline: "スタイルとスケジュール",
+      phaseStyleTimeline: "スタイル",
       phaseRecommendation: "ご提案",
       common: {
         back: "戻る",
@@ -426,12 +420,6 @@ window.AURA_I18N = {
         warm: "温かみ＆親しみやすさ",
         bold: "大胆＆モダン",
         corporate: "フォーマル＆コーポレート"
-      },
-      timeline: {
-        question: "いつまでに公開したいですか？",
-        asap: "できるだけ早く",
-        month: "1ヶ月以内",
-        flexible: "柔軟に対応"
       },
       recommendation: {
         question: "こちらのプランをご提案します",
