@@ -398,7 +398,14 @@ function initCalEmbed() {
   calEmbedInitialized = true;
   Cal.ns['discovery-call']('inline', {
     elementOrSelector: '#quiz-cal-embed',
-    config: { layout: 'month_view', theme: 'dark' },
+    // name/email prefill the booker form with what the Recommendation step
+    // already collected, so the client isn't asked for the same info twice.
+    config: {
+      layout: 'month_view',
+      theme: 'dark',
+      name: quiz.answers.name || '',
+      email: quiz.answers.email || ''
+    },
     calLink: 'maximilien-cat-ljsq1g/discovery-call'
   });
   Cal.ns['discovery-call']('on', {
