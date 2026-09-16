@@ -322,6 +322,15 @@ h1 em{
   border:1px solid var(--line);
   overflow:hidden;
 }
+/* one absolutely-positioned layout per tier, stacked in the same box; only
+   the active one is ever displayed so there's no bleed-through between
+   tiers, and each replays its own reveal independently of the others */
+.stage-layout{
+  position:absolute;
+  inset:0;
+  display:none;
+}
+.stage-layout.active{ display:block; }
 .block{
   position:absolute;
   background: rgba(234,246,255,0.05);
@@ -329,38 +338,52 @@ h1 em{
   border-radius:8px;
   opacity:0;
   transform: translateY(24px) scale(0.96);
-  transition: opacity 0.9s cubic-bezier(0.19,1,0.22,1), transform 0.9s cubic-bezier(0.19,1,0.22,1), background 0.9s ease, border-color 0.9s ease;
+  transition: opacity 0.45s cubic-bezier(0.19,1,0.22,1), transform 0.45s cubic-bezier(0.19,1,0.22,1), background 0.45s ease, border-color 0.45s ease;
 }
-.stage.live .block{
+.stage-layout.revealed .block{
   opacity:1;
   transform: translateY(0) scale(1);
 }
-.stage.live .block.filled{
+.stage-layout.revealed .block.filled{
   background: var(--ink);
   border-color: var(--ink);
 }
-.stage.live .block.tint-violet{ background: var(--cyan); border-color: var(--cyan); }
-.stage.live .block.tint-coral{ background: var(--blue); border-color: var(--blue); }
-.stage.live .block.tint-teal{ background: var(--amber); border-color: var(--amber); }
-.stage.live .block.b-head,
-.stage.live .block.b-sub,
-.stage.live .block.b-card1,
-.stage.live .block.b-card2,
-.stage.live .block.b-card3{
+.stage-layout.revealed .block.tint-violet{ background: var(--cyan); border-color: var(--cyan); }
+.stage-layout.revealed .block.tint-coral{ background: var(--blue); border-color: var(--blue); }
+.stage-layout.revealed .block.tint-teal{ background: var(--amber); border-color: var(--amber); }
+.stage-layout.revealed .block.content-block{
   background: rgba(77,232,255,0.05);
   border-color: rgba(77,232,255,0.5);
   box-shadow: 0 0 12px rgba(77,232,255,0.2);
 }
 
-.b-nav{ top:5%; left:5%; width:20%; height:6%; transition-delay:0s; }
-.b-cta{ top:5%; right:5%; width:12%; height:6%; transition-delay:0.08s; }
-.b-head{ top:20%; left:5%; width:45%; height:10%; transition-delay:0.16s; }
-.b-sub{ top:33%; left:5%; width:35%; height:6%; transition-delay:0.24s; }
-.b-btn{ top:44%; left:5%; width:15%; height:7%; transition-delay:0.32s; }
-.b-hero-img{ top:15%; right:5%; width:35%; height:55%; transition-delay:0.4s; }
-.b-card1{ top:75%; left:5%; width:26%; height:18%; transition-delay:0.5s; }
-.b-card2{ top:75%; left:33%; width:26%; height:18%; transition-delay:0.58s; }
-.b-card3{ top:75%; left:61%; width:26%; height:18%; transition-delay:0.66s; }
+.b-nav{ top:5%; left:5%; width:20%; height:6%; }
+.b-cta{ top:5%; right:5%; width:12%; height:6%; }
+.b-head{ top:20%; left:5%; width:45%; height:10%; }
+.b-sub{ top:33%; left:5%; width:35%; height:6%; }
+.b-btn{ top:44%; left:5%; width:15%; height:7%; }
+.b-hero-img{ top:15%; right:5%; width:35%; height:55%; }
+.b-card1{ top:75%; left:5%; width:26%; height:18%; }
+.b-card2{ top:75%; left:33%; width:26%; height:18%; }
+.b-card3{ top:75%; left:61%; width:26%; height:18%; }
+
+/* launch: leaner, single-focus layout - a handful of blocks, full-width hero */
+.b-head-launch{ top:20%; left:5%; width:55%; height:13%; }
+.b-hero-img-launch{ top:40%; left:5%; width:90%; height:34%; }
+.b-card1-launch{ top:80%; left:5%; width:42%; height:14%; }
+.b-card2-launch{ top:80%; left:53%; width:42%; height:14%; }
+
+/* studio: grow's layout plus a second card row, compressed to make room */
+.b-head-studio{ top:16%; left:5%; width:45%; height:9%; }
+.b-sub-studio{ top:27%; left:5%; width:35%; height:5%; }
+.b-btn-studio{ top:35%; left:5%; width:15%; height:6%; }
+.b-hero-img-studio{ top:12%; right:5%; width:35%; height:48%; }
+.b-card1-studio{ top:63%; left:5%; width:26%; height:14%; }
+.b-card2-studio{ top:63%; left:33%; width:26%; height:14%; }
+.b-card3-studio{ top:63%; left:61%; width:26%; height:14%; }
+.b-card4-studio{ top:79%; left:5%; width:26%; height:14%; }
+.b-card5-studio{ top:79%; left:33%; width:26%; height:14%; }
+.b-card6-studio{ top:79%; left:61%; width:26%; height:14%; }
 
 /* timeline: 3-step process with per-tier day labels */
 .timeline{
