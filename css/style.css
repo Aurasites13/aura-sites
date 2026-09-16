@@ -1176,6 +1176,19 @@ footer{
   border-radius:100px;
 }
 
+.quiz-cal-embed{
+  margin-top:20px;
+  min-height:480px;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background: var(--bg);
+}
+
+.modal:has(.quiz-step[data-step="booking"].active){
+  max-width:720px;
+}
+
 @media (max-width: 520px){
   .modal{ padding:36px 24px 28px; }
   .quiz-question{ font-size:20px; }

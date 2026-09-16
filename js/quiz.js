@@ -348,4 +348,28 @@ function skipExtras() {
 
 document.getElementById('quiz-finish-extras').addEventListener('click', finishExtras);
 document.getElementById('quiz-skip-extras').addEventListener('click', skipExtras);
-document.getElementById('quiz-done').addEventListener('click', closeQuiz);
+document.getElementById('quiz-thanks-continue').addEventListener('click', () => goToStep('booking'));
+
+// --- final step: book a discovery call (Cal.com inline embed) ---
+
+// The embed step is display:none until active, and Cal's inline embed needs
+// a visible container to size itself into, so it's initialized lazily on
+// first activation rather than eagerly on page load.
+let calEmbedInitialized = false;
+function initCalEmbed() {
+  if (calEmbedInitialized || typeof Cal !== 'function') return;
+  calEmbedInitialized = true;
+  Cal.ns['discovery-call']('inline', {
+    elementOrSelector: '#quiz-cal-embed',
+    config: { layout: 'month_view', theme: 'dark' },
+    calLink: 'maximilien-cat-ljsq1g/discovery-call'
+  });
+}
+
+const bookingStepEl = document.querySelector('.quiz-step[data-step="booking"]');
+const bookingObserver = new MutationObserver(() => {
+  if (bookingStepEl.classList.contains('active')) initCalEmbed();
+});
+bookingObserver.observe(bookingStepEl, { attributes: true, attributeFilter: ['class'] });
+
+document.getElementById('quiz-skip-booking').addEventListener('click', closeQuiz);

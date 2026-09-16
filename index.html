@@ -488,7 +488,14 @@
       <div class="quiz-step" data-step="thanks">
         <div class="quiz-question" id="quiz-thanks-heading">Thanks! We'll be in touch soon</div>
         <p class="quiz-subtext" data-i18n="quiz.thanks.subtext">Usually within one business day.</p>
-        <div class="quiz-nav"><span></span><button class="btn primary" id="quiz-done" data-i18n="quiz.thanks.closeBtn">Close</button></div>
+        <div class="quiz-nav"><span></span><button class="btn primary" id="quiz-thanks-continue" data-i18n="quiz.thanks.continueBtn">Continue</button></div>
+      </div>
+
+      <div class="quiz-step" data-step="booking">
+        <div class="quiz-question" data-i18n="quiz.booking.heading">Let's talk it through</div>
+        <p class="quiz-subtext" data-i18n="quiz.booking.subtext">Book a quick discovery call, no obligation.</p>
+        <div class="quiz-cal-embed" id="quiz-cal-embed"></div>
+        <div class="quiz-nav"><span></span><button class="btn" id="quiz-skip-booking" data-i18n="quiz.booking.skipBtn">Skip for now, I'll book later</button></div>
       </div>
 
     </div>
@@ -501,6 +508,40 @@
 <script src="js/i18n.js"></script>
 <script src="js/main.js"></script>
 <script src="js/reveal.js"></script>
+
+<!-- Cal.com embed loader (official @calcom/embed-core snippet). This just
+     defines window.Cal and queues calls; the actual embed.js bundle isn't
+     fetched from Cal's CDN until Cal(...) is first invoked. -->
+<script type="text/javascript">
+  (function (C, A, L) {
+    let p = function (a, ar) { a.q.push(ar); };
+    let d = C.document;
+    C.Cal = C.Cal || function () {
+      let cal = C.Cal;
+      let ar = arguments;
+      if (!cal.loaded) {
+        cal.ns = {};
+        cal.q = cal.q || [];
+        d.head.appendChild(d.createElement("script")).src = A;
+        cal.loaded = true;
+      }
+      if (ar[0] === L) {
+        const api = function () { p(api, arguments); };
+        const namespace = ar[1];
+        api.q = api.q || [];
+        if (typeof namespace === "string") {
+          cal.ns[namespace] = cal.ns[namespace] || api;
+          p(cal.ns[namespace], ar);
+          p(cal, ["initNamespace", namespace]);
+        } else p(cal, ar);
+        return;
+      }
+      p(cal, ar);
+    };
+  })(window, "https://app.cal.com/embed/embed.js", "init");
+  Cal("init", "discovery-call", { origin: "https://cal.com" });
+</script>
+
 <script src="js/quiz.js"></script>
 
 </body>

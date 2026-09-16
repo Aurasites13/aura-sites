@@ -223,7 +223,12 @@ window.AURA_I18N = {
       thanks: {
         headingTemplate: "Thanks, {name}! We'll be in touch soon",
         subtext: "Usually within one business day.",
-        closeBtn: "Close"
+        continueBtn: "Continue"
+      },
+      booking: {
+        heading: "Let's talk it through",
+        subtext: "Book a quick discovery call, no obligation.",
+        skipBtn: "Skip for now, I'll book later"
       }
     }
   },
@@ -447,7 +452,12 @@ window.AURA_I18N = {
       thanks: {
         headingTemplate: "{name}様、ありがとうございます！近日中にご連絡いたします",
         subtext: "通常、1営業日以内にご連絡します。",
-        closeBtn: "閉じる"
+        continueBtn: "次へ"
+      },
+      booking: {
+        heading: "詳しくお話ししましょう",
+        subtext: "気軽なディスカバリーコールを予約しましょう。参加は任意です。",
+        skipBtn: "今はスキップして、後で予約する"
       }
     }
   }
