@@ -370,13 +370,15 @@ h1 em{
 /* launch: filled browser-chrome mockup for a fictional ramen shop, matching
    the .mock-chrome pattern from the portfolio cards but with the shop's own
    warm palette (kept separate from Aura Sites' own cyan/blue) instead of the
-   translucent wireframe boxes used for grow/studio */
-.tier-mock{
-  position:absolute;
-  inset:0;
+   translucent wireframe boxes used for grow/studio. Blocks are direct
+   children of .stage-layout (same nesting depth as grow/studio) rather than
+   wrapped in an extra positioned container, since that extra level of
+   nested position:absolute + percentage sizing rendered incorrectly in some
+   browsers. */
+.tier-mock-launch{
   background:#F6EEE1;
 }
-.tier-mock .mock-chrome{
+.tier-mock-launch .mock-chrome{
   position:absolute;
   top:0; left:0; right:0;
   height:9%;
