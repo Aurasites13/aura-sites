@@ -317,190 +317,153 @@ h1 em{
   width:100%;
   max-width:860px;
   aspect-ratio: 16/10;
-  background: var(--bg-2);
+  background:#15110E;
   border-radius:14px;
-  border:1px solid var(--line);
+  border:1px solid rgba(232,103,44,0.16);
   overflow:hidden;
 }
-/* one absolutely-positioned layout per tier, stacked in the same box; only
-   the active one is ever displayed so there's no bleed-through between
-   tiers, and each replays its own reveal independently of the others */
-.stage-layout{
-  position:absolute;
-  inset:0;
-  display:none;
-}
-.stage-layout.active{ display:block; }
-.block{
-  position:absolute;
-  background: rgba(234,246,255,0.05);
-  border: 1px solid var(--line);
-  border-radius:8px;
-  opacity:0;
-  transform: translateY(24px) scale(0.96);
-  transition: opacity 0.45s cubic-bezier(0.19,1,0.22,1), transform 0.45s cubic-bezier(0.19,1,0.22,1), background 0.45s ease, border-color 0.45s ease;
-}
-.stage-layout.revealed .block{
-  opacity:1;
-  transform: translateY(0) scale(1);
-}
-.stage-layout.revealed .block.filled{
-  background: var(--ink);
-  border-color: var(--ink);
-}
-.stage-layout.revealed .block.tint-violet{ background: var(--cyan); border-color: var(--cyan); }
-.stage-layout.revealed .block.tint-coral{ background: var(--blue); border-color: var(--blue); }
-.stage-layout.revealed .block.tint-teal{ background: var(--amber); border-color: var(--amber); }
-.stage-layout.revealed .block.content-block{
-  background: rgba(77,232,255,0.05);
-  border-color: rgba(77,232,255,0.5);
-  box-shadow: 0 0 12px rgba(77,232,255,0.2);
-}
-
-.b-nav{ top:5%; left:5%; width:20%; height:6%; }
-.b-cta{ top:5%; right:5%; width:12%; height:6%; }
-
-/* launch + grow: filled browser-chrome mockup telling the same Ippo Ramen
-   story across tiers (a single shop, then a small group), matching the
-   .mock-chrome pattern from the portfolio cards. Shares one palette across
-   both tiers on purpose - unlike the portfolio cards, which each get their
-   own distinct palette, this is the same brand growing, not a different
-   business. Blocks are direct children of .stage-layout (same nesting depth
-   as grow/studio's original wireframe blocks) rather than wrapped in an
-   extra positioned container, since that extra level of nested
-   position:absolute + percentage sizing rendered incorrectly in some
-   browsers. */
-.tier-mock-ippo{
-  background:#F6EEE1;
-}
-.tier-mock-ippo .mock-chrome{
+.stage > .mock-chrome{
   position:absolute;
   top:0; left:0; right:0;
   height:9%;
   align-items:center;
-  background: rgba(0,0,0,0.08);
+  background: rgba(0,0,0,0.15);
 }
-.ramen-nav-bar{
+.block{
+  position:absolute;
+  opacity:0;
+}
+.stage-replay-wrap{
+  display:flex;
+  justify-content:center;
+  margin-top:20px;
+}
+.stage-replay-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-family:'Inter', sans-serif;
+  font-size:13px;
+  font-weight:500;
+  color: var(--ink-dim);
+  background:transparent;
+  border:1px solid var(--line);
+  border-radius:100px;
+  padding:9px 18px;
+  cursor:pointer;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+.stage-replay-btn:hover{ color: var(--ink); border-color: rgba(77,232,255,0.4); }
+.stage-replay-btn svg{ width:14px; height:14px; }
+
+/* KOKU: a single, standalone fictional ramen-chain mockup, fully independent
+   of the tier tabs above (those only ever control the day-count timeline).
+   Bold/minimal/confident-chain direction: near-black warm charcoal, one
+   amber accent evoking flame/broth, generous whitespace - its own distinct
+   brand, kept separate from Aura Sites' own cyan/blue. Each element type
+   gets its own entrance style (fade, zoom, slide, pop) rather than one
+   uniform animation, staggered via fixed transition-delays since there's
+   only ever this one demo now (no per-tier JS indexing needed). */
+.koku-nav{
   top:9%; left:0; width:100%; height:9%;
   display:flex; align-items:center; justify-content:space-between;
   padding:0 6%;
   box-sizing:border-box;
+  transition: opacity 0.35s ease;
+  transition-delay:0ms;
 }
-.ramen-wordmark{
-  display:flex; align-items:center; gap:7px;
+.stage.revealed .koku-nav{ opacity:1; }
+.koku-wordmark{
   font-family:'Space Grotesk', sans-serif;
-  font-weight:600;
-  font-size: clamp(9px, 1.6vw, 14px);
-  color:#33241A;
-  white-space:nowrap;
+  font-weight:700;
+  letter-spacing:0.06em;
+  font-size: clamp(11px, 2vw, 16px);
+  color:#F3ECE4;
 }
-.ramen-wordmark-dot{
-  display:block;
-  width:0.75em; height:0.75em;
-  border-radius:50%;
-  background:#C1502E;
-  flex-shrink:0;
-}
-.ramen-navlinks{ display:flex; gap:5%; }
-.ramen-navlinks span{
+.koku-navlinks{ display:flex; gap:6%; }
+.koku-navlinks span{
   font-family:'Inter', sans-serif;
   font-size: clamp(7px, 1.05vw, 10px);
-  color:#8C7A68;
+  color:#8A7F76;
   white-space:nowrap;
 }
-.ramen-hero-img{
-  top:22%; left:6%; width:40%; height:36%;
+
+.koku-hero-img{
+  top:18%; left:6%; width:88%; height:26%;
   display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  border-radius:10px;
+  background:#1E1815;
+  transform: scale(1.08);
+  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.19,1,0.22,1);
+  transition-delay:40ms;
 }
-.ramen-bowl-icon{ width:72%; height:auto; }
-.ramen-heading{ top:24%; left:50%; width:44%; height:10%; }
-.ramen-subtitle{ top:37%; left:50%; width:36%; height:6%; }
-.ramen-cta{
-  top:47%; left:50%; width:36%; height:9%;
+.stage.revealed .koku-hero-img{ opacity:1; transform:scale(1); }
+.koku-hero-art{ width:100%; height:100%; display:block; }
+
+.koku-heading{
+  top:47%; left:6%; width:88%; height:8%;
+  display:flex; align-items:center; justify-content:center;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.19,1,0.22,1);
+  transition-delay:90ms;
+}
+.stage.revealed .koku-heading{ opacity:1; transform:translateY(0); }
+.koku-heading span{
+  font-family:'Space Grotesk', sans-serif;
+  font-weight:600;
+  font-size: clamp(13px, 2.6vw, 21px);
+  color:#F3ECE4;
+  text-align:center;
+}
+
+.koku-cta{
+  top:58%; left:37%; width:26%; height:7%;
   display:flex; align-items:center; justify-content:center;
   border-radius:100px;
+  background:#E8672C;
+  transform: scale(0.8);
+  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  transition-delay:140ms;
 }
-.ramen-cta span{
+.stage.revealed .koku-cta{ opacity:1; transform:scale(1); }
+.koku-cta span{
   font-family:'Inter', sans-serif;
   font-weight:600;
-  font-size: clamp(7px, 1.15vw, 10.5px);
-  color:#F6EEE1;
+  font-size: clamp(7px, 1.2vw, 10.5px);
+  color:#15110E;
   white-space:nowrap;
 }
-.ramen-content-block{
-  display:flex; align-items:center; gap:8%;
+
+.koku-content{
+  top:70%; height:24%;
+  display:flex; flex-direction:column; justify-content:center; gap:8%;
   padding:0 8%;
   box-sizing:border-box;
+  background:#211A16;
+  border:1px solid rgba(232,103,44,0.14);
+  border-radius:8px;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.19,1,0.22,1);
 }
-.ramen-icon{ width:16%; height:auto; flex-shrink:0; }
-.ramen-content-block span{
+.stage.revealed .koku-content{ opacity:1; transform:translateY(0); }
+.koku-content-locations{ left:6%; width:26.7%; transition-delay:190ms; }
+.koku-content-philosophy{ left:36.7%; width:26.7%; transition-delay:230ms; }
+.koku-content-order{ left:67.3%; width:26.7%; transition-delay:270ms; }
+.koku-content-label{
   font-family:'Inter', sans-serif;
   font-weight:600;
   font-size: clamp(6.5px, 1vw, 9.5px);
-  color:#8C7A68;
+  color:#E8672C;
   text-transform:uppercase;
-  letter-spacing:0.05em;
+  letter-spacing:0.06em;
 }
-.ramen-content-hours{ top:65%; left:6%; width:41%; height:26%; }
-.ramen-content-menu{ top:65%; left:53%; width:41%; height:26%; }
-
-.stage-layout.revealed .block.ramen-nav-bar{ background:#EDE1CF; border-color:#D9C6A8; }
-.stage-layout.revealed .block.ramen-hero-img{
-  background: linear-gradient(135deg, #C1502E, #7A3018);
-  border-color:#7A3018;
-}
-.stage-layout.revealed .block.ramen-heading{ background:#33241A; border-color:#33241A; }
-.stage-layout.revealed .block.ramen-subtitle{ background:#B8A48C; border-color:#B8A48C; }
-.stage-layout.revealed .block.ramen-cta{ background:#C1502E; border-color:#C1502E; }
-.stage-layout.revealed .block.ramen-content-hours,
-.stage-layout.revealed .block.ramen-content-menu{ background:#EDE1CF; border-color:#D9C6A8; }
-
-/* grow: same Ippo Ramen story and palette as launch, now a small group with
-   three locations - same hero treatment, three content blocks instead of two */
-.ramen-hero-img-grow{
-  top:20%; left:6%; width:38%; height:32%;
-  display:flex; align-items:center; justify-content:center;
-}
-.ramen-heading-grow{ top:22%; left:48%; width:46%; height:9%; }
-.ramen-subtitle-grow{ top:33%; left:48%; width:38%; height:5%; }
-.ramen-cta-grow{
-  top:41%; left:48%; width:34%; height:8%;
-  display:flex; align-items:center; justify-content:center;
-  border-radius:100px;
-}
-.ramen-cta-grow span{
+.koku-content-copy{
   font-family:'Inter', sans-serif;
-  font-weight:600;
-  font-size: clamp(7px, 1.15vw, 10.5px);
-  color:#F6EEE1;
-  white-space:nowrap;
+  font-size: clamp(7px, 1.1vw, 10.5px);
+  color:#F3ECE4;
+  line-height:1.4;
 }
-.ramen-content-locations{ top:58%; left:6%; width:26.7%; height:30%; }
-.ramen-content-story{ top:58%; left:36.7%; width:26.7%; height:30%; }
-.ramen-content-gallery{ top:58%; left:67.3%; width:26.7%; height:30%; }
-
-.stage-layout.revealed .block.ramen-hero-img-grow{
-  background: linear-gradient(135deg, #C1502E, #7A3018);
-  border-color:#7A3018;
-}
-.stage-layout.revealed .block.ramen-heading-grow{ background:#33241A; border-color:#33241A; }
-.stage-layout.revealed .block.ramen-subtitle-grow{ background:#B8A48C; border-color:#B8A48C; }
-.stage-layout.revealed .block.ramen-cta-grow{ background:#C1502E; border-color:#C1502E; }
-.stage-layout.revealed .block.ramen-content-locations,
-.stage-layout.revealed .block.ramen-content-story,
-.stage-layout.revealed .block.ramen-content-gallery{ background:#EDE1CF; border-color:#D9C6A8; }
-
-/* studio: still the original wireframe demo, its own follow-up pass */
-.b-head-studio{ top:16%; left:5%; width:45%; height:9%; }
-.b-sub-studio{ top:27%; left:5%; width:35%; height:5%; }
-.b-btn-studio{ top:35%; left:5%; width:15%; height:6%; }
-.b-hero-img-studio{ top:12%; right:5%; width:35%; height:48%; }
-.b-card1-studio{ top:63%; left:5%; width:26%; height:14%; }
-.b-card2-studio{ top:63%; left:33%; width:26%; height:14%; }
-.b-card3-studio{ top:63%; left:61%; width:26%; height:14%; }
-.b-card4-studio{ top:79%; left:5%; width:26%; height:14%; }
-.b-card5-studio{ top:79%; left:33%; width:26%; height:14%; }
-.b-card6-studio{ top:79%; left:61%; width:26%; height:14%; }
 
 /* timeline: 3-step process with per-tier day labels */
 .timeline{

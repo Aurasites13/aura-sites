@@ -32,48 +32,35 @@ function setTier(tier, opts) {
   });
 }
 
-// --- Assembly stage: one block layout per tier, replayed on every tab
-// click (not just the first scroll into view). Blocks stagger in over a
-// short window so replaying a couple of times while comparing tiers never
-// feels like a wait.
-const REVEAL_GAP_MS = 40;
-function revealStageLayout(tier) {
-  const layouts = document.querySelectorAll('.stage-layout');
-  const target = document.querySelector(`.stage-layout[data-tier-layout="${tier}"]`);
-  if (!target) return;
-
-  layouts.forEach(layout => {
-    layout.classList.remove('active', 'revealed');
-    layout.querySelectorAll('.block').forEach(b => { b.style.transitionDelay = ''; });
-  });
-
-  target.classList.add('active');
-  target.querySelectorAll('.block').forEach((el, i) => {
-    el.style.transitionDelay = `${i * REVEAL_GAP_MS}ms`;
-  });
-
-  // force a reflow so the browser registers the pre-reveal (opacity:0) state
-  // before .revealed is added, otherwise the transition gets skipped since
-  // display:none -> block and the class addition would land in the same tick
-  void target.offsetWidth;
-  requestAnimationFrame(() => target.classList.add('revealed'));
+// --- Assembly stage: a single standalone KOKU demo, fully independent of
+// the tier tabs (those only ever swap the day-count timeline above). Each
+// element type has its own transition (fade/zoom/slide/pop) with a fixed
+// CSS transition-delay, so replaying is just toggling .revealed on #stage -
+// no per-tier bookkeeping needed since there's only ever this one demo.
+const stageEl = document.getElementById('stage');
+function playStageReveal() {
+  stageEl.classList.remove('revealed');
+  // force a reflow so the browser registers the pre-reveal state before
+  // .revealed is re-added, otherwise a same-tick class toggle gets coalesced
+  // and the transition never plays
+  void stageEl.offsetWidth;
+  requestAnimationFrame(() => stageEl.classList.add('revealed'));
 }
 
 const stageObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
-      revealStageLayout(activeTier);
+      playStageReveal();
       stageObserver.unobserve(entry.target);
     }
   });
 }, { threshold: 0.4 });
-stageObserver.observe(document.getElementById('stage'));
+stageObserver.observe(stageEl);
+
+document.getElementById('stage-replay').addEventListener('click', playStageReveal);
 
 tierTabs.forEach(tab => {
-  tab.addEventListener('click', () => {
-    setTier(tab.dataset.tier);
-    revealStageLayout(tab.dataset.tier);
-  });
+  tab.addEventListener('click', () => setTier(tab.dataset.tier));
 });
 
 // keep the currently displayed tier's day labels in sync with the active language
