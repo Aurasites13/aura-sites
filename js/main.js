@@ -40,11 +40,17 @@ function setTier(tier, opts) {
 const stageEl = document.getElementById('stage');
 function playStageReveal() {
   stageEl.classList.remove('revealed');
-  // force a reflow so the browser registers the pre-reveal state before
-  // .revealed is re-added, otherwise a same-tick class toggle gets coalesced
-  // and the transition never plays
+  // Force a reflow so the browser registers the pre-reveal state, then wait
+  // a full extra frame before re-adding .revealed. A single rAF isn't
+  // enough here: when replaying from an already-revealed state (the whole
+  // point of the button), remove+reflow+single-rAF-add can all land within
+  // the same paint, so the browser never actually paints the "hidden" state
+  // in between and coalesces the two class changes into a visible no-op.
+  // The nested rAF guarantees at least one real paint happens first.
   void stageEl.offsetWidth;
-  requestAnimationFrame(() => stageEl.classList.add('revealed'));
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => stageEl.classList.add('revealed'));
+  });
 }
 
 const stageObserver = new IntersectionObserver((entries) => {
