@@ -359,26 +359,21 @@ h1 em{
 
 .b-nav{ top:5%; left:5%; width:20%; height:6%; }
 .b-cta{ top:5%; right:5%; width:12%; height:6%; }
-.b-head{ top:20%; left:5%; width:45%; height:10%; }
-.b-sub{ top:33%; left:5%; width:35%; height:6%; }
-.b-btn{ top:44%; left:5%; width:15%; height:7%; }
-.b-hero-img{ top:15%; right:5%; width:35%; height:55%; }
-.b-card1{ top:75%; left:5%; width:26%; height:18%; }
-.b-card2{ top:75%; left:33%; width:26%; height:18%; }
-.b-card3{ top:75%; left:61%; width:26%; height:18%; }
 
-/* launch: filled browser-chrome mockup for a fictional ramen shop, matching
-   the .mock-chrome pattern from the portfolio cards but with the shop's own
-   warm palette (kept separate from Aura Sites' own cyan/blue) instead of the
-   translucent wireframe boxes used for grow/studio. Blocks are direct
-   children of .stage-layout (same nesting depth as grow/studio) rather than
-   wrapped in an extra positioned container, since that extra level of
-   nested position:absolute + percentage sizing rendered incorrectly in some
+/* launch + grow: filled browser-chrome mockup telling the same Ippo Ramen
+   story across tiers (a single shop, then a small group), matching the
+   .mock-chrome pattern from the portfolio cards. Shares one palette across
+   both tiers on purpose - unlike the portfolio cards, which each get their
+   own distinct palette, this is the same brand growing, not a different
+   business. Blocks are direct children of .stage-layout (same nesting depth
+   as grow/studio's original wireframe blocks) rather than wrapped in an
+   extra positioned container, since that extra level of nested
+   position:absolute + percentage sizing rendered incorrectly in some
    browsers. */
-.tier-mock-launch{
+.tier-mock-ippo{
   background:#F6EEE1;
 }
-.tier-mock-launch .mock-chrome{
+.tier-mock-ippo .mock-chrome{
   position:absolute;
   top:0; left:0; right:0;
   height:9%;
@@ -460,7 +455,42 @@ h1 em{
 .stage-layout.revealed .block.ramen-content-hours,
 .stage-layout.revealed .block.ramen-content-menu{ background:#EDE1CF; border-color:#D9C6A8; }
 
-/* studio: grow's layout plus a second card row, compressed to make room */
+/* grow: same Ippo Ramen story and palette as launch, now a small group with
+   three locations - same hero treatment, three content blocks instead of two */
+.ramen-hero-img-grow{
+  top:20%; left:6%; width:38%; height:32%;
+  display:flex; align-items:center; justify-content:center;
+}
+.ramen-heading-grow{ top:22%; left:48%; width:46%; height:9%; }
+.ramen-subtitle-grow{ top:33%; left:48%; width:38%; height:5%; }
+.ramen-cta-grow{
+  top:41%; left:48%; width:34%; height:8%;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:100px;
+}
+.ramen-cta-grow span{
+  font-family:'Inter', sans-serif;
+  font-weight:600;
+  font-size: clamp(7px, 1.15vw, 10.5px);
+  color:#F6EEE1;
+  white-space:nowrap;
+}
+.ramen-content-locations{ top:58%; left:6%; width:26.7%; height:30%; }
+.ramen-content-story{ top:58%; left:36.7%; width:26.7%; height:30%; }
+.ramen-content-gallery{ top:58%; left:67.3%; width:26.7%; height:30%; }
+
+.stage-layout.revealed .block.ramen-hero-img-grow{
+  background: linear-gradient(135deg, #C1502E, #7A3018);
+  border-color:#7A3018;
+}
+.stage-layout.revealed .block.ramen-heading-grow{ background:#33241A; border-color:#33241A; }
+.stage-layout.revealed .block.ramen-subtitle-grow{ background:#B8A48C; border-color:#B8A48C; }
+.stage-layout.revealed .block.ramen-cta-grow{ background:#C1502E; border-color:#C1502E; }
+.stage-layout.revealed .block.ramen-content-locations,
+.stage-layout.revealed .block.ramen-content-story,
+.stage-layout.revealed .block.ramen-content-gallery{ background:#EDE1CF; border-color:#D9C6A8; }
+
+/* studio: still the original wireframe demo, its own follow-up pass */
 .b-head-studio{ top:16%; left:5%; width:45%; height:9%; }
 .b-sub-studio{ top:27%; left:5%; width:35%; height:5%; }
 .b-btn-studio{ top:35%; left:5%; width:15%; height:6%; }
