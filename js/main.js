@@ -33,23 +33,79 @@ function setTier(tier, opts) {
 }
 
 // --- Assembly stage: a single standalone KOKU demo, fully independent of
-// the tier tabs (those only ever swap the day-count timeline above). Each
-// element type has its own transition (fade/zoom/slide/pop) with a fixed
-// CSS transition-delay, so replaying is just toggling .revealed on #stage -
-// no per-tier bookkeeping needed since there's only ever this one demo.
+// the tier tabs (those only ever swap the day-count timeline above). Driven
+// by the Web Animations API instead of toggling a CSS class: each element
+// type gets its own keyframe sequence, and calling .animate() again always
+// starts a fresh animation instance regardless of current state - no
+// reflow/rAF timing tricks that a browser can coalesce into a no-op, which
+// is what made the old class-toggle approach unreliable on replay.
 const stageEl = document.getElementById('stage');
+
+const slideUp = (distance) => [
+  { opacity: 0, transform: `translateY(${distance}px)` },
+  { opacity: 1, transform: 'translateY(0)' }
+];
+
+const KOKU_SEQUENCE = [
+  {
+    selector: '.koku-nav',
+    keyframes: [
+      { opacity: 0, transform: 'translateY(-8px)' },
+      { opacity: 1, transform: 'translateY(0)' }
+    ],
+    options: { delay: 0, duration: 300, easing: 'cubic-bezier(0.19,1,0.22,1)' }
+  },
+  {
+    // elastic zoom: overshoots slightly smaller than full size before
+    // settling, rather than a flat scale-down, for a more premium feel
+    selector: '.koku-hero-img',
+    keyframes: [
+      { opacity: 0, transform: 'scale(1.18)' },
+      { opacity: 1, transform: 'scale(0.99)', offset: 0.75 },
+      { opacity: 1, transform: 'scale(1)' }
+    ],
+    options: { delay: 60, duration: 650, easing: 'cubic-bezier(0.19,1,0.22,1)' }
+  },
+  {
+    selector: '.koku-heading',
+    keyframes: slideUp(26),
+    options: { delay: 160, duration: 450, easing: 'cubic-bezier(0.16,1,0.3,1)' }
+  },
+  {
+    // satisfying pop: overshoots past full size, settles slightly under,
+    // then eases to rest - a small bounce rather than a single ease-out
+    selector: '.koku-cta',
+    keyframes: [
+      { opacity: 0, transform: 'scale(0.6)' },
+      { opacity: 1, transform: 'scale(1.1)', offset: 0.6 },
+      { opacity: 1, transform: 'scale(0.97)', offset: 0.82 },
+      { opacity: 1, transform: 'scale(1)' }
+    ],
+    options: { delay: 230, duration: 520, easing: 'ease-out' }
+  },
+  {
+    selector: '.koku-content-locations',
+    keyframes: slideUp(30),
+    options: { delay: 300, duration: 430, easing: 'cubic-bezier(0.19,1,0.22,1)' }
+  },
+  {
+    selector: '.koku-content-philosophy',
+    keyframes: slideUp(30),
+    options: { delay: 350, duration: 430, easing: 'cubic-bezier(0.19,1,0.22,1)' }
+  },
+  {
+    selector: '.koku-content-order',
+    keyframes: slideUp(30),
+    options: { delay: 400, duration: 430, easing: 'cubic-bezier(0.19,1,0.22,1)' }
+  }
+];
+
 function playStageReveal() {
-  stageEl.classList.remove('revealed');
-  // Force a reflow so the browser registers the pre-reveal state, then wait
-  // a full extra frame before re-adding .revealed. A single rAF isn't
-  // enough here: when replaying from an already-revealed state (the whole
-  // point of the button), remove+reflow+single-rAF-add can all land within
-  // the same paint, so the browser never actually paints the "hidden" state
-  // in between and coalesces the two class changes into a visible no-op.
-  // The nested rAF guarantees at least one real paint happens first.
-  void stageEl.offsetWidth;
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => stageEl.classList.add('revealed'));
+  KOKU_SEQUENCE.forEach(({ selector, keyframes, options }) => {
+    const el = stageEl.querySelector(selector);
+    if (!el) return;
+    el.getAnimations().forEach(anim => anim.cancel());
+    el.animate(keyframes, Object.assign({ fill: 'forwards' }, options));
   });
 }
 

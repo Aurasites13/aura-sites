@@ -369,10 +369,7 @@ h1 em{
   display:flex; align-items:center; justify-content:space-between;
   padding:0 6%;
   box-sizing:border-box;
-  transition: opacity 0.35s ease;
-  transition-delay:0ms;
 }
-.stage.revealed .koku-nav{ opacity:1; }
 .koku-wordmark{
   font-family:'Space Grotesk', sans-serif;
   font-weight:700;
@@ -394,11 +391,7 @@ h1 em{
   overflow:hidden;
   border-radius:10px;
   background:#1E1815;
-  transform: scale(1.08);
-  transition: opacity 0.5s ease, transform 0.55s cubic-bezier(0.19,1,0.22,1);
-  transition-delay:40ms;
 }
-.stage.revealed .koku-hero-img{ opacity:1; transform:scale(1); }
 .koku-hero-photo{
   width:100%; height:100%;
   object-fit:cover;
@@ -418,11 +411,7 @@ h1 em{
 .koku-heading{
   top:47%; left:6%; width:88%; height:8%;
   display:flex; align-items:center; justify-content:center;
-  transform: translateY(16px);
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.19,1,0.22,1);
-  transition-delay:90ms;
 }
-.stage.revealed .koku-heading{ opacity:1; transform:translateY(0); }
 .koku-heading span{
   font-family:'Space Grotesk', sans-serif;
   font-weight:600;
@@ -436,11 +425,7 @@ h1 em{
   display:flex; align-items:center; justify-content:center;
   border-radius:100px;
   background:#E8672C;
-  transform: scale(0.8);
-  transition: opacity 0.35s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
-  transition-delay:140ms;
 }
-.stage.revealed .koku-cta{ opacity:1; transform:scale(1); }
 .koku-cta span{
   font-family:'Inter', sans-serif;
   font-weight:600;
@@ -457,13 +442,10 @@ h1 em{
   background:#211A16;
   border:1px solid rgba(232,103,44,0.14);
   border-radius:8px;
-  transform: translateY(20px);
-  transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.19,1,0.22,1);
 }
-.stage.revealed .koku-content{ opacity:1; transform:translateY(0); }
-.koku-content-locations{ left:6%; width:26.7%; transition-delay:190ms; }
-.koku-content-philosophy{ left:36.7%; width:26.7%; transition-delay:230ms; }
-.koku-content-order{ left:67.3%; width:26.7%; transition-delay:270ms; }
+.koku-content-locations{ left:6%; width:26.7%; }
+.koku-content-philosophy{ left:36.7%; width:26.7%; }
+.koku-content-order{ left:67.3%; width:26.7%; }
 .koku-content-label{
   font-family:'Inter', sans-serif;
   font-weight:600;
