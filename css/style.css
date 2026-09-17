@@ -367,11 +367,79 @@ h1 em{
 .b-card2{ top:75%; left:33%; width:26%; height:18%; }
 .b-card3{ top:75%; left:61%; width:26%; height:18%; }
 
-/* launch: leaner, single-focus layout - a handful of blocks, full-width hero */
-.b-head-launch{ top:20%; left:5%; width:55%; height:13%; }
-.b-hero-img-launch{ top:40%; left:5%; width:90%; height:34%; }
-.b-card1-launch{ top:80%; left:5%; width:42%; height:14%; }
-.b-card2-launch{ top:80%; left:53%; width:42%; height:14%; }
+/* launch: filled browser-chrome mockup for a fictional ramen shop, matching
+   the .mock-chrome pattern from the portfolio cards but with the shop's own
+   warm palette (kept separate from Aura Sites' own cyan/blue) instead of the
+   translucent wireframe boxes used for grow/studio */
+.tier-mock{
+  position:absolute;
+  inset:0;
+  background:#F6EEE1;
+}
+.tier-mock .mock-chrome{
+  position:absolute;
+  top:0; left:0; right:0;
+  height:9%;
+  align-items:center;
+  background: rgba(0,0,0,0.08);
+}
+.ramen-nav-bar{
+  top:9%; left:0; width:100%; height:9%;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 6%;
+  box-sizing:border-box;
+}
+.ramen-wordmark{
+  font-family:'Space Grotesk', sans-serif;
+  font-weight:600;
+  font-size: clamp(9px, 1.6vw, 14px);
+  color:#33241A;
+  white-space:nowrap;
+}
+.ramen-navlinks{ display:flex; gap:5%; }
+.ramen-navlinks span{
+  font-family:'Inter', sans-serif;
+  font-size: clamp(7px, 1.05vw, 10px);
+  color:#8C7A68;
+  white-space:nowrap;
+}
+.ramen-hero-img{ top:22%; left:6%; width:40%; height:36%; }
+.ramen-heading{ top:24%; left:50%; width:44%; height:10%; }
+.ramen-subtitle{ top:37%; left:50%; width:36%; height:6%; }
+.ramen-cta{
+  top:47%; left:50%; width:36%; height:9%;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:100px;
+}
+.ramen-cta span{
+  font-family:'Inter', sans-serif;
+  font-weight:600;
+  font-size: clamp(7px, 1.15vw, 10.5px);
+  color:#F6EEE1;
+  white-space:nowrap;
+}
+.ramen-content-block{ padding:9% 8% 0; box-sizing:border-box; }
+.ramen-content-block span{
+  font-family:'Inter', sans-serif;
+  font-weight:600;
+  font-size: clamp(6.5px, 1vw, 9.5px);
+  color:#8C7A68;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.ramen-content-hours{ top:65%; left:6%; width:41%; height:26%; }
+.ramen-content-menu{ top:65%; left:53%; width:41%; height:26%; }
+
+.stage-layout.revealed .block.ramen-nav-bar{ background:#EDE1CF; border-color:#D9C6A8; }
+.stage-layout.revealed .block.ramen-hero-img{
+  background: linear-gradient(135deg, #C1502E, #7A3018);
+  border-color:#7A3018;
+}
+.stage-layout.revealed .block.ramen-heading{ background:#33241A; border-color:#33241A; }
+.stage-layout.revealed .block.ramen-subtitle{ background:#B8A48C; border-color:#B8A48C; }
+.stage-layout.revealed .block.ramen-cta{ background:#C1502E; border-color:#C1502E; }
+.stage-layout.revealed .block.ramen-content-hours,
+.stage-layout.revealed .block.ramen-content-menu{ background:#EDE1CF; border-color:#D9C6A8; }
 
 /* studio: grow's layout plus a second card row, compressed to make room */
 .b-head-studio{ top:16%; left:5%; width:45%; height:9%; }
