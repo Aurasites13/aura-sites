@@ -118,15 +118,35 @@
     <div class="stage-layout tier-mock-launch" data-tier-layout="launch">
       <div class="mock-chrome"><span></span><span></span><span></span></div>
       <div class="block ramen-nav-bar">
-        <span class="ramen-wordmark">Ippo Ramen</span>
+        <span class="ramen-wordmark"><span class="ramen-wordmark-dot" aria-hidden="true"></span>Ippo Ramen</span>
         <span class="ramen-navlinks"><span>Menu</span><span>Hours</span><span>Reserve</span></span>
       </div>
-      <div class="block ramen-hero-img"></div>
+      <div class="block ramen-hero-img">
+        <svg class="ramen-bowl-icon" viewBox="0 0 200 160" aria-hidden="true">
+          <path d="M80 40 C 75 30, 85 25, 80 15" stroke="#F6EEE1" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.55"/>
+          <path d="M100 38 C 95 26, 105 22, 100 10" stroke="#F6EEE1" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.7"/>
+          <path d="M120 40 C 115 30, 125 25, 120 15" stroke="#F6EEE1" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.55"/>
+          <rect x="149" y="50" width="5" height="58" rx="2.5" fill="#2A1D15" transform="rotate(20 151.5 79)"/>
+          <rect x="158" y="50" width="5" height="58" rx="2.5" fill="#2A1D15" transform="rotate(20 160.5 79)"/>
+          <path d="M35 98 Q100 155 165 98 L153 116 Q100 150 47 116 Z" fill="#2A1D15"/>
+          <ellipse cx="100" cy="98" rx="65" ry="24" fill="#8C3A1E"/>
+          <ellipse cx="100" cy="98" rx="65" ry="24" fill="none" stroke="#F6EEE1" stroke-width="2.5" opacity="0.45"/>
+          <path d="M65 92 q10 -14 20 0 q10 -14 20 0 q10 -14 20 0 q10 -14 20 0" stroke="#F6EEE1" stroke-width="4.5" fill="none" stroke-linecap="round" opacity="0.9"/>
+          <circle cx="138" cy="90" r="13" fill="#F6EEE1"/>
+          <circle cx="138" cy="90" r="5.5" fill="#E8B54A"/>
+        </svg>
+      </div>
       <div class="block ramen-heading"></div>
       <div class="block ramen-subtitle"></div>
       <div class="block ramen-cta"><span>Reserve a table</span></div>
-      <div class="block ramen-content-block ramen-content-hours"><span>Hours &amp; location</span></div>
-      <div class="block ramen-content-block ramen-content-menu"><span>Menu highlight</span></div>
+      <div class="block ramen-content-block ramen-content-hours">
+        <svg class="ramen-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#C1502E" stroke-width="2"/><path d="M12 7v5l3.5 2" stroke="#C1502E" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+        <span>Hours &amp; location</span>
+      </div>
+      <div class="block ramen-content-block ramen-content-menu">
+        <svg class="ramen-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11h17a8.5 8.5 0 0 1-17 0Z" fill="none" stroke="#C1502E" stroke-width="2"/><path d="M2 11h20" stroke="#C1502E" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>Menu highlight</span>
+      </div>
     </div>
     <div class="stage-layout active" data-tier-layout="grow">
       <div class="block filled b-nav"></div>

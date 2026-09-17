@@ -392,11 +392,19 @@ h1 em{
   box-sizing:border-box;
 }
 .ramen-wordmark{
+  display:flex; align-items:center; gap:7px;
   font-family:'Space Grotesk', sans-serif;
   font-weight:600;
   font-size: clamp(9px, 1.6vw, 14px);
   color:#33241A;
   white-space:nowrap;
+}
+.ramen-wordmark-dot{
+  display:block;
+  width:0.75em; height:0.75em;
+  border-radius:50%;
+  background:#C1502E;
+  flex-shrink:0;
 }
 .ramen-navlinks{ display:flex; gap:5%; }
 .ramen-navlinks span{
@@ -405,7 +413,11 @@ h1 em{
   color:#8C7A68;
   white-space:nowrap;
 }
-.ramen-hero-img{ top:22%; left:6%; width:40%; height:36%; }
+.ramen-hero-img{
+  top:22%; left:6%; width:40%; height:36%;
+  display:flex; align-items:center; justify-content:center;
+}
+.ramen-bowl-icon{ width:72%; height:auto; }
 .ramen-heading{ top:24%; left:50%; width:44%; height:10%; }
 .ramen-subtitle{ top:37%; left:50%; width:36%; height:6%; }
 .ramen-cta{
@@ -420,7 +432,12 @@ h1 em{
   color:#F6EEE1;
   white-space:nowrap;
 }
-.ramen-content-block{ padding:9% 8% 0; box-sizing:border-box; }
+.ramen-content-block{
+  display:flex; align-items:center; gap:8%;
+  padding:0 8%;
+  box-sizing:border-box;
+}
+.ramen-icon{ width:16%; height:auto; flex-shrink:0; }
 .ramen-content-block span{
   font-family:'Inter', sans-serif;
   font-weight:600;
