@@ -45,6 +45,11 @@ window.AuraI18n = (function () {
     document.querySelectorAll('[data-i18n-tooltip]').forEach(el => {
       el.setAttribute('data-tooltip', t(el.getAttribute('data-i18n-tooltip')));
     });
+    // Used for <meta> tags (e.g. name="description"), which have no text
+    // content of their own, just a `content` attribute.
+    document.querySelectorAll('[data-i18n-content]').forEach(el => {
+      el.setAttribute('content', t(el.getAttribute('data-i18n-content')));
+    });
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.lang === currentLang);
       btn.setAttribute('aria-pressed', String(btn.dataset.lang === currentLang));

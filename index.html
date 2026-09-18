@@ -3,7 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aura Sites</title>
+<title data-i18n="meta.title">Aura Sites — Custom Website Design, Built Fast</title>
+<meta name="description" content="Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds." data-i18n-content="meta.description">
+
+<!-- Favicon: temporary placeholder using the hero's aura/orb motif, simplified
+     for legibility at small sizes. Swap for the real logo mark once it exists. -->
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-180.png" sizes="180x180" type="image/png">
+<link rel="apple-touch-icon" href="assets/favicon-180.png">
+
+<!-- Open Graph / Twitter Card. og:url and the image URLs below point at the
+     current Netlify subdomain as a placeholder; update all three together
+     once a final custom domain is live. Title/description do switch with the
+     language toggle via data-i18n-content, but note that most link-preview
+     and social crawlers fetch the raw HTML without running JS, so in
+     practice they'll usually see whichever language is in this static
+     markup (English) rather than a visitor's chosen language. -->
+<meta property="og:title" content="Aura Sites — Custom Website Design, Built Fast" data-i18n-content="meta.title">
+<meta property="og:description" content="Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds." data-i18n-content="meta.description">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://aurasites13.netlify.app/assets/og-image.jpg">
+<meta property="og:url" content="https://aurasites13.netlify.app/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Aura Sites — Custom Website Design, Built Fast" data-i18n-content="meta.title">
+<meta name="twitter:description" content="Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds." data-i18n-content="meta.description">
+<meta name="twitter:image" content="https://aurasites13.netlify.app/assets/og-image.jpg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
@@ -45,7 +70,10 @@
     <img src="assets/logo/aura-sites-icon.svg" alt="" width="40" height="40" class="aura-logo__mark">
     <span class="aura-logo__word aura-font-display">AURA <span class="aura-logo__word--dim">SITES</span></span>
   </a>
-  <div class="nav-links">
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links" id="nav-links">
     <a href="#work" data-i18n="nav.work">Work</a>
     <a href="#process" data-i18n="nav.process">Process</a>
     <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
@@ -60,8 +88,40 @@
 
 <section class="hero" id="hero">
   <div class="hero-stage" id="hero-stage">
-    <canvas id="aura-canvas"></canvas>
+    <canvas id="aura-canvas" role="img" aria-label="Animated glowing wireframe orb, Aura Sites' visual signature"></canvas>
     <div class="light-wash" id="light-wash"></div>
+
+    <div class="hero-loader" id="hero-loader" aria-hidden="true">
+      <span class="hero-loader__dot"></span>
+    </div>
+    <script>
+      // Independent of scene.js: this runs the moment the browser parses this
+      // point in the HTML, before the (much heavier) three.js CDN script and
+      // scene.js even start downloading. It's the single source of truth for
+      // "is the 3D scene up yet", so the loading dot can't get stuck forever
+      // if that script never arrives (network failure, ad blocker, etc).
+      (function () {
+        var FALLBACK_MS = 9000;
+        var loader = document.getElementById('hero-loader');
+        var settled = false;
+
+        function settle(sceneReady) {
+          if (settled) return;
+          settled = true;
+          if (loader) {
+            loader.classList.add('hero-loader--hidden');
+            // Belt-and-suspenders: fully pull it out of layout/paint once the
+            // fade transition has had time to finish, so it's physically gone
+            // rather than relying only on opacity/pointer-events staying applied.
+            setTimeout(function () { loader.style.display = 'none'; }, 700);
+          }
+          if (!sceneReady) document.documentElement.classList.add('no-3d-scene');
+        }
+
+        window.__auraSceneReady = function () { settle(true); };
+        setTimeout(function () { settle(false); }, FALLBACK_MS);
+      })();
+    </script>
 
     <div class="intro-caption" id="intro-caption">
       <img src="assets/logo/aura-sites-icon.svg" alt="" class="intro-caption__mark">
@@ -121,8 +181,8 @@
       <span class="koku-navlinks"><span>Locations</span><span>Order</span></span>
     </div>
     <div class="block koku-hero-img">
-      <img class="koku-hero-photo" src="assets/demo/koku-hero.jpg" alt="" loading="lazy">
-      <img class="koku-hero-inset" src="assets/demo/koku-detail.jpg" alt="" loading="lazy">
+      <img class="koku-hero-photo" src="assets/demo/koku-hero.jpg" alt="KOKU, a fictional brand shown as an example in Aura Sites' pricing tier demo, ramen bowl hero photo" loading="lazy">
+      <img class="koku-hero-inset" src="assets/demo/koku-detail.jpg" alt="Detail photo from the KOKU demo showing a close-up of the ramen bowl" loading="lazy">
     </div>
     <div class="block koku-heading"><span>Depth in every bowl</span></div>
     <div class="block koku-cta"><span>Order now</span></div>
@@ -159,7 +219,7 @@
         <div class="mock-chrome"><span></span><span></span><span></span></div>
         <picture class="mock-shot">
           <source srcset="assets/work/jingu.webp" type="image/webp">
-          <img src="assets/work/jingu.jpg" alt="JINGŪ homepage hero, an editorial matcha brand site with a bowl of whisked matcha" data-i18n-alt="work.jinguAlt" loading="lazy">
+          <img src="assets/work/jingu.jpg" alt="Aura Sites custom website design example for the JINGŪ matcha brand, an editorial homepage hero with a bowl of whisked matcha" data-i18n-alt="work.jinguAlt" loading="lazy">
         </picture>
       </div>
       <div class="work-meta">
@@ -175,7 +235,7 @@
         <div class="mock-chrome"><span></span><span></span><span></span></div>
         <picture class="mock-shot">
           <source srcset="assets/work/pec.webp" type="image/webp">
-          <img src="assets/work/pec.jpg" alt="PEC homepage hero, a private education concierge site for Tokyo families" data-i18n-alt="work.pecAlt" loading="lazy">
+          <img src="assets/work/pec.jpg" alt="Aura Sites custom website design example for PEC, a private education concierge site for Tokyo families" data-i18n-alt="work.pecAlt" loading="lazy">
         </picture>
       </div>
       <div class="work-meta">
@@ -191,7 +251,7 @@
         <div class="mock-chrome"><span></span><span></span><span></span></div>
         <picture class="mock-shot">
           <source srcset="assets/work/luxury-japan.webp" type="image/webp">
-          <img src="assets/work/luxury-japan.jpg" alt="Luxury Japan homepage hero, a Zen rock garden with a blossoming weeping cherry tree beside a traditional plaster wall" data-i18n-alt="work.ljAlt" loading="lazy">
+          <img src="assets/work/luxury-japan.jpg" alt="Aura Sites custom website design example for Luxury Japan, a homepage hero with a Zen rock garden and a blossoming weeping cherry tree beside a traditional plaster wall" data-i18n-alt="work.ljAlt" loading="lazy">
         </picture>
       </div>
       <div class="work-meta">
@@ -308,7 +368,7 @@
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a1">Turnaround depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary.</p>
+        <p data-i18n="faq.a1">Turnaround for custom website design depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -317,7 +377,7 @@
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a2">Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit the project's needs. Additional rounds can always be added if required.</p>
+        <p data-i18n="faq.a2">Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your custom website design needs. Additional rounds can always be added if required.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -326,7 +386,7 @@
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a3">We begin with a short discovery call to understand your goals. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps.</p>
+        <p data-i18n="faq.a3">We begin with a short discovery call to understand your goals for your custom website design. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -335,11 +395,56 @@
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a4">If you cancel before we deliver the first design concept, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.</p>
+        <p data-i18n="faq.a4">If you cancel before we deliver the first concept for your custom website design, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.</p>
       </div>
     </div>
   </div>
 </section>
+
+<!-- FAQPage structured data for the section above. Kept static (not
+     regenerated by the i18n engine) since search and AI-answer crawlers
+     largely read the raw HTML without executing JS, so this mirrors the
+     page's default English FAQ copy for reliable indexing. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How fast can you actually turn this around?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Turnaround for custom website design depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many rounds of revisions do I get?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your custom website design needs. Additional rounds can always be added if required."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do you need from me to get started?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We begin with a short discovery call to understand your goals for your custom website design. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's your refund policy?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If you cancel before we deliver the first concept for your custom website design, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue."
+      }
+    }
+  ]
+}
+</script>
 
 <section class="why-not-template">
   <h2 class="display" data-i18n="whyNotTemplate.heading">Not another template</h2>

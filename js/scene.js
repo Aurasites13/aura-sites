@@ -11,7 +11,28 @@ renderer.setSize(width, height);
 const scene = new THREE.Scene();
 scene.fog = new THREE.Fog(0x000000, 4, 16);
 const camera = new THREE.PerspectiveCamera(45, width / height, 0.05, 100);
-camera.position.set(0, 0, 9.5);
+
+// The orb's world size is fixed, but a fixed vertical FOV means a narrow,
+// tall aspect ratio (mobile portrait) crops in on it horizontally, so it
+// reads as huge and overflows the screen width. Widening the FOV and
+// pulling the camera back as the aspect ratio narrows keeps the orb's
+// apparent size on screen roughly consistent from desktop down to phones.
+// Fog's far distance is extended to match so the orb doesn't fade into it
+// at the increased distance (desktop is untouched either way).
+const BASE_FOV = 45, BASE_DIST = 9.5, BASE_FOG_FAR = 16;
+const WIDE_REF_ASPECT = 1.3, NARROW_REF_ASPECT = 0.45;
+let baseCameraDist = BASE_DIST;
+function applyResponsiveCamera() {
+  const aspect = width / height;
+  const t = Math.min(1, Math.max(0, (WIDE_REF_ASPECT - aspect) / (WIDE_REF_ASPECT - NARROW_REF_ASPECT)));
+  camera.fov = BASE_FOV + t * 28;
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
+  baseCameraDist = BASE_DIST + t * 6.5;
+  scene.fog.far = BASE_FOG_FAR + t * 10;
+}
+applyResponsiveCamera();
+camera.position.set(0, 0, baseCameraDist);
 
 renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -182,6 +203,7 @@ window.addEventListener('scroll', updateScrollProgress, { passive: true });
 updateScrollProgress();
 
 const clock = new THREE.Clock();
+let firstFrameSignaled = false;
 function animate() {
   const t = clock.getElapsedTime();
 
@@ -240,10 +262,19 @@ function animate() {
   grid.material.opacity = 0.45 * Math.max(0, 1 - flyProgress * 0.85);
 
   // fly the camera through the aura as the user scrolls
-  const targetZ = 9.5 - flyProgress * 9;
+  const targetZ = baseCameraDist - flyProgress * 9;
   camera.position.z += (targetZ - camera.position.z) * 0.18;
 
   renderer.render(scene, camera);
+
+  // Signal that a real, fully set-up frame has actually been drawn (not
+  // just that this script finished downloading), so the static HTML loader
+  // can hand off to the scene. Fires exactly once.
+  if (!firstFrameSignaled) {
+    firstFrameSignaled = true;
+    if (window.__auraSceneReady) window.__auraSceneReady();
+  }
+
   requestAnimationFrame(animate);
 }
 animate();
@@ -251,7 +282,6 @@ animate();
 window.addEventListener('resize', () => {
   width = window.innerWidth;
   height = window.innerHeight;
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
+  applyResponsiveCamera();
   renderer.setSize(width, height);
 });

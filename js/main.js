@@ -190,3 +190,20 @@ document.querySelectorAll('.faq-item').forEach(item => {
     question.setAttribute('aria-expanded', String(!isOpen));
   });
 });
+
+// --- Mobile nav: hamburger toggle ---
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+if (navToggle && navLinks) {
+  function closeNavMenu() {
+    navLinks.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  }
+  navToggle.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', String(isOpen));
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeNavMenu);
+  });
+}
