@@ -177,11 +177,11 @@ window.AURA_I18N = {
       retentionHeading: "Data retention",
       retentionBody: "We retain your information for as long as necessary to respond to your inquiry or, if we work together, for the duration of our engagement and a reasonable period afterward for record-keeping purposes. You can request deletion of your information at any time, as described below.",
       rightsHeading: "Your rights",
-      rightsBody: "You may request access to, correction of, or deletion of your personal information by contacting us at <a href=\"mailto:hello@aurasites.com\">hello@aurasites.com</a>. We will respond within a reasonable timeframe.",
+      rightsBody: "You may request access to, correction of, or deletion of your personal information by contacting us at <a href=\"mailto:aurasitesstudio@gmail.com\">aurasitesstudio@gmail.com</a>. We will respond within a reasonable timeframe.",
       changesHeading: "Changes to this policy",
       changesBody: "We may update this policy from time to time. The effective date above reflects the most recent version.",
       contactHeading: "Contact",
-      contactBody: "Questions about this policy can be sent to <a href=\"mailto:hello@aurasites.com\">hello@aurasites.com</a>."
+      contactBody: "Questions about this policy can be sent to <a href=\"mailto:aurasitesstudio@gmail.com\">aurasitesstudio@gmail.com</a>."
     },
     quiz: {
       modalAriaLabel: "Start a project",
@@ -456,11 +456,11 @@ window.AURA_I18N = {
       retentionHeading: "情報の保存期間",
       retentionBody: "お客様の情報は、お問い合わせへの対応に必要な期間、またはご契約いただいた場合はその契約期間および記録保持のための合理的な期間、保存します。お客様はいつでも、下記の方法によりご自身の情報の削除をご請求いただけます。",
       rightsHeading: "お客様の権利",
-      rightsBody: "お客様は、<a href=\"mailto:hello@aurasites.com\">hello@aurasites.com</a> までご連絡いただくことで、ご自身の個人情報へのアクセス、訂正、削除を請求することができます。当社は合理的な期間内に対応いたします。",
+      rightsBody: "お客様は、<a href=\"mailto:aurasitesstudio@gmail.com\">aurasitesstudio@gmail.com</a> までご連絡いただくことで、ご自身の個人情報へのアクセス、訂正、削除を請求することができます。当社は合理的な期間内に対応いたします。",
       changesHeading: "本ポリシーの変更",
       changesBody: "当社は、本ポリシーを随時更新することがあります。上記の施行日は、最新版の発行日を示しています。",
       contactHeading: "お問い合わせ",
-      contactBody: "本ポリシーに関するご質問は、<a href=\"mailto:hello@aurasites.com\">hello@aurasites.com</a> までお送りください。"
+      contactBody: "本ポリシーに関するご質問は、<a href=\"mailto:aurasitesstudio@gmail.com\">aurasitesstudio@gmail.com</a> までお送りください。"
     },
     quiz: {
       modalAriaLabel: "プロジェクトを始める",

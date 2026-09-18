@@ -15,7 +15,7 @@
 //   FROM_EMAIL       Optional. Defaults to onboarding@resend.dev (Resend's
 //                    shared testing address). For production, verify your
 //                    own sending domain in Resend and set this to an address
-//                    on that domain, e.g. "Aura Sites <hello@aurasites.com>".
+//                    on that domain, e.g. "Aura Sites <aurasitesstudio@gmail.com>".
 //
 // Steps still needed on the Resend side: sign up at resend.com, verify a
 // sending domain (or use their onboarding@resend.dev domain for testing),
