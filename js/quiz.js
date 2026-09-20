@@ -52,14 +52,18 @@ function buildFormFields() {
   };
 }
 
+// When quiz.answers.preselectedTier is set (entered via a specific pricing
+// card's button rather than a generic "get started" entry point), the tier
+// is already known, so the whole Scope phase (page count, complexity) is
+// skipped -- there's nothing left for it to determine.
 const STEP_DEFS = [
   { id: 'business-name', phaseKey: 'quiz.phaseBasics' },
   { id: 'description', phaseKey: 'quiz.phaseBasics' },
   { id: 'email', phaseKey: 'quiz.phaseBasics' },
-  { id: 'size', phaseKey: 'quiz.phaseScope' },
-  { id: 'pages-checklist', phaseKey: 'quiz.phaseScope', when: a => a.size === 'notsure' },
-  { id: 'complexity', phaseKey: 'quiz.phaseScope' },
-  { id: 'complexity-detail', phaseKey: 'quiz.phaseScope', when: a => a.complexity === 'yes' },
+  { id: 'size', phaseKey: 'quiz.phaseScope', when: a => !a.preselectedTier },
+  { id: 'pages-checklist', phaseKey: 'quiz.phaseScope', when: a => !a.preselectedTier && a.size === 'notsure' },
+  { id: 'complexity', phaseKey: 'quiz.phaseScope', when: a => !a.preselectedTier },
+  { id: 'complexity-detail', phaseKey: 'quiz.phaseScope', when: a => !a.preselectedTier && a.complexity === 'yes' },
   { id: 'vibe', phaseKey: 'quiz.phaseStyleTimeline' },
   { id: 'recommendation', phaseKey: 'quiz.phaseRecommendation' }
 ];
@@ -117,8 +121,12 @@ function goBack() {
 }
 
 // --- open / close ---
-function openQuiz() {
+// `tier` is set when opened from a specific pricing card's button (Launch,
+// Grow, or Studio), rather than a generic entry point like the nav link,
+// which doesn't know a tier yet.
+function openQuiz(tier) {
   quiz.answers = {};
+  if (tier) quiz.answers.preselectedTier = tier;
   quiz.currentStepId = STEP_DEFS[0].id;
   document.querySelectorAll('.quiz-input').forEach(el => { el.value = ''; el.style.borderColor = ''; });
   document.querySelectorAll('.option-card.selected').forEach(el => el.classList.remove('selected'));
@@ -150,7 +158,7 @@ function closeQuiz() {
 document.querySelectorAll('.js-open-quiz').forEach(el => {
   el.addEventListener('click', (e) => {
     e.preventDefault();
-    openQuiz();
+    openQuiz(el.dataset.tier);
   });
 });
 
@@ -231,6 +239,12 @@ document.querySelectorAll('#quiz-pages-checklist .check-card input').forEach(cb 
 });
 
 // --- recommendation ---
+function blurbKeyForTier(tier) {
+  if (tier === 'studio') return 'quiz.recommendation.blurbStudio';
+  if (tier === 'launch') return 'quiz.recommendation.blurbLaunch';
+  return 'quiz.recommendation.blurbGrow';
+}
+
 function computeRecommendation() {
   const a = quiz.answers;
   let pageCount;
@@ -245,19 +259,22 @@ function computeRecommendation() {
   else if (pageCount === 1) tier = 'launch';
   else tier = 'grow';
 
-  let blurbKey;
-  if (complex) blurbKey = 'quiz.recommendation.blurbComplex';
-  else if (tier === 'studio') blurbKey = 'quiz.recommendation.blurbStudio';
-  else if (tier === 'launch') blurbKey = 'quiz.recommendation.blurbLaunch';
-  else blurbKey = 'quiz.recommendation.blurbGrow';
-
+  const blurbKey = complex ? 'quiz.recommendation.blurbComplex' : blurbKeyForTier(tier);
   return { tier, blurb: t(blurbKey) };
 }
 
+// The recommendation step doubles as a confirmation screen when the tier was
+// already chosen (a specific pricing card's button), rather than computed
+// from Scope-phase answers that were never asked in that path.
 function renderRecommendation() {
-  const { tier, blurb } = computeRecommendation();
+  const preselected = quiz.answers.preselectedTier;
+  const { tier, blurb } = preselected
+    ? { tier: preselected, blurb: t(blurbKeyForTier(preselected)) }
+    : computeRecommendation();
   const info = getTierInfo(tier);
   quiz.answers.recommendedTier = tier;
+  document.getElementById('quiz-recommend-question').textContent =
+    t(preselected ? 'quiz.recommendation.questionConfirm' : 'quiz.recommendation.question');
   document.getElementById('recommend-tier').textContent = info.name;
   document.getElementById('recommend-price').innerHTML = info.price;
   document.getElementById('recommend-turnaround').textContent = info.turnaround;

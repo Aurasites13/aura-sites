@@ -165,6 +165,65 @@ window.addEventListener('mousemove', (e) => {
   mouseY = (e.clientY / window.innerHeight) * 2 - 1;
 });
 
+// --- click/tap ripple ---
+// Each ripple stores its origin as a unit direction in the mesh's local
+// (object) space -- the same space basePositions/sphereBasePositions live
+// in, and the same space the per-frame displacement loop below works in.
+// Storing it there (rather than in world space) is what makes the ripple
+// stay attached to the correct spot on the surface as the orb keeps
+// rotating after the click, instead of drifting.
+const raycaster = new THREE.Raycaster();
+const pointerNDC = new THREE.Vector2();
+const activeRipples = [];
+const RIPPLE_WAVE_SPEED = 3.2;      // how fast the wavefront travels outward
+const RIPPLE_FREQUENCY = 9;         // how many rings within the ripple
+const RIPPLE_DISTANCE_DECAY = 2.2;  // higher = more localized around the click
+const RIPPLE_TIME_DECAY = 2.8;      // higher = fades faster
+const RIPPLE_AMPLITUDE = 0.3;
+const RIPPLE_MAX_LIFETIME = 2.0;    // hard cutoff (seconds), well past the point it's visually gone
+const RIPPLE_MAX_COUNT = 8;         // bounds worst-case cost if clicked rapidly
+
+let currentT = 0;
+
+function spawnRippleAt(clientX, clientY) {
+  const rect = canvas.getBoundingClientRect();
+  pointerNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+  pointerNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(pointerNDC, camera);
+  const hits = raycaster.intersectObjects([solidMesh, mesh], false);
+  if (!hits.length) return;
+
+  const local = solidMesh.worldToLocal(hits[0].point.clone()).normalize();
+  if (activeRipples.length >= RIPPLE_MAX_COUNT) activeRipples.shift();
+  activeRipples.push({ x: local.x, y: local.y, z: local.z, startTime: currentT });
+}
+
+// pointerdown covers both mouse clicks and touch taps with a single listener
+canvas.addEventListener('pointerdown', (e) => spawnRippleAt(e.clientX, e.clientY));
+
+// Summed displacement from every active ripple at a given point on the unit
+// sphere (dx,dy,dz), added into the same radial `scale` factor the ambient
+// noise below already uses. The phase (distance - elapsed*speed) is what
+// makes the wave crests travel outward over time rather than sit still;
+// the two exp() terms decay the effect with distance from the click and
+// with time since the click, so it spreads and fades rather than pulsing
+// the whole sphere uniformly.
+function rippleDisplacement(dx, dy, dz) {
+  let sum = 0;
+  for (let r = 0; r < activeRipples.length; r++) {
+    const ripple = activeRipples[r];
+    const ddx = dx - ripple.x, ddy = dy - ripple.y, ddz = dz - ripple.z;
+    const distance = Math.sqrt(ddx * ddx + ddy * ddy + ddz * ddz);
+    if (distance > 1.8) continue; // negligible contribution this far out, skip the transcendental calls
+    const elapsed = currentT - ripple.startTime;
+    const distanceDecay = Math.exp(-distance * RIPPLE_DISTANCE_DECAY);
+    const timeDecay = Math.exp(-elapsed * RIPPLE_TIME_DECAY);
+    const phase = distance - elapsed * RIPPLE_WAVE_SPEED;
+    sum += RIPPLE_AMPLITUDE * distanceDecay * timeDecay * Math.cos(phase * RIPPLE_FREQUENCY);
+  }
+  return sum;
+}
+
 // --- scroll progress: how far we've flown into the aura ---
 const heroSection = document.getElementById('hero');
 const lightWash = document.getElementById('light-wash');
@@ -204,6 +263,15 @@ const clock = new THREE.Clock();
 let firstFrameSignaled = false;
 function animate() {
   const t = clock.getElapsedTime();
+  currentT = t;
+
+  // drop ripples once they're old enough to be visually gone, so this array
+  // (and the per-vertex work below) doesn't grow across a long session
+  if (activeRipples.length) {
+    for (let r = activeRipples.length - 1; r >= 0; r--) {
+      if (currentT - activeRipples[r].startTime > RIPPLE_MAX_LIFETIME) activeRipples.splice(r, 1);
+    }
+  }
 
   const noiseAmp = 0.5 + flyProgress * 0.9;
   const pos = geometry.attributes.position;
@@ -212,10 +280,12 @@ function animate() {
     const iy = basePositions[i * 3 + 1];
     const iz = basePositions[i * 3 + 2];
     const len = Math.sqrt(ix * ix + iy * iy + iz * iz);
+    const dx = ix / len, dy = iy / len, dz = iz / len;
     const noise = Math.sin(ix * 1.6 + t * 0.6) * Math.cos(iy * 1.6 + t * 0.5) * 0.14
                 + Math.sin(iz * 2.1 + t * 0.4) * 0.08;
-    const scale = 1 + noise * noiseAmp;
-    pos.setXYZ(i, (ix / len) * len * scale, (iy / len) * len * scale, (iz / len) * len * scale);
+    const ripple = activeRipples.length ? rippleDisplacement(dx, dy, dz) : 0;
+    const scale = 1 + noise * noiseAmp + ripple;
+    pos.setXYZ(i, dx * len * scale, dy * len * scale, dz * len * scale);
   }
   pos.needsUpdate = true;
   // No computeVertexNormals() here: `material` is a MeshBasicMaterial
@@ -230,15 +300,17 @@ function animate() {
     const iy = sphereBasePositions[i * 3 + 1];
     const iz = sphereBasePositions[i * 3 + 2];
     const len = Math.sqrt(ix * ix + iy * iy + iz * iz);
+    const dx = ix / len, dy = iy / len, dz = iz / len;
     const noise = Math.sin(ix * 1.6 + t * 0.6) * Math.cos(iy * 1.6 + t * 0.5) * 0.14
                 + Math.sin(iz * 2.1 + t * 0.4) * 0.08;
-    const scale = 1 + noise * noiseAmp;
-    spherePos.setXYZ(i, (ix / len) * len * scale, (iy / len) * len * scale, (iz / len) * len * scale);
+    const ripple = activeRipples.length ? rippleDisplacement(dx, dy, dz) : 0;
+    const scale = 1 + noise * noiseAmp + ripple;
+    spherePos.setXYZ(i, dx * len * scale, dy * len * scale, dz * len * scale);
     // analytic radial normal instead of computeVertexNormals(): a UV sphere's pole
     // vertices share a position but not a buffer index, so face-normal averaging
     // can't blend them and the pole shows up as a faceted pinwheel. The radial
     // direction is smooth and seamless everywhere, poles included.
-    sphereNormal.setXYZ(i, ix / len, iy / len, iz / len);
+    sphereNormal.setXYZ(i, dx, dy, dz);
   }
   spherePos.needsUpdate = true;
   sphereNormal.needsUpdate = true;

@@ -32,101 +32,86 @@ function setTier(tier, opts) {
   });
 }
 
-// --- Assembly stage: a single standalone KOKU demo, fully independent of
-// the tier tabs (those only ever swap the day-count timeline above). Driven
-// by the Web Animations API instead of toggling a CSS class: each element
-// type gets its own keyframe sequence, and calling .animate() again always
-// starts a fresh animation instance regardless of current state - no
-// reflow/rAF timing tricks that a browser can coalesce into a no-op, which
-// is what made the old class-toggle approach unreliable on replay.
-const stageEl = document.getElementById('stage');
-
-const slideUp = (distance) => [
-  { opacity: 0, transform: `translateY(${distance}px)` },
-  { opacity: 1, transform: 'translateY(0)' }
-];
-
-const KOKU_SEQUENCE = [
-  {
-    selector: '.koku-nav',
-    keyframes: [
-      { opacity: 0, transform: 'translateY(-8px)' },
-      { opacity: 1, transform: 'translateY(0)' }
-    ],
-    options: { delay: 0, duration: 300, easing: 'cubic-bezier(0.19,1,0.22,1)' }
-  },
-  {
-    // elastic zoom: overshoots slightly smaller than full size before
-    // settling, rather than a flat scale-down, for a more premium feel
-    selector: '.koku-hero-img',
-    keyframes: [
-      { opacity: 0, transform: 'scale(1.18)' },
-      { opacity: 1, transform: 'scale(0.99)', offset: 0.75 },
-      { opacity: 1, transform: 'scale(1)' }
-    ],
-    options: { delay: 60, duration: 650, easing: 'cubic-bezier(0.19,1,0.22,1)' }
-  },
-  {
-    selector: '.koku-heading',
-    keyframes: slideUp(26),
-    options: { delay: 160, duration: 450, easing: 'cubic-bezier(0.16,1,0.3,1)' }
-  },
-  {
-    // satisfying pop: overshoots past full size, settles slightly under,
-    // then eases to rest - a small bounce rather than a single ease-out
-    selector: '.koku-cta',
-    keyframes: [
-      { opacity: 0, transform: 'scale(0.6)' },
-      { opacity: 1, transform: 'scale(1.1)', offset: 0.6 },
-      { opacity: 1, transform: 'scale(0.97)', offset: 0.82 },
-      { opacity: 1, transform: 'scale(1)' }
-    ],
-    options: { delay: 230, duration: 520, easing: 'ease-out' }
-  },
-  {
-    selector: '.koku-content-locations',
-    keyframes: slideUp(30),
-    options: { delay: 300, duration: 430, easing: 'cubic-bezier(0.19,1,0.22,1)' }
-  },
-  {
-    selector: '.koku-content-philosophy',
-    keyframes: slideUp(30),
-    options: { delay: 350, duration: 430, easing: 'cubic-bezier(0.19,1,0.22,1)' }
-  },
-  {
-    selector: '.koku-content-order',
-    keyframes: slideUp(30),
-    options: { delay: 400, duration: 430, easing: 'cubic-bezier(0.19,1,0.22,1)' }
-  }
-];
-
-function playStageReveal() {
-  KOKU_SEQUENCE.forEach(({ selector, keyframes, options }) => {
-    const el = stageEl.querySelector(selector);
-    if (!el) return;
-    el.getAnimations().forEach(anim => anim.cancel());
-    el.animate(keyframes, Object.assign({ fill: 'forwards' }, options));
-  });
-}
-
-const stageObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      playStageReveal();
-      stageObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.4 });
-stageObserver.observe(stageEl);
-
-document.getElementById('stage-replay').addEventListener('click', playStageReveal);
-
 tierTabs.forEach(tab => {
   tab.addEventListener('click', () => setTier(tab.dataset.tier));
 });
 
 // keep the currently displayed tier's day labels in sync with the active language
 window.AuraI18n.onChange(() => setTier(activeTier, { instant: true }));
+
+// --- Social proof: rotating testimonial pairs ---
+const quoteGrid = document.getElementById('quote-grid');
+const quoteText1 = document.getElementById('quote-text-1');
+const quoteAttr1 = document.getElementById('quote-attr-1');
+const quoteText2 = document.getElementById('quote-text-2');
+const quoteAttr2 = document.getElementById('quote-attr-2');
+
+if (quoteGrid && quoteText1 && quoteText2) {
+  const QUOTE_ROTATE_MS = 20000;
+  const QUOTE_FADE_MS = 400;
+  let quotePairIndex = 0;
+  let quoteRotateTimer = null;
+
+  function getQuotes() {
+    const dict = window.AURA_I18N[window.AuraI18n.lang] || window.AURA_I18N.en;
+    return (dict.socialProof && dict.socialProof.quotes) || window.AURA_I18N.en.socialProof.quotes;
+  }
+
+  function renderQuotePair(instant) {
+    const quotes = getQuotes();
+    const count = quotes.length;
+    const q1 = quotes[(quotePairIndex * 2) % count];
+    const q2 = quotes[(quotePairIndex * 2 + 1) % count];
+    const fields = [quoteText1, quoteAttr1, quoteText2, quoteAttr2];
+
+    function apply() {
+      quoteText1.textContent = q1.text;
+      quoteAttr1.textContent = q1.attr;
+      quoteText2.textContent = q2.text;
+      quoteAttr2.textContent = q2.attr;
+    }
+
+    if (instant) {
+      apply();
+      return;
+    }
+    fields.forEach(el => el.classList.add('quote-fade'));
+    setTimeout(() => {
+      apply();
+      fields.forEach(el => el.classList.remove('quote-fade'));
+    }, QUOTE_FADE_MS);
+  }
+
+  function advanceQuotePair() {
+    const pairCount = Math.ceil(getQuotes().length / 2);
+    quotePairIndex = (quotePairIndex + 1) % pairCount;
+    renderQuotePair(false);
+  }
+
+  function startQuoteRotation() {
+    stopQuoteRotation();
+    quoteRotateTimer = setInterval(advanceQuotePair, QUOTE_ROTATE_MS);
+  }
+
+  function stopQuoteRotation() {
+    if (quoteRotateTimer) {
+      clearInterval(quoteRotateTimer);
+      quoteRotateTimer = null;
+    }
+  }
+
+  // Pause on hover or focus so an actively reading visitor isn't interrupted
+  // mid-read, and give them a fresh 20s once they move away.
+  quoteGrid.addEventListener('mouseenter', stopQuoteRotation);
+  quoteGrid.addEventListener('mouseleave', startQuoteRotation);
+  quoteGrid.addEventListener('focusin', stopQuoteRotation);
+  quoteGrid.addEventListener('focusout', startQuoteRotation);
+
+  // Re-render instantly (no crossfade) on language switch, same as the
+  // tier timeline above.
+  window.AuraI18n.onChange(() => renderQuotePair(true));
+  startQuoteRotation();
+}
 
 // --- Info-tap tooltips ---
 let activeTooltip = null;
@@ -207,3 +192,11 @@ if (navToggle && navLinks) {
     link.addEventListener('click', closeNavMenu);
   });
 }
+
+// --- Hero "See the work" button: scroll to the portfolio section ---
+document.querySelectorAll('.js-scroll-work').forEach(el => {
+  el.addEventListener('click', () => {
+    const workSection = document.getElementById('work');
+    if (workSection) workSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});

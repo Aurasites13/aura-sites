@@ -77,7 +77,7 @@
     <a href="#work" data-i18n="nav.work">Work</a>
     <a href="#process" data-i18n="nav.process">Process</a>
     <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
-    <a href="#" class="js-open-quiz" data-i18n="nav.contact">Contact</a>
+    <a href="#" class="js-open-quiz" data-i18n="nav.contact">Get started</a>
     <div class="lang-toggle" role="group" aria-label="Language">
       <button type="button" class="lang-btn" data-lang="en">EN</button>
       <span class="lang-sep">/</span>
@@ -133,7 +133,7 @@
       <p class="sub" data-i18n="hero.sub">Studio-quality design, delivered in days, not months.</p>
       <div class="cta-row">
         <button class="btn primary js-open-quiz" data-i18n="hero.ctaPrimary">Start a project</button>
-        <button class="btn" data-i18n="hero.ctaSecondary">See the work</button>
+        <button class="btn js-scroll-work" data-i18n="hero.ctaSecondary">See the work</button>
       </div>
     </div>
 
@@ -172,38 +172,6 @@
       <span class="step-label" data-i18n="process.stepLive">Live</span>
       <span class="step-day">Day 10–14</span>
     </div>
-  </div>
-
-  <div class="stage" id="stage">
-    <div class="mock-chrome"><span></span><span></span><span></span></div>
-    <div class="block koku-nav">
-      <span class="koku-wordmark">KOKU</span>
-      <span class="koku-navlinks"><span>Locations</span><span>Order</span></span>
-    </div>
-    <div class="block koku-hero-img">
-      <img class="koku-hero-photo" src="assets/demo/koku-hero.jpg" alt="KOKU, a fictional brand shown as an example in Aura Sites' pricing tier demo, ramen bowl hero photo" loading="lazy">
-      <img class="koku-hero-inset" src="assets/demo/koku-detail.jpg" alt="Detail photo from the KOKU demo showing a close-up of the ramen bowl" loading="lazy">
-    </div>
-    <div class="block koku-heading"><span>Depth in every bowl</span></div>
-    <div class="block koku-cta"><span>Order now</span></div>
-    <div class="block koku-content koku-content-locations">
-      <span class="koku-content-label">Locations</span>
-      <span class="koku-content-copy">24 locations, nationwide</span>
-    </div>
-    <div class="block koku-content koku-content-philosophy">
-      <span class="koku-content-label">Philosophy</span>
-      <span class="koku-content-copy">18-hour broth, every bowl</span>
-    </div>
-    <div class="block koku-content koku-content-order">
-      <span class="koku-content-label">Order online</span>
-      <span class="koku-content-copy">Delivery in 30 minutes</span>
-    </div>
-  </div>
-  <div class="stage-replay-wrap">
-    <button type="button" class="stage-replay-btn" id="stage-replay">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 11A8 8 0 1 0 18.5 15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M20 5v6h-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <span data-i18n="process.replayBtn">Watch it build</span>
-    </button>
   </div>
 </section>
 
@@ -280,14 +248,14 @@
       <div class="stat-label" data-i18n="socialProof.stat3Label">fixed pricing tiers, no surprises</div>
     </div>
   </div>
-  <div class="quote-grid">
+  <div class="quote-grid" id="quote-grid">
     <div class="quote-card">
-      <p class="quote-text" data-i18n="socialProof.quote1Text">"They took a vague idea and gave it shape in days, not months. It felt like working with a design studio, not a software vendor."</p>
-      <div class="quote-attr" data-i18n="socialProof.quote1Attr">Founder, independent retail brand</div>
+      <p class="quote-text" id="quote-text-1">"They took a vague idea and gave it shape in days, not months. It felt like working with a design studio, not a software vendor."</p>
+      <div class="quote-attr" id="quote-attr-1">Founder, independent retail brand</div>
     </div>
     <div class="quote-card">
-      <p class="quote-text" data-i18n="socialProof.quote2Text">"The process was refreshingly simple. One call, a few quiet days of progress, then a site that actually looked like us."</p>
-      <div class="quote-attr" data-i18n="socialProof.quote2Attr">Operator, hospitality business</div>
+      <p class="quote-text" id="quote-text-2">"The process was refreshingly simple. One call, a few quiet days of progress, then a site that actually looked like us."</p>
+      <div class="quote-attr" id="quote-attr-2">Operator, hospitality business</div>
     </div>
   </div>
 </section>
@@ -310,7 +278,7 @@
         <li data-i18n="pricing.launch.feature3">Mobile-optimized</li>
         <li data-i18n="pricing.launch.feature4">1 revision round</li>
       </ul>
-      <button class="btn price-btn js-open-quiz" data-i18n="pricing.launch.cta">Get started</button>
+      <button class="btn price-btn js-open-quiz" data-tier="launch" data-i18n="pricing.launch.cta">Get started</button>
     </div>
 
     <div class="price-card featured">
@@ -326,7 +294,7 @@
         <li data-i18n="pricing.grow.feature4">Copywriting support</li>
         <li data-i18n="pricing.grow.feature5">3 revision rounds</li>
       </ul>
-      <button class="btn primary price-btn js-open-quiz" data-i18n="pricing.grow.cta">Get started</button>
+      <button class="btn primary price-btn js-open-quiz" data-tier="grow" data-i18n="pricing.grow.cta">Get started</button>
     </div>
 
     <div class="price-card">
@@ -340,7 +308,7 @@
         <li data-i18n="pricing.studio.feature3">Bespoke interaction &amp; motion</li>
         <li data-i18n="pricing.studio.feature4">Dedicated support</li>
       </ul>
-      <button class="btn price-btn js-open-quiz" data-i18n="pricing.studio.cta">Talk to us</button>
+      <button class="btn price-btn js-open-quiz" data-tier="studio" data-i18n="pricing.studio.cta">Talk to us</button>
     </div>
 
   </div>
@@ -464,7 +432,7 @@
       <a href="#work" data-i18n="nav.work">Work</a>
       <a href="#process" data-i18n="nav.process">Process</a>
       <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
-      <a href="#" class="js-open-quiz" data-i18n="nav.contact">Contact</a>
+      <a href="#" class="js-open-quiz" data-i18n="nav.contact">Get started</a>
     </div>
     <a class="footer-email" href="mailto:aurasitesstudio@gmail.com">aurasitesstudio@gmail.com</a>
   </div>
@@ -556,7 +524,7 @@
       </div>
 
       <div class="quiz-step" data-step="recommendation">
-        <div class="quiz-question" data-i18n="quiz.recommendation.question">Here's what we'd suggest</div>
+        <div class="quiz-question" id="quiz-recommend-question" data-i18n="quiz.recommendation.question">Here's what we'd suggest</div>
         <div class="recommend-card" id="recommend-card">
           <div class="recommend-tier" id="recommend-tier">Grow</div>
           <div class="recommend-price" id="recommend-price">¥480,000〜</div>
