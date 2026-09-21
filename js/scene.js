@@ -176,10 +176,29 @@ const raycaster = new THREE.Raycaster();
 const pointerNDC = new THREE.Vector2();
 const activeRipples = [];
 const RIPPLE_WAVE_SPEED = 3.2;      // how fast the wavefront travels outward
-const RIPPLE_FREQUENCY = 9;         // how many rings within the ripple
+// Measured empirically: the wireframe mesh (mesh/geometry) is only an
+// IcosahedronGeometry(2.05, 5) -- detail subdivides each face into
+// (detail+1)^2 triangles, not 4^detail, so this is just 720 faces total,
+// with an average edge length of ~0.42 world units (verified by sampling
+// hit.face vertices live). At the previous frequency of 9, the ripple's
+// wavelength (2*PI/9 =~ 0.70) was *shorter* than that edge length: fewer
+// than 2 samples per wavelength on that mesh, i.e. genuine undersampling/
+// aliasing of the wave pattern, not a bug tied to viewing angle. It was
+// most visible near the silhouette because that's where the same amount of
+// (aliased) radial displacement projects to the largest apparent on-screen
+// change -- grazing-angle surfaces amplify radial motion far more than
+// front-facing ones do, so an artifact present everywhere reads as
+// silhouette-only. 5 keeps wavelength (~1.26) at roughly 3x that edge
+// length, comfortably above the Nyquist rate for this mesh.
+const RIPPLE_FREQUENCY = 5;         // how many rings within the ripple
 const RIPPLE_DISTANCE_DECAY = 2.2;  // higher = more localized around the click
 const RIPPLE_TIME_DECAY = 2.8;      // higher = fades faster
-const RIPPLE_AMPLITUDE = 0.3;
+const RIPPLE_AMPLITUDE = 0.15;
+// Hard ceiling on the *summed* contribution from every overlapping ripple at
+// a single vertex, regardless of how many are stacked there. Set just above
+// one ripple's own peak so two overlapping ripples still read as slightly
+// stronger than one, but rapid clicking can never compound past this.
+const RIPPLE_MAX_TOTAL = 0.22;
 const RIPPLE_MAX_LIFETIME = 2.0;    // hard cutoff (seconds), well past the point it's visually gone
 const RIPPLE_MAX_COUNT = 8;         // bounds worst-case cost if clicked rapidly
 
@@ -221,7 +240,9 @@ function rippleDisplacement(dx, dy, dz) {
     const phase = distance - elapsed * RIPPLE_WAVE_SPEED;
     sum += RIPPLE_AMPLITUDE * distanceDecay * timeDecay * Math.cos(phase * RIPPLE_FREQUENCY);
   }
-  return sum;
+  // Clamp the total regardless of how many ripples overlap here, so rapid
+  // clicking can't compound into an extreme spike.
+  return Math.max(-RIPPLE_MAX_TOTAL, Math.min(RIPPLE_MAX_TOTAL, sum));
 }
 
 // --- scroll progress: how far we've flown into the aura ---
