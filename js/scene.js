@@ -204,6 +204,14 @@ const RIPPLE_MAX_COUNT = 8;         // bounds worst-case cost if clicked rapidly
 
 let currentT = 0;
 
+// Shared by every ripple source (direct clicks below, and the data-spark's
+// through-orb entry/exit points) so they all stay visually consistent.
+function addRippleAtWorldPoint(worldPoint) {
+  const local = solidMesh.worldToLocal(worldPoint.clone()).normalize();
+  if (activeRipples.length >= RIPPLE_MAX_COUNT) activeRipples.shift();
+  activeRipples.push({ x: local.x, y: local.y, z: local.z, startTime: currentT });
+}
+
 function spawnRippleAt(clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
   pointerNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
@@ -211,10 +219,7 @@ function spawnRippleAt(clientX, clientY) {
   raycaster.setFromCamera(pointerNDC, camera);
   const hits = raycaster.intersectObjects([solidMesh, mesh], false);
   if (!hits.length) return;
-
-  const local = solidMesh.worldToLocal(hits[0].point.clone()).normalize();
-  if (activeRipples.length >= RIPPLE_MAX_COUNT) activeRipples.shift();
-  activeRipples.push({ x: local.x, y: local.y, z: local.z, startTime: currentT });
+  addRippleAtWorldPoint(hits[0].point);
 }
 
 // pointerdown covers both mouse clicks and touch taps with a single listener
@@ -257,6 +262,8 @@ const SPARK_THROUGH_TRAIL = 14;    // longer streak while crossing the interior 
 const SPARK_MIN_RADIUS = 2.6;      // just outside the orb's own ~2.05 radius
 const SPARK_MAX_RADIUS = 4.2;      // stays close enough to read as part of the hero scene
 const SPARK_ORB_DIM_RADIUS = 2.15; // inside this distance from centre counts as "inside the orb"
+const SPARK_ORB_SURFACE_RADIUS = 2.05; // matches the wireframe's own radius -- used to find the exact
+                                        // point a through-pass crosses the orb's surface, for the ripple
 const SPARK_THROUGH_DIM = 0.32;    // extra alpha multiplier while geometrically inside (real depth
                                     // test handles the rest -- this covers grazing entry/exit angles
                                     // where the near surface doesn't fully hide it)
@@ -283,7 +290,7 @@ const sparkMaterial = new THREE.ShaderMaterial({
       vAlpha = aAlpha;
       vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
       gl_Position = projectionMatrix * mvPosition;
-      gl_PointSize = (3.0 + 10.0 * aAlpha) * sizeScale;
+      gl_PointSize = (7.0 + 26.0 * aAlpha) * sizeScale;
     }
   `,
   fragmentShader: `
@@ -336,6 +343,10 @@ const spark = {
   throughTo: new THREE.Vector3(),
   throughProgress: 0,
   throughDuration: 1,
+  throughEntryTt: 0,
+  throughExitTt: 1,
+  throughEntryFired: false,
+  throughExitFired: false,
   runUntil: 0,
   nextThroughAt: 0,
   idleUntil: 4 + Math.random() * 3, // first run, a few seconds after load
@@ -352,7 +363,7 @@ function startSparkRun() {
   spark.wanderFrom.copy(randomPointOnShell());
   spark.wanderTo.copy(randomPointOnShell());
   spark.wanderProgress = 0;
-  spark.wanderDuration = 2.5 + Math.random() * 2;
+  spark.wanderDuration = 4 + Math.random() * 3;
   spark.state = 'wander';
   spark.fadeAlpha = 0;
   spark.runUntil = currentT + 6 + Math.random() * 5;         // active for ~6-11s
@@ -392,13 +403,24 @@ function updateSpark(dt) {
         spark.throughFrom.copy(entry);
         spark.throughTo.copy(exit);
         spark.throughProgress = 0;
-        spark.throughDuration = 1.0 + Math.random() * 0.4;
+        spark.throughDuration = 1.8 + Math.random() * 0.6;
         spark.state = 'through';
+        spark.throughEntryFired = false;
+        spark.throughExitFired = false;
+        // entry/exit are antipodal at the same shell radius R, so the
+        // straight line's distance from the origin at progress tt is
+        // R*|1-2*tt| -- solving that for the orb's own surface radius
+        // gives exactly where along this pass it crosses the surface,
+        // once on the way in and once on the way out.
+        const shellR = entry.length();
+        const ratio = Math.min(1, SPARK_ORB_SURFACE_RADIUS / shellR);
+        spark.throughEntryTt = (1 - ratio) / 2;
+        spark.throughExitTt = (1 + ratio) / 2;
       } else {
         spark.wanderFrom.copy(spark.wanderTo);
         spark.wanderTo.copy(randomPointOnShell());
         spark.wanderProgress = 0;
-        spark.wanderDuration = 2.5 + Math.random() * 2;
+        spark.wanderDuration = 4 + Math.random() * 3;
       }
     }
     const tt = easeInOutSmooth(Math.min(1, spark.wanderProgress));
@@ -406,9 +428,9 @@ function updateSpark(dt) {
     // layered sine wobble on top of the interpolated path for organic,
     // non-linear texture rather than a flat straight-line glide
     const s = spark.wobbleSeed;
-    headPos.x += Math.sin(currentT * 1.3 + s) * 0.18;
-    headPos.y += Math.sin(currentT * 0.9 + s * 1.7) * 0.13;
-    headPos.z += Math.cos(currentT * 1.1 + s * 2.3) * 0.18;
+    headPos.x += Math.sin(currentT * 0.85 + s) * 0.18;
+    headPos.y += Math.sin(currentT * 0.6 + s * 1.7) * 0.13;
+    headPos.z += Math.cos(currentT * 0.7 + s * 2.3) * 0.18;
   } else {
     // 'through': a straight pass entering one side, crossing the interior,
     // and exiting the opposite side, then resuming the wander from there.
@@ -416,11 +438,23 @@ function updateSpark(dt) {
     const tt = Math.min(1, spark.throughProgress);
     headPos = _sparkHead.copy(spark.throughFrom).lerp(spark.throughTo, tt);
     if (headPos.length() < SPARK_ORB_DIM_RADIUS) dimFactor = SPARK_THROUGH_DIM;
+    // Ripple exactly where the pass crosses the orb's real surface, using
+    // the same effect the orb's own click interaction already uses.
+    if (!spark.throughEntryFired && tt >= spark.throughEntryTt) {
+      spark.throughEntryFired = true;
+      const entryPoint = spark.throughFrom.clone().lerp(spark.throughTo, spark.throughEntryTt);
+      addRippleAtWorldPoint(entryPoint);
+    }
+    if (!spark.throughExitFired && tt >= spark.throughExitTt) {
+      spark.throughExitFired = true;
+      const exitPoint = spark.throughFrom.clone().lerp(spark.throughTo, spark.throughExitTt);
+      addRippleAtWorldPoint(exitPoint);
+    }
     if (spark.throughProgress >= 1) {
       spark.wanderFrom.copy(spark.throughTo);
       spark.wanderTo.copy(randomPointOnShell());
       spark.wanderProgress = 0;
-      spark.wanderDuration = 2.5 + Math.random() * 2;
+      spark.wanderDuration = 4 + Math.random() * 3;
       spark.state = 'wander';
       spark.nextThroughAt = currentT + 8 + Math.random() * 7;
     }
@@ -467,9 +501,24 @@ function updateSpark(dt) {
 // orb's own click-for-ripple below, so the two interactions never both
 // fire off the same click. Checked first; if it hits, the ripple is
 // skipped entirely for that click. ---
-raycaster.params.Points.threshold = 0.22;
+//
+// Debugging note: this previously used a fixed raycaster.params.Points.
+// threshold of 0.22. Three.js's own default for Points is 1, so 0.22 was
+// actually *stricter* than doing nothing at all -- and worse, that
+// threshold is a fixed world-space distance while the spark's actual
+// distance from the camera varies a lot as it wanders (as near as ~5 units,
+// as far as ~14 on the far side of its shell). A fixed threshold that's a
+// comfortable ~20px hit radius up close shrinks to under half that far
+// away, since perspective makes the same world-space distance cover fewer
+// screen pixels the farther it is. Verified empirically before fixing:
+// hits reliably registered up to ~20-25px off target at distance ~6.5, but
+// that radius isn't representative of the spark's full wander range.
+// Scaling the threshold by the spark's current camera distance keeps the
+// effective on-screen hit area roughly consistent wherever it happens to be.
+const SPARK_CLICK_THRESHOLD_RATIO = 0.05;
 function trySparkClick(clientX, clientY) {
   if (!sparkPoints.visible) return false;
+  raycaster.params.Points.threshold = camera.position.distanceTo(_sparkHead) * SPARK_CLICK_THRESHOLD_RATIO;
   const rect = canvas.getBoundingClientRect();
   pointerNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
   pointerNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
