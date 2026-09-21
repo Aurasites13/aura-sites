@@ -218,7 +218,10 @@ function spawnRippleAt(clientX, clientY) {
 }
 
 // pointerdown covers both mouse clicks and touch taps with a single listener
-canvas.addEventListener('pointerdown', (e) => spawnRippleAt(e.clientX, e.clientY));
+canvas.addEventListener('pointerdown', (e) => {
+  if (trySparkClick(e.clientX, e.clientY)) return;
+  spawnRippleAt(e.clientX, e.clientY);
+});
 
 // Summed displacement from every active ripple at a given point on the unit
 // sphere (dx,dy,dz), added into the same radial `scale` factor the ambient
@@ -245,62 +248,20 @@ function rippleDisplacement(dx, dy, dz) {
   return Math.max(-RIPPLE_MAX_TOTAL, Math.min(RIPPLE_MAX_TOTAL, sum));
 }
 
-// --- data spark: a small light that travels along the wireframe's edges ---
-// `geometry` is non-indexed (each triangle owns its own 3 vertices, even
-// where corners coincide), so there's no adjacency to walk yet. This builds
-// it once at startup: dedupe vertices that share a base position down to
-// the icosahedron's actual ~362 corners, then record which corners each
-// triangle's edges connect. The spark only ever needs to know "which
-// corners are one edge away from this one."
-function buildEdgeGraph(basePositionsArr) {
-  const posKeyToIndex = new Map();
-  const uniquePositions = [];      // base (undisplaced) position per unique corner
-  const vertCount = basePositionsArr.length / 3;
-  const rawToUnique = new Int32Array(vertCount);
-
-  for (let i = 0; i < vertCount; i++) {
-    const x = basePositionsArr[i * 3], y = basePositionsArr[i * 3 + 1], z = basePositionsArr[i * 3 + 2];
-    const key = x.toFixed(4) + '|' + y.toFixed(4) + '|' + z.toFixed(4);
-    let uniqueIdx = posKeyToIndex.get(key);
-    if (uniqueIdx === undefined) {
-      uniqueIdx = uniquePositions.length;
-      uniquePositions.push(new THREE.Vector3(x, y, z));
-      posKeyToIndex.set(key, uniqueIdx);
-    }
-    rawToUnique[i] = uniqueIdx;
-  }
-
-  const adjacencySets = uniquePositions.map(() => new Set());
-  const triCount = vertCount / 3;
-  for (let f = 0; f < triCount; f++) {
-    const a = rawToUnique[f * 3], b = rawToUnique[f * 3 + 1], c = rawToUnique[f * 3 + 2];
-    adjacencySets[a].add(b); adjacencySets[a].add(c);
-    adjacencySets[b].add(a); adjacencySets[b].add(c);
-    adjacencySets[c].add(a); adjacencySets[c].add(b);
-  }
-
-  // One raw buffer index per unique corner, used to read that corner's
-  // *live* (displaced) position each frame -- every raw index sharing a
-  // corner is displaced identically since the displacement math only
-  // depends on the base position, never on which duplicate index it is.
-  const representativeRawIndex = new Int32Array(uniquePositions.length).fill(-1);
-  for (let i = 0; i < vertCount; i++) {
-    const u = rawToUnique[i];
-    if (representativeRawIndex[u] === -1) representativeRawIndex[u] = i;
-  }
-
-  return {
-    uniquePositions,
-    adjacency: adjacencySets.map(s => Array.from(s)),
-    representativeRawIndex
-  };
-}
-const edgeGraph = buildEdgeGraph(basePositions);
-
+// --- data spark: a small light that flies freely through the space
+// around the orb, occasionally passing through its volume ---
 const SPARK_COLOR = 0x8FF3FF;
 const SPARK_TRAIL_MAX = 14;
-const SPARK_SURFACE_TRAIL = 7;   // shorter trail while just running the wireframe
-const SPARK_INTERIOR_GLOW = 1.8; // brief boost while crossing the interior
+const SPARK_WANDER_TRAIL = 7;      // shorter trail while just drifting
+const SPARK_THROUGH_TRAIL = 14;    // longer streak while crossing the interior (it's moving faster there)
+const SPARK_MIN_RADIUS = 2.6;      // just outside the orb's own ~2.05 radius
+const SPARK_MAX_RADIUS = 4.2;      // stays close enough to read as part of the hero scene
+const SPARK_ORB_DIM_RADIUS = 2.15; // inside this distance from centre counts as "inside the orb"
+const SPARK_THROUGH_DIM = 0.32;    // extra alpha multiplier while geometrically inside (real depth
+                                    // test handles the rest -- this covers grazing entry/exit angles
+                                    // where the near surface doesn't fully hide it)
+const SPARK_CLICK_BOOST_PEAK = 1.3;
+const SPARK_CLICK_BOOST_DECAY = 4.0; // higher = returns to normal faster
 
 const sparkTrailPositions = new Float32Array(SPARK_TRAIL_MAX * 3);
 const sparkTrailAlphas = new Float32Array(SPARK_TRAIL_MAX);
@@ -336,77 +297,77 @@ const sparkMaterial = new THREE.ShaderMaterial({
     }
   `,
   transparent: true,
+  depthTest: true,
   depthWrite: false,
   blending: THREE.AdditiveBlending
 });
 const sparkPoints = new THREE.Points(sparkGeometry, sparkMaterial);
 sparkPoints.frustumCulled = false;
 sparkPoints.visible = false;
-// A child of `mesh` rather than the scene: it then inherits the same
-// rotation transform every frame for free, so positions computed in the
-// wireframe's local space (matching basePositions) land in the right place
-// without any manual rotation math here.
-mesh.add(sparkPoints);
+// Rendered after the orb's solid sphere regardless of Three.js's automatic
+// transparent-object distance sort, so the depth buffer already holds the
+// orb's real surface depth by the time the spark draws -- that's what makes
+// depthTest above actually occlude it correctly while "inside" the orb,
+// rather than depending on sort order happening to agree.
+sparkPoints.renderOrder = 10;
+// A child of the scene, not the rotating mesh: it flies through fixed space
+// around the orb, independent of the orb's own spin.
+scene.add(sparkPoints);
 
-function pickRandomVertex() {
-  return Math.floor(Math.random() * edgeGraph.uniquePositions.length);
-}
-
-function pickNextSurfaceVertex(fromUnique, cameFromUnique) {
-  const neighbors = edgeGraph.adjacency[fromUnique];
-  if (!neighbors.length) return fromUnique;
-  if (neighbors.length === 1) return neighbors[0];
-  const filtered = neighbors.filter(n => n !== cameFromUnique);
-  const pool = filtered.length ? filtered : neighbors;
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-
-function pickInteriorTarget(fromUnique) {
-  const fromPos = edgeGraph.uniquePositions[fromUnique];
-  for (let attempt = 0; attempt < 6; attempt++) {
-    const candidate = pickRandomVertex();
-    if (fromPos.distanceTo(edgeGraph.uniquePositions[candidate]) > 2.2) return candidate;
-  }
-  return pickRandomVertex();
-}
-
-function getLiveVertexPosition(uniqueIdx, out) {
-  const rawIdx = edgeGraph.representativeRawIndex[uniqueIdx];
-  const attr = geometry.attributes.position;
-  return out.set(attr.getX(rawIdx), attr.getY(rawIdx), attr.getZ(rawIdx));
+function randomPointOnShell() {
+  const r = SPARK_MIN_RADIUS + Math.random() * (SPARK_MAX_RADIUS - SPARK_MIN_RADIUS);
+  const theta = Math.random() * Math.PI * 2;
+  const phi = Math.acos((Math.random() * 2) - 1);
+  return new THREE.Vector3(
+    r * Math.sin(phi) * Math.cos(theta),
+    r * Math.sin(phi) * Math.sin(theta) * 0.75, // flattened a little so it stays in typical frame
+    r * Math.cos(phi)
+  );
 }
 
 const spark = {
-  state: 'idle',        // 'idle' | 'surface' | 'interior'
-  fromVertex: 0,
-  toVertex: 0,
-  pendingVertex: 0,
-  segProgress: 0,
-  segDuration: 0.5,
+  state: 'idle',          // 'idle' | 'wander' | 'through'
+  wanderFrom: new THREE.Vector3(),
+  wanderTo: new THREE.Vector3(),
+  wanderProgress: 0,
+  wanderDuration: 3,
+  wobbleSeed: Math.random() * 100,
+  throughFrom: new THREE.Vector3(),
+  throughTo: new THREE.Vector3(),
+  throughProgress: 0,
+  throughDuration: 1,
   runUntil: 0,
-  nextInteriorAt: 0,
+  nextThroughAt: 0,
   idleUntil: 4 + Math.random() * 3, // first run, a few seconds after load
   fadeAlpha: 0,
-  interiorStart: new THREE.Vector3(),
-  interiorControl: new THREE.Vector3(),
-  interiorEnd: new THREE.Vector3(),
+  lastClickTime: -999,
   trailHistory: []
 };
 
+function easeInOutSmooth(x) {
+  return x * x * (3 - 2 * x); // smoothstep
+}
+
 function startSparkRun() {
-  spark.fromVertex = pickRandomVertex();
-  spark.toVertex = pickNextSurfaceVertex(spark.fromVertex, -1);
-  spark.segProgress = 0;
-  spark.segDuration = 0.35 + Math.random() * 0.35;
-  spark.state = 'surface';
+  spark.wanderFrom.copy(randomPointOnShell());
+  spark.wanderTo.copy(randomPointOnShell());
+  spark.wanderProgress = 0;
+  spark.wanderDuration = 2.5 + Math.random() * 2;
+  spark.state = 'wander';
   spark.fadeAlpha = 0;
-  spark.runUntil = currentT + 5 + Math.random() * 4;       // active for ~5-9s
-  spark.nextInteriorAt = currentT + 8 + Math.random() * 7; // first interior transit in ~8-15s
+  spark.runUntil = currentT + 6 + Math.random() * 5;         // active for ~6-11s
+  spark.nextThroughAt = currentT + 8 + Math.random() * 7;    // first through-pass in ~8-15s
   spark.trailHistory = [];
 }
 
-const _sparkA = new THREE.Vector3();
-const _sparkB = new THREE.Vector3();
+function pickThroughTrajectory(currentPos) {
+  // Antipodal points on the wander shell, so the straight line between them
+  // passes exactly through the origin -- i.e. through the orb's centre.
+  const entry = randomPointOnShell();
+  const exit = entry.clone().negate();
+  return { entry, exit };
+}
+
 const _sparkHead = new THREE.Vector3();
 
 function updateSpark(dt) {
@@ -420,67 +381,68 @@ function updateSpark(dt) {
   const fadingOut = currentT >= spark.runUntil;
   spark.fadeAlpha += ((fadingOut ? 0 : 1) - spark.fadeAlpha) * Math.min(1, dt * 2.5);
 
-  let headPos, glowBoost = 1.0;
+  let headPos;
+  let dimFactor = 1.0;
 
-  if (spark.state === 'surface') {
-    spark.segProgress += dt / spark.segDuration;
-    getLiveVertexPosition(spark.fromVertex, _sparkA);
-    getLiveVertexPosition(spark.toVertex, _sparkB);
-    if (spark.segProgress >= 1) {
-      if (currentT >= spark.nextInteriorAt) {
-        const target = pickInteriorTarget(spark.toVertex);
-        spark.interiorStart.copy(_sparkB);
-        spark.interiorEnd.copy(edgeGraph.uniquePositions[target]);
-        // pull the control point in toward the centre so the path visibly
-        // dips through the interior rather than skimming just under the surface
-        spark.interiorControl.copy(spark.interiorStart).add(spark.interiorEnd).multiplyScalar(0.15);
-        spark.pendingVertex = target;
-        spark.state = 'interior';
-        spark.segProgress = 0;
-        spark.segDuration = 0.8 + Math.random() * 0.3;
+  if (spark.state === 'wander') {
+    spark.wanderProgress += dt / spark.wanderDuration;
+    if (spark.wanderProgress >= 1) {
+      if (currentT >= spark.nextThroughAt) {
+        const { entry, exit } = pickThroughTrajectory(spark.wanderTo);
+        spark.throughFrom.copy(entry);
+        spark.throughTo.copy(exit);
+        spark.throughProgress = 0;
+        spark.throughDuration = 1.0 + Math.random() * 0.4;
+        spark.state = 'through';
       } else {
-        const cameFrom = spark.fromVertex;
-        spark.fromVertex = spark.toVertex;
-        spark.toVertex = pickNextSurfaceVertex(spark.fromVertex, cameFrom);
-        spark.segProgress = 0;
-        spark.segDuration = 0.35 + Math.random() * 0.35;
+        spark.wanderFrom.copy(spark.wanderTo);
+        spark.wanderTo.copy(randomPointOnShell());
+        spark.wanderProgress = 0;
+        spark.wanderDuration = 2.5 + Math.random() * 2;
       }
     }
-    headPos = _sparkHead.copy(_sparkA).lerp(_sparkB, Math.min(1, spark.segProgress));
+    const tt = easeInOutSmooth(Math.min(1, spark.wanderProgress));
+    headPos = _sparkHead.copy(spark.wanderFrom).lerp(spark.wanderTo, tt);
+    // layered sine wobble on top of the interpolated path for organic,
+    // non-linear texture rather than a flat straight-line glide
+    const s = spark.wobbleSeed;
+    headPos.x += Math.sin(currentT * 1.3 + s) * 0.18;
+    headPos.y += Math.sin(currentT * 0.9 + s * 1.7) * 0.13;
+    headPos.z += Math.cos(currentT * 1.1 + s * 2.3) * 0.18;
   } else {
-    spark.segProgress += dt / spark.segDuration;
-    glowBoost = SPARK_INTERIOR_GLOW;
-    const tt = Math.min(1, spark.segProgress);
-    const it = 1 - tt;
-    const p0 = spark.interiorStart, p1 = spark.interiorControl, p2 = spark.interiorEnd;
-    headPos = _sparkHead.set(
-      it * it * p0.x + 2 * it * tt * p1.x + tt * tt * p2.x,
-      it * it * p0.y + 2 * it * tt * p1.y + tt * tt * p2.y,
-      it * it * p0.z + 2 * it * tt * p1.z + tt * tt * p2.z
-    );
-    if (spark.segProgress >= 1) {
-      spark.fromVertex = spark.pendingVertex;
-      spark.toVertex = pickNextSurfaceVertex(spark.fromVertex, -1);
-      spark.state = 'surface';
-      spark.segProgress = 0;
-      spark.segDuration = 0.35 + Math.random() * 0.35;
-      spark.nextInteriorAt = currentT + 8 + Math.random() * 7;
+    // 'through': a straight pass entering one side, crossing the interior,
+    // and exiting the opposite side, then resuming the wander from there.
+    spark.throughProgress += dt / spark.throughDuration;
+    const tt = Math.min(1, spark.throughProgress);
+    headPos = _sparkHead.copy(spark.throughFrom).lerp(spark.throughTo, tt);
+    if (headPos.length() < SPARK_ORB_DIM_RADIUS) dimFactor = SPARK_THROUGH_DIM;
+    if (spark.throughProgress >= 1) {
+      spark.wanderFrom.copy(spark.throughTo);
+      spark.wanderTo.copy(randomPointOnShell());
+      spark.wanderProgress = 0;
+      spark.wanderDuration = 2.5 + Math.random() * 2;
+      spark.state = 'wander';
+      spark.nextThroughAt = currentT + 8 + Math.random() * 7;
     }
   }
 
   // only retire once the fade-out has actually finished, and only while back
-  // on the surface, so a run never cuts off mid interior-crossing
-  if (fadingOut && spark.fadeAlpha < 0.02 && spark.state === 'surface') {
+  // in normal wander, so a run never cuts off mid through-pass
+  if (fadingOut && spark.fadeAlpha < 0.02 && spark.state === 'wander') {
     spark.state = 'idle';
     spark.idleUntil = currentT + 10 + Math.random() * 10; // pause ~10-20s before the next run
     sparkPoints.visible = false;
     return;
   }
 
+  // brief brightness boost on click, decaying back to normal over ~1s
+  const sinceClick = currentT - spark.lastClickTime;
+  const clickBoost = sinceClick < 1.2 ? 1 + SPARK_CLICK_BOOST_PEAK * Math.exp(-sinceClick * SPARK_CLICK_BOOST_DECAY) : 1;
+
   spark.trailHistory.unshift(headPos.clone());
   if (spark.trailHistory.length > SPARK_TRAIL_MAX) spark.trailHistory.length = SPARK_TRAIL_MAX;
 
-  const activeTrailLen = spark.state === 'interior' ? SPARK_TRAIL_MAX : SPARK_SURFACE_TRAIL;
+  const activeTrailLen = spark.state === 'through' ? SPARK_THROUGH_TRAIL : SPARK_WANDER_TRAIL;
   let drawCount = 0;
   for (let i = 0; i < SPARK_TRAIL_MAX; i++) {
     const hp = spark.trailHistory[i];
@@ -489,7 +451,7 @@ function updateSpark(dt) {
       sparkTrailPositions[i * 3 + 1] = hp.y;
       sparkTrailPositions[i * 3 + 2] = hp.z;
       const fadeT = 1 - i / activeTrailLen;
-      sparkTrailAlphas[i] = fadeT * fadeT * spark.fadeAlpha;
+      sparkTrailAlphas[i] = fadeT * fadeT * spark.fadeAlpha * dimFactor;
       drawCount = i + 1;
     } else {
       sparkTrailAlphas[i] = 0;
@@ -498,7 +460,24 @@ function updateSpark(dt) {
   sparkGeometry.setDrawRange(0, drawCount);
   sparkGeometry.attributes.position.needsUpdate = true;
   sparkGeometry.attributes.aAlpha.needsUpdate = true;
-  sparkMaterial.uniforms.sizeScale.value = glowBoost;
+  sparkMaterial.uniforms.sizeScale.value = clickBoost;
+}
+
+// --- click/tap on the spark itself: a separate raycast target from the
+// orb's own click-for-ripple below, so the two interactions never both
+// fire off the same click. Checked first; if it hits, the ripple is
+// skipped entirely for that click. ---
+raycaster.params.Points.threshold = 0.22;
+function trySparkClick(clientX, clientY) {
+  if (!sparkPoints.visible) return false;
+  const rect = canvas.getBoundingClientRect();
+  pointerNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+  pointerNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+  raycaster.setFromCamera(pointerNDC, camera);
+  const hits = raycaster.intersectObject(sparkPoints, false);
+  if (!hits.length) return false;
+  spark.lastClickTime = currentT;
+  return true;
 }
 
 // --- scroll progress: how far we've flown into the aura ---
@@ -556,6 +535,10 @@ function animate() {
     }
   }
 
+  // Independent of the orb's own geometry/rotation now, so this can run
+  // anywhere in the frame.
+  updateSpark(dt);
+
   const noiseAmp = 0.5 + flyProgress * 0.9;
   const pos = geometry.attributes.position;
   for (let i = 0; i < pos.count; i++) {
@@ -575,11 +558,6 @@ function animate() {
   // (unlit, wireframe), which never reads vertex normals, so recomputing
   // them for ~60k vertices every frame was pure wasted CPU work -- likely
   // the main cause of the animation lag, especially on mobile.
-
-  // Reads the icosahedron's just-updated live positions above, so the spark
-  // tracks the actual current (noise- and ripple-displaced) surface rather
-  // than the static base geometry.
-  updateSpark(dt);
 
   const spherePos = sphereGeometry.attributes.position;
   const sphereNormal = sphereGeometry.attributes.normal;
