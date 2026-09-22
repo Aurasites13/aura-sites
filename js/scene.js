@@ -272,10 +272,22 @@ const SPARK_THROUGH_DIM = 0.4;      // dimmed, not hidden, while inside the orb'
 // value that drives heroContent's own reveal (contentReveal kicks in past
 // 0.78 there). Fading out over the same window and fully retiring at that
 // exact threshold means the spark is always gone by the time the headline
-// starts appearing, with no separate scroll math to keep in sync.
+// starts appearing, with no separate scroll math to keep in sync. This is
+// the hard rule and takes priority over everything below: once retired,
+// gone for good, regardless of where the on/off cycle happened to be.
 const SPARK_FADE_START = 0.42;
 const SPARK_FADE_END = 0.78;
-const SPARK_ENTRANCE_SECONDS = 0.6; // brief fade-in on load, independent of scroll
+
+// Recurring presence cycle, independent of scroll speed: visible for 30s,
+// hidden for 2 minutes, repeating for as long as someone lingers before
+// arrival -- rather than a single one-shot appearance (or the previous
+// random per-visit chance), this gives anyone who dawdles at the top or
+// scrolls slowly a couple of chances to notice it. Most people scrolling
+// at a normal pace will simply arrive within the first on-window anyway.
+const SPARK_CYCLE_ON_SECONDS = 30;
+const SPARK_CYCLE_OFF_SECONDS = 120;
+const SPARK_CYCLE_PERIOD = SPARK_CYCLE_ON_SECONDS + SPARK_CYCLE_OFF_SECONDS;
+const SPARK_CYCLE_FADE_SECONDS = 0.6; // smooth fade at each on/off boundary, not an abrupt cut
 
 // Firefly movement: mostly unhurried legs, occasionally a fast "burst" leg,
 // linear (not eased) interpolation so direction changes at each waypoint
@@ -384,7 +396,7 @@ const spark = {
   evadeProgress: 0,
   evadeDuration: 0.25,
   lastEvadeTime: -999,
-  entranceStartT: null,
+  cycleStartT: null,        // reference point the 30s-on/2min-off cycle counts from
   retired: false,           // permanent once true -- never re-shown, even if scroll reverses
   lastScreenX: null,
   lastScreenY: null,
@@ -434,27 +446,42 @@ function triggerSparkEvade() {
 const _sparkHead = new THREE.Vector3();
 
 function updateSpark(dt) {
-  // Once retired, stop doing any work -- *unless* a through-pass is still
-  // in flight, in which case it needs to keep running so it can actually
-  // finish (state transition back to 'wander', exit ripple still firing)
-  // instead of freezing mid-pass forever. Found via testing: an earlier
-  // version returned here unconditionally, and retiring while mid-pass
-  // left throughProgress permanently stuck and the exit ripple never fired.
-  if (spark.retired && spark.state !== 'through') {
+  if (spark.cycleStartT === null) spark.cycleStartT = currentT;
+
+  // Ratchet: once past the fade-end threshold, gone for good, regardless of
+  // scrolling back up afterward. This hard rule takes priority over the
+  // on/off cycle below -- it's checked first and, once true, nothing in
+  // the cycle can bring the spark back.
+  if (rawScrollProgress >= SPARK_FADE_END) spark.retired = true;
+
+  // Recurring 30s-on/2min-off presence cycle, counted from cycleStartT
+  // regardless of scroll -- so it keeps running even if someone lingers at
+  // the very top of the hero before scrolling at all. cycleAlpha ramps
+  // smoothly at each on/off boundary rather than cutting abruptly, and its
+  // very first ramp-up (at cycleT=0) doubles as the spark's initial
+  // entrance fade-in, so no separate one-shot entrance timer is needed.
+  const cycleT = (currentT - spark.cycleStartT) % SPARK_CYCLE_PERIOD;
+  const cycleAlpha = cycleT < SPARK_CYCLE_ON_SECONDS
+    ? Math.min(1, cycleT / SPARK_CYCLE_FADE_SECONDS, (SPARK_CYCLE_ON_SECONDS - cycleT) / SPARK_CYCLE_FADE_SECONDS)
+    : 0;
+
+  // Stop doing any per-frame work when there's nothing to show -- either
+  // permanently retired, or just in an "off" window of the presence cycle
+  // -- *unless* a through-pass is still in flight, which needs to keep
+  // running so it can actually finish (state transition back to 'wander',
+  // exit ripple still firing) instead of freezing mid-pass. Found via
+  // testing: an earlier version returned unconditionally once retired,
+  // and retiring mid-pass left throughProgress permanently stuck and the
+  // exit ripple never fired; the same trap would apply to the off-cycle
+  // window if it weren't guarded the same way.
+  if ((spark.retired || cycleAlpha <= 0.001) && spark.state !== 'through') {
     sparkPoints.visible = false;
     return;
   }
 
-  if (spark.entranceStartT === null) spark.entranceStartT = currentT;
-
-  // Ratchet: once past the fade-end threshold, gone for good, regardless of
-  // scrolling back up afterward.
-  if (rawScrollProgress >= SPARK_FADE_END) spark.retired = true;
-
-  const entranceAlpha = Math.min(1, (currentT - spark.entranceStartT) / SPARK_ENTRANCE_SECONDS);
   const scrollAlpha = rawScrollProgress <= SPARK_FADE_START ? 1
     : Math.max(0, 1 - (rawScrollProgress - SPARK_FADE_START) / (SPARK_FADE_END - SPARK_FADE_START));
-  const targetAlpha = spark.retired ? 0 : entranceAlpha * scrollAlpha;
+  const targetAlpha = spark.retired ? 0 : scrollAlpha * cycleAlpha;
 
   if (targetAlpha <= 0.001 && spark.state !== 'through') {
     sparkPoints.visible = false;
