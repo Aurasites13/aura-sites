@@ -222,9 +222,12 @@ function spawnRippleAt(clientX, clientY) {
   addRippleAtWorldPoint(hits[0].point);
 }
 
-// pointerdown covers both mouse clicks and touch taps with a single listener
+// pointerdown covers both mouse clicks and touch taps with a single listener.
+// An attempted click/tap on the spark makes it flee rather than ripple the
+// orb underneath it (relevant mainly for touch, which has no hover event to
+// have already triggered the proximity-based evade in pointermove above).
 canvas.addEventListener('pointerdown', (e) => {
-  if (trySparkClick(e.clientX, e.clientY)) return;
+  if (trySparkEvadeClick(e.clientX, e.clientY)) return;
   spawnRippleAt(e.clientX, e.clientY);
 });
 
@@ -253,44 +256,66 @@ function rippleDisplacement(dx, dy, dz) {
   return Math.max(-RIPPLE_MAX_TOTAL, Math.min(RIPPLE_MAX_TOTAL, sum));
 }
 
-// --- data spark: a small light that flies freely through the space
-// around the orb, occasionally passing through its volume ---
+// --- data spark: a firefly-like light present only during the hero's
+// pre-arrival scroll approach. Wanders freely around the orb, occasionally
+// darting straight through its volume, and flees if the cursor gets close. ---
 const SPARK_COLOR = 0x8FF3FF;
 const SPARK_TRAIL_MAX = 14;
-const SPARK_WANDER_TRAIL = 7;      // shorter trail while just drifting
-const SPARK_THROUGH_TRAIL = 14;    // longer streak while crossing the interior (it's moving faster there)
-const SPARK_MIN_RADIUS = 2.6;      // just outside the orb's own ~2.05 radius
-const SPARK_MAX_RADIUS = 4.2;      // stays close enough to read as part of the hero scene
-const SPARK_ORB_DIM_RADIUS = 2.15; // inside this distance from centre counts as "inside the orb"
-const SPARK_ORB_SURFACE_RADIUS = 2.05; // matches the wireframe's own radius -- used to find the exact
-                                        // point a through-pass crosses the orb's surface, for the ripple
-const SPARK_THROUGH_DIM = 0.32;    // extra alpha multiplier while geometrically inside (real depth
-                                    // test handles the rest -- this covers grazing entry/exit angles
-                                    // where the near surface doesn't fully hide it)
-const SPARK_CLICK_BOOST_PEAK = 1.3;
-const SPARK_CLICK_BOOST_DECAY = 4.0; // higher = returns to normal faster
+const SPARK_WANDER_TRAIL = 7;       // shorter trail while just drifting
+const SPARK_THROUGH_TRAIL = 14;     // longer streak while crossing the interior (it's moving faster there)
+const SPARK_MIN_RADIUS = 2.6;       // just outside the orb's own ~2.05 radius
+const SPARK_MAX_RADIUS = 4.2;       // stays close enough to read as part of the hero scene
+const SPARK_ORB_SURFACE_RADIUS = 2.05; // matches the wireframe's own radius
+const SPARK_THROUGH_DIM = 0.4;      // dimmed, not hidden, while inside the orb's volume
+
+// Visibility is tied directly to rawScrollProgress -- the same un-eased
+// value that drives heroContent's own reveal (contentReveal kicks in past
+// 0.78 there). Fading out over the same window and fully retiring at that
+// exact threshold means the spark is always gone by the time the headline
+// starts appearing, with no separate scroll math to keep in sync.
+const SPARK_FADE_START = 0.42;
+const SPARK_FADE_END = 0.78;
+const SPARK_ENTRANCE_SECONDS = 0.6; // brief fade-in on load, independent of scroll
+
+// Firefly movement: mostly unhurried legs, occasionally a fast "burst" leg,
+// linear (not eased) interpolation so direction changes at each waypoint
+// read as sharp rather than gently settling in and out.
+const SPARK_BURST_CHANCE = 0.22;
+const SPARK_NORMAL_LEG_RANGE = [1.5, 3.4];
+const SPARK_BURST_LEG_RANGE = [0.28, 0.55];
+
+// The approach window is short (bounded by how long someone spends
+// scrolling through the fly-through), so through-passes are triggered by
+// scroll position, not a long random real-world interval that might not
+// fire in time -- guarantees at least one, likely two, actually happen.
+const SPARK_THROUGH_SCROLL_THRESHOLDS = [0.14, 0.34];
+
+// Evade: cursor proximity (or an attempted click/tap, for touch where
+// there's no hover) makes it dart away quickly rather than brightening.
+const SPARK_EVADE_RADIUS_PX = 90;
+const SPARK_EVADE_COOLDOWN = 0.7;
+const SPARK_EVADE_DURATION_RANGE = [0.2, 0.35];
+const SPARK_EVADE_DISTANCE_RANGE = [1.6, 2.6];
 
 const sparkTrailPositions = new Float32Array(SPARK_TRAIL_MAX * 3);
 const sparkTrailAlphas = new Float32Array(SPARK_TRAIL_MAX);
 const sparkGeometry = new THREE.BufferGeometry();
 sparkGeometry.setAttribute('position', new THREE.BufferAttribute(sparkTrailPositions, 3));
 sparkGeometry.setAttribute('aAlpha', new THREE.BufferAttribute(sparkTrailAlphas, 1));
-sparkGeometry.setDrawRange(0, 0); // nothing to draw until the first run starts
+sparkGeometry.setDrawRange(0, 0);
 
 const sparkMaterial = new THREE.ShaderMaterial({
   uniforms: {
-    color: { value: new THREE.Color(SPARK_COLOR) },
-    sizeScale: { value: 1.0 }
+    color: { value: new THREE.Color(SPARK_COLOR) }
   },
   vertexShader: `
     attribute float aAlpha;
     varying float vAlpha;
-    uniform float sizeScale;
     void main() {
       vAlpha = aAlpha;
       vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
       gl_Position = projectionMatrix * mvPosition;
-      gl_PointSize = (7.0 + 26.0 * aAlpha) * sizeScale;
+      gl_PointSize = 11.0 + 34.0 * aAlpha;
     }
   `,
   fragmentShader: `
@@ -304,19 +329,19 @@ const sparkMaterial = new THREE.ShaderMaterial({
     }
   `,
   transparent: true,
-  depthTest: true,
+  // Explicitly off, not just left at the default. This is what makes the
+  // spark stay visible (dimmed via aAlpha below) while "inside" the orb --
+  // previously depthTest:true meant the orb's own depth buffer discarded
+  // the spark's fragments outright whenever it was behind the near
+  // surface, regardless of the orb's own transparency. The "inside" look
+  // is now produced entirely by SPARK_THROUGH_DIM, not by real occlusion.
+  depthTest: false,
   depthWrite: false,
   blending: THREE.AdditiveBlending
 });
 const sparkPoints = new THREE.Points(sparkGeometry, sparkMaterial);
 sparkPoints.frustumCulled = false;
 sparkPoints.visible = false;
-// Rendered after the orb's solid sphere regardless of Three.js's automatic
-// transparent-object distance sort, so the depth buffer already holds the
-// orb's real surface depth by the time the spark draws -- that's what makes
-// depthTest above actually occlude it correctly while "inside" the orb,
-// rather than depending on sort order happening to agree.
-sparkPoints.renderOrder = 10;
 // A child of the scene, not the rotating mesh: it flies through fixed space
 // around the orb, independent of the orb's own spin.
 scene.add(sparkPoints);
@@ -332,12 +357,18 @@ function randomPointOnShell() {
   );
 }
 
+function pickLegDuration() {
+  const [nMin, nMax] = SPARK_NORMAL_LEG_RANGE;
+  const [bMin, bMax] = SPARK_BURST_LEG_RANGE;
+  return Math.random() < SPARK_BURST_CHANCE ? bMin + Math.random() * (bMax - bMin) : nMin + Math.random() * (nMax - nMin);
+}
+
 const spark = {
-  state: 'idle',          // 'idle' | 'wander' | 'through'
-  wanderFrom: new THREE.Vector3(),
-  wanderTo: new THREE.Vector3(),
+  state: 'wander',          // 'wander' | 'through' | 'evade'
+  wanderFrom: randomPointOnShell(),
+  wanderTo: randomPointOnShell(),
   wanderProgress: 0,
-  wanderDuration: 3,
+  wanderDuration: pickLegDuration(),
   wobbleSeed: Math.random() * 100,
   throughFrom: new THREE.Vector3(),
   throughTo: new THREE.Vector3(),
@@ -347,97 +378,126 @@ const spark = {
   throughExitTt: 1,
   throughEntryFired: false,
   throughExitFired: false,
-  runUntil: 0,
-  nextThroughAt: 0,
-  idleUntil: 4 + Math.random() * 3, // first run, a few seconds after load
-  fadeAlpha: 0,
-  lastClickTime: -999,
+  nextThroughIndex: 0,
+  evadeFrom: new THREE.Vector3(),
+  evadeTo: new THREE.Vector3(),
+  evadeProgress: 0,
+  evadeDuration: 0.25,
+  lastEvadeTime: -999,
+  entranceStartT: null,
+  retired: false,           // permanent once true -- never re-shown, even if scroll reverses
+  lastScreenX: null,
+  lastScreenY: null,
   trailHistory: []
 };
 
-function easeInOutSmooth(x) {
-  return x * x * (3 - 2 * x); // smoothstep
-}
-
-function startSparkRun() {
-  spark.wanderFrom.copy(randomPointOnShell());
-  spark.wanderTo.copy(randomPointOnShell());
-  spark.wanderProgress = 0;
-  spark.wanderDuration = 4 + Math.random() * 3;
-  spark.state = 'wander';
-  spark.fadeAlpha = 0;
-  spark.runUntil = currentT + 6 + Math.random() * 5;         // active for ~6-11s
-  spark.nextThroughAt = currentT + 8 + Math.random() * 7;    // first through-pass in ~8-15s
-  spark.trailHistory = [];
-}
-
-function pickThroughTrajectory(currentPos) {
+function beginThroughPass(fromPos) {
   // Antipodal points on the wander shell, so the straight line between them
   // passes exactly through the origin -- i.e. through the orb's centre.
   const entry = randomPointOnShell();
   const exit = entry.clone().negate();
-  return { entry, exit };
+  spark.throughFrom.copy(entry);
+  spark.throughTo.copy(exit);
+  spark.throughProgress = 0;
+  spark.throughDuration = 1.7 + Math.random() * 0.5;
+  spark.state = 'through';
+  spark.throughEntryFired = false;
+  spark.throughExitFired = false;
+  // entry/exit are antipodal at the same shell radius R, so the straight
+  // line's distance from the origin at progress tt is R*|1-2*tt| -- solving
+  // that for the orb's own surface radius gives exactly where along this
+  // pass it crosses the surface, once on the way in and once on the way out.
+  const ratio = Math.min(1, SPARK_ORB_SURFACE_RADIUS / entry.length());
+  spark.throughEntryTt = (1 - ratio) / 2;
+  spark.throughExitTt = (1 + ratio) / 2;
+}
+
+function triggerSparkEvade() {
+  if (!sparkPoints.visible || spark.state === 'through') return;
+  if (currentT - spark.lastEvadeTime < SPARK_EVADE_COOLDOWN) return;
+  spark.lastEvadeTime = currentT;
+  const from = _sparkHead.clone();
+  const dir = new THREE.Vector3(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1).normalize();
+  const [dMin, dMax] = SPARK_EVADE_DISTANCE_RANGE;
+  const to = from.clone().addScaledVector(dir, dMin + Math.random() * (dMax - dMin));
+  const dist = to.length();
+  if (dist < SPARK_MIN_RADIUS) to.setLength(SPARK_MIN_RADIUS);
+  else if (dist > SPARK_MAX_RADIUS) to.setLength(SPARK_MAX_RADIUS);
+  spark.evadeFrom.copy(from);
+  spark.evadeTo.copy(to);
+  spark.evadeProgress = 0;
+  const [durMin, durMax] = SPARK_EVADE_DURATION_RANGE;
+  spark.evadeDuration = durMin + Math.random() * (durMax - durMin);
+  spark.state = 'evade';
 }
 
 const _sparkHead = new THREE.Vector3();
 
 function updateSpark(dt) {
-  if (spark.state === 'idle') {
-    if (currentT < spark.idleUntil) { sparkPoints.visible = false; return; }
-    startSparkRun();
+  // Once retired, stop doing any work -- *unless* a through-pass is still
+  // in flight, in which case it needs to keep running so it can actually
+  // finish (state transition back to 'wander', exit ripple still firing)
+  // instead of freezing mid-pass forever. Found via testing: an earlier
+  // version returned here unconditionally, and retiring while mid-pass
+  // left throughProgress permanently stuck and the exit ripple never fired.
+  if (spark.retired && spark.state !== 'through') {
+    sparkPoints.visible = false;
+    return;
   }
 
-  sparkPoints.visible = true;
+  if (spark.entranceStartT === null) spark.entranceStartT = currentT;
 
-  const fadingOut = currentT >= spark.runUntil;
-  spark.fadeAlpha += ((fadingOut ? 0 : 1) - spark.fadeAlpha) * Math.min(1, dt * 2.5);
+  // Ratchet: once past the fade-end threshold, gone for good, regardless of
+  // scrolling back up afterward.
+  if (rawScrollProgress >= SPARK_FADE_END) spark.retired = true;
+
+  const entranceAlpha = Math.min(1, (currentT - spark.entranceStartT) / SPARK_ENTRANCE_SECONDS);
+  const scrollAlpha = rawScrollProgress <= SPARK_FADE_START ? 1
+    : Math.max(0, 1 - (rawScrollProgress - SPARK_FADE_START) / (SPARK_FADE_END - SPARK_FADE_START));
+  const targetAlpha = spark.retired ? 0 : entranceAlpha * scrollAlpha;
+
+  if (targetAlpha <= 0.001 && spark.state !== 'through') {
+    sparkPoints.visible = false;
+  } else {
+    sparkPoints.visible = true;
+  }
 
   let headPos;
   let dimFactor = 1.0;
 
   if (spark.state === 'wander') {
-    spark.wanderProgress += dt / spark.wanderDuration;
-    if (spark.wanderProgress >= 1) {
-      if (currentT >= spark.nextThroughAt) {
-        const { entry, exit } = pickThroughTrajectory(spark.wanderTo);
-        spark.throughFrom.copy(entry);
-        spark.throughTo.copy(exit);
-        spark.throughProgress = 0;
-        spark.throughDuration = 1.8 + Math.random() * 0.6;
-        spark.state = 'through';
-        spark.throughEntryFired = false;
-        spark.throughExitFired = false;
-        // entry/exit are antipodal at the same shell radius R, so the
-        // straight line's distance from the origin at progress tt is
-        // R*|1-2*tt| -- solving that for the orb's own surface radius
-        // gives exactly where along this pass it crosses the surface,
-        // once on the way in and once on the way out.
-        const shellR = entry.length();
-        const ratio = Math.min(1, SPARK_ORB_SURFACE_RADIUS / shellR);
-        spark.throughEntryTt = (1 - ratio) / 2;
-        spark.throughExitTt = (1 + ratio) / 2;
-      } else {
+    // Scroll-triggered through-pass check happens before the normal leg
+    // logic so it can interrupt an in-progress leg immediately rather than
+    // waiting for it to finish -- the approach window is short enough that
+    // waiting could eat into it meaningfully.
+    if (spark.nextThroughIndex < SPARK_THROUGH_SCROLL_THRESHOLDS.length
+        && rawScrollProgress >= SPARK_THROUGH_SCROLL_THRESHOLDS[spark.nextThroughIndex]) {
+      spark.nextThroughIndex++;
+      beginThroughPass(spark.wanderTo);
+    } else {
+      spark.wanderProgress += dt / spark.wanderDuration;
+      if (spark.wanderProgress >= 1) {
         spark.wanderFrom.copy(spark.wanderTo);
         spark.wanderTo.copy(randomPointOnShell());
         spark.wanderProgress = 0;
-        spark.wanderDuration = 4 + Math.random() * 3;
+        spark.wanderDuration = pickLegDuration();
       }
+      // Linear, not eased: velocity changes abruptly at each waypoint
+      // instead of easing in and out, reading as sharper firefly-like turns.
+      const tt = Math.min(1, spark.wanderProgress);
+      headPos = _sparkHead.copy(spark.wanderFrom).lerp(spark.wanderTo, tt);
+      const s = spark.wobbleSeed;
+      headPos.x += Math.sin(currentT * 0.85 + s) * 0.18;
+      headPos.y += Math.sin(currentT * 0.6 + s * 1.7) * 0.13;
+      headPos.z += Math.cos(currentT * 0.7 + s * 2.3) * 0.18;
     }
-    const tt = easeInOutSmooth(Math.min(1, spark.wanderProgress));
-    headPos = _sparkHead.copy(spark.wanderFrom).lerp(spark.wanderTo, tt);
-    // layered sine wobble on top of the interpolated path for organic,
-    // non-linear texture rather than a flat straight-line glide
-    const s = spark.wobbleSeed;
-    headPos.x += Math.sin(currentT * 0.85 + s) * 0.18;
-    headPos.y += Math.sin(currentT * 0.6 + s * 1.7) * 0.13;
-    headPos.z += Math.cos(currentT * 0.7 + s * 2.3) * 0.18;
-  } else {
-    // 'through': a straight pass entering one side, crossing the interior,
-    // and exiting the opposite side, then resuming the wander from there.
+  }
+
+  if (spark.state === 'through') {
     spark.throughProgress += dt / spark.throughDuration;
     const tt = Math.min(1, spark.throughProgress);
     headPos = _sparkHead.copy(spark.throughFrom).lerp(spark.throughTo, tt);
-    if (headPos.length() < SPARK_ORB_DIM_RADIUS) dimFactor = SPARK_THROUGH_DIM;
+    if (headPos.length() < SPARK_ORB_SURFACE_RADIUS) dimFactor = SPARK_THROUGH_DIM;
     // Ripple exactly where the pass crosses the orb's real surface, using
     // the same effect the orb's own click interaction already uses.
     if (!spark.throughEntryFired && tt >= spark.throughEntryTt) {
@@ -454,24 +514,25 @@ function updateSpark(dt) {
       spark.wanderFrom.copy(spark.throughTo);
       spark.wanderTo.copy(randomPointOnShell());
       spark.wanderProgress = 0;
-      spark.wanderDuration = 4 + Math.random() * 3;
+      spark.wanderDuration = pickLegDuration();
       spark.state = 'wander';
-      spark.nextThroughAt = currentT + 8 + Math.random() * 7;
     }
   }
 
-  // only retire once the fade-out has actually finished, and only while back
-  // in normal wander, so a run never cuts off mid through-pass
-  if (fadingOut && spark.fadeAlpha < 0.02 && spark.state === 'wander') {
-    spark.state = 'idle';
-    spark.idleUntil = currentT + 10 + Math.random() * 10; // pause ~10-20s before the next run
-    sparkPoints.visible = false;
-    return;
+  if (spark.state === 'evade') {
+    spark.evadeProgress += dt / spark.evadeDuration;
+    const tt = Math.min(1, spark.evadeProgress);
+    headPos = _sparkHead.copy(spark.evadeFrom).lerp(spark.evadeTo, tt);
+    if (spark.evadeProgress >= 1) {
+      spark.wanderFrom.copy(spark.evadeTo);
+      spark.wanderTo.copy(randomPointOnShell());
+      spark.wanderProgress = 0;
+      spark.wanderDuration = pickLegDuration();
+      spark.state = 'wander';
+    }
   }
 
-  // brief brightness boost on click, decaying back to normal over ~1s
-  const sinceClick = currentT - spark.lastClickTime;
-  const clickBoost = sinceClick < 1.2 ? 1 + SPARK_CLICK_BOOST_PEAK * Math.exp(-sinceClick * SPARK_CLICK_BOOST_DECAY) : 1;
+  if (!headPos) return; // through-pass just started this tick; nothing to draw yet this frame
 
   spark.trailHistory.unshift(headPos.clone());
   if (spark.trailHistory.length > SPARK_TRAIL_MAX) spark.trailHistory.length = SPARK_TRAIL_MAX;
@@ -485,7 +546,7 @@ function updateSpark(dt) {
       sparkTrailPositions[i * 3 + 1] = hp.y;
       sparkTrailPositions[i * 3 + 2] = hp.z;
       const fadeT = 1 - i / activeTrailLen;
-      sparkTrailAlphas[i] = fadeT * fadeT * spark.fadeAlpha * dimFactor;
+      sparkTrailAlphas[i] = fadeT * fadeT * targetAlpha * dimFactor;
       drawCount = i + 1;
     } else {
       sparkTrailAlphas[i] = 0;
@@ -494,38 +555,30 @@ function updateSpark(dt) {
   sparkGeometry.setDrawRange(0, drawCount);
   sparkGeometry.attributes.position.needsUpdate = true;
   sparkGeometry.attributes.aAlpha.needsUpdate = true;
-  sparkMaterial.uniforms.sizeScale.value = clickBoost;
+
+  // Cache the on-screen position for the evade proximity checks below,
+  // which run off mouse/pointer events rather than every render frame.
+  const projected = headPos.clone().project(camera);
+  const rect = canvas.getBoundingClientRect();
+  spark.lastScreenX = rect.left + (projected.x + 1) / 2 * rect.width;
+  spark.lastScreenY = rect.top + (1 - projected.y) / 2 * rect.height;
 }
 
-// --- click/tap on the spark itself: a separate raycast target from the
-// orb's own click-for-ripple below, so the two interactions never both
-// fire off the same click. Checked first; if it hits, the ripple is
-// skipped entirely for that click. ---
-//
-// Debugging note: this previously used a fixed raycaster.params.Points.
-// threshold of 0.22. Three.js's own default for Points is 1, so 0.22 was
-// actually *stricter* than doing nothing at all -- and worse, that
-// threshold is a fixed world-space distance while the spark's actual
-// distance from the camera varies a lot as it wanders (as near as ~5 units,
-// as far as ~14 on the far side of its shell). A fixed threshold that's a
-// comfortable ~20px hit radius up close shrinks to under half that far
-// away, since perspective makes the same world-space distance cover fewer
-// screen pixels the farther it is. Verified empirically before fixing:
-// hits reliably registered up to ~20-25px off target at distance ~6.5, but
-// that radius isn't representative of the spark's full wander range.
-// Scaling the threshold by the spark's current camera distance keeps the
-// effective on-screen hit area roughly consistent wherever it happens to be.
-const SPARK_CLICK_THRESHOLD_RATIO = 0.05;
-function trySparkClick(clientX, clientY) {
-  if (!sparkPoints.visible) return false;
-  raycaster.params.Points.threshold = camera.position.distanceTo(_sparkHead) * SPARK_CLICK_THRESHOLD_RATIO;
-  const rect = canvas.getBoundingClientRect();
-  pointerNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-  pointerNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
-  raycaster.setFromCamera(pointerNDC, camera);
-  const hits = raycaster.intersectObject(sparkPoints, false);
-  if (!hits.length) return false;
-  spark.lastClickTime = currentT;
+// --- evade on cursor proximity or an attempted click/tap ---
+window.addEventListener('pointermove', (e) => {
+  if (!sparkPoints.visible || spark.lastScreenX === null) return;
+  const dx = e.clientX - spark.lastScreenX, dy = e.clientY - spark.lastScreenY;
+  if (Math.sqrt(dx * dx + dy * dy) < SPARK_EVADE_RADIUS_PX) triggerSparkEvade();
+});
+
+// Returns true if this click/tap was close enough to the spark to count as
+// "attempting to click it" (relevant for touch, which has no hover event
+// to have already triggered the proximity check above).
+function trySparkEvadeClick(clientX, clientY) {
+  if (!sparkPoints.visible || spark.lastScreenX === null) return false;
+  const dx = clientX - spark.lastScreenX, dy = clientY - spark.lastScreenY;
+  if (Math.sqrt(dx * dx + dy * dy) >= SPARK_EVADE_RADIUS_PX) return false;
+  triggerSparkEvade();
   return true;
 }
 
@@ -541,12 +594,18 @@ function easeInOutCubic(x) {
 }
 
 let flyProgress = 0;
+// Raw (un-eased) scroll fraction through the hero, exposed at module level
+// so the data-spark can tie its own visibility to the exact same value
+// that drives the headline/CTA reveal below (contentReveal), rather than
+// duplicating scroll math or guessing at an equivalent threshold.
+let rawScrollProgress = 0;
 function updateScrollProgress() {
   if (prefersReducedMotion) { flyProgress = 0; return; }
   const rect = heroSection.getBoundingClientRect();
   const scrollable = heroSection.offsetHeight - window.innerHeight;
   let raw = scrollable > 0 ? -rect.top / scrollable : 0;
   raw = Math.max(0, Math.min(1, raw));
+  rawScrollProgress = raw;
   flyProgress = easeInOutCubic(raw);
 
   lightWash.style.opacity = Math.min(1, flyProgress * 1.6) * (flyProgress > 0.92 ? Math.max(0, 1 - (flyProgress - 0.92) / 0.08) : 1);
