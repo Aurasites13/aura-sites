@@ -123,8 +123,8 @@ window.AURA_I18N = {
       }
     },
     globalReach: {
-      heading: "Reach more customers, in their language",
-      body: "Many of our clients are Japanese restaurants and small businesses looking to reach more visitors, in English and beyond. Every Aura Sites project includes professional translation, done in partnership with Asiatis, a translation agency with over 25 years of experience across Japanese, English, and other languages. Your site won't just look great, it'll be understood correctly by the customers you're trying to reach."
+      heading: "Speak your customers' language.",
+      body: "Your customers speak more than one language, shouldn't your website? Every Aura Sites project includes professional translation, done in partnership with Asiatis, a translation agency with over 25 years of experience across Japanese, English, and beyond. Your site won't just look great, it'll be understood correctly by everyone who visits."
     },
     hosting: {
       title: "Hosting",
@@ -423,8 +423,8 @@ window.AURA_I18N = {
       }
     },
     globalReach: {
-      heading: "もっと多くのお客様に、伝わる言葉で",
-      body: "当社のクライアントの多くは、英語をはじめとする海外のお客様にもっと届きたいと考える、日本の飲食店や小規模事業者です。Aura Sitesのすべてのプロジェクトには、プロフェッショナルな翻訳が含まれています。日本語・英語をはじめ25年以上の実績を持つ翻訳会社、Asiatisとの提携によるものです。見た目が美しいだけでなく、届けたいお客様に正しく伝わるサイトをお届けします。"
+      heading: "お客様の言葉で、話そう。",
+      body: "お客様は、いくつもの言語を話します。あなたのサイトは、それに応えられていますか？Aura Sitesのすべてのプロジェクトには、プロフェッショナルな翻訳が含まれています。日本語・英語をはじめ25年以上の実績を持つ翻訳会社、Asiatisとの提携によるものです。見た目が美しいだけでなく、訪れるすべての方に正しく伝わるサイトをお届けします。"
     },
     hosting: {
       title: "ホスティング",

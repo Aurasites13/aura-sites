@@ -790,7 +790,11 @@ h1 em{
   margin:0 auto;
 }
 .global-reach h2{
-  font-size: clamp(28px, 3.6vw, 42px);
+  /* Capped at 38px rather than the 42px other section headings use --
+     verified empirically that "Speak your customers' language." wraps to
+     two lines at 42px within this section's 700px container, and stays on
+     one line from 38px down. */
+  font-size: clamp(28px, 3.6vw, 38px);
   font-weight:500;
   letter-spacing:-0.01em;
   margin-bottom:16px;
