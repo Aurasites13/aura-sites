@@ -91,6 +91,7 @@ window.AURA_I18N = {
         feature2: "Custom design, no templates",
         feature3: "Mobile-optimized",
         feature4: "1 revision round",
+        feature5: "Professional translation included (English + more)",
         cta: "Get started"
       },
       grow: {
@@ -105,6 +106,7 @@ window.AURA_I18N = {
         feature3Post: "for easy updates",
         feature4: "Copywriting support",
         feature5: "3 revision rounds",
+        feature6: "Professional translation included (English + more)",
         cta: "Get started"
       },
       studio: {
@@ -116,8 +118,13 @@ window.AURA_I18N = {
         feature2: "E-commerce &amp; integrations",
         feature3: "Bespoke interaction &amp; motion",
         feature4: "Dedicated support",
+        feature5: "Professional translation included (English + more)",
         cta: "Talk to us"
       }
+    },
+    globalReach: {
+      heading: "Reach more customers, in their language",
+      body: "Many of our clients are Japanese restaurants and small businesses looking to reach more visitors, in English and beyond. Every Aura Sites project includes professional translation, done in partnership with Asiatis, a translation agency with over 25 years of experience across Japanese, English, and other languages. Your site won't just look great, it'll be understood correctly by the customers you're trying to reach."
     },
     hosting: {
       title: "Hosting",
@@ -143,7 +150,9 @@ window.AURA_I18N = {
       q3: "What do you need from me to get started?",
       a3: "We begin with a short discovery call to understand your goals for your custom website design. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps.",
       q4: "What's your refund policy?",
-      a4: "If you cancel before we deliver the first concept for your custom website design, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue."
+      a4: "If you cancel before we deliver the first concept for your custom website design, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.",
+      q5: "Do you offer the website in other languages?",
+      a5: "Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated."
     },
     whyNotTemplate: {
       heading: "Not another template",
@@ -382,6 +391,7 @@ window.AURA_I18N = {
         feature2: "テンプレートを使わないオーダーメイドデザイン",
         feature3: "モバイル最適化",
         feature4: "修正1回",
+        feature5: "プロによる翻訳込み（英語ほか対応）",
         cta: "はじめる"
       },
       grow: {
@@ -396,6 +406,7 @@ window.AURA_I18N = {
         feature3Post: "で簡単に更新",
         feature4: "コピーライティングサポート",
         feature5: "修正3回",
+        feature6: "プロによる翻訳込み（英語ほか対応）",
         cta: "はじめる"
       },
       studio: {
@@ -407,8 +418,13 @@ window.AURA_I18N = {
         feature2: "ECサイト・外部連携",
         feature3: "オーダーメイドのインタラクション・モーション",
         feature4: "専任サポート",
+        feature5: "プロによる翻訳込み（英語ほか対応）",
         cta: "ご相談ください"
       }
+    },
+    globalReach: {
+      heading: "もっと多くのお客様に、伝わる言葉で",
+      body: "当社のクライアントの多くは、英語をはじめとする海外のお客様にもっと届きたいと考える、日本の飲食店や小規模事業者です。Aura Sitesのすべてのプロジェクトには、プロフェッショナルな翻訳が含まれています。日本語・英語をはじめ25年以上の実績を持つ翻訳会社、Asiatisとの提携によるものです。見た目が美しいだけでなく、届けたいお客様に正しく伝わるサイトをお届けします。"
     },
     hosting: {
       title: "ホスティング",
@@ -434,7 +450,9 @@ window.AURA_I18N = {
       q3: "始めるにあたって、何を用意すればいいですか？",
       a3: "まずは短いヒアリングを行い、ホームページ制作のご要望を伺うところから始めます。そのうえで、ロゴ、写真、ブランドカラー、既存のテキスト、可能であればドメインやホスティングアカウントへのアクセス情報などがあるとスムーズです。まだお持ちでない場合も、私たちがサポートしますのでご安心ください。",
       q4: "返金についてのポリシーを教えてください。",
-      a4: "ホームページ制作の最初のデザイン案(初稿デザイン)をお渡しする前にキャンセルされた場合、作業はほとんど発生していないため、全額返金いたします。初稿デザインの提出後は、それまでのデザイン・開発にかかった時間を完了した業務とみなすため、以降キャンセルされた場合でも返金の対象外となります。"
+      a4: "ホームページ制作の最初のデザイン案(初稿デザイン)をお渡しする前にキャンセルされた場合、作業はほとんど発生していないため、全額返金いたします。初稿デザインの提出後は、それまでのデザイン・開発にかかった時間を完了した業務とみなすため、以降キャンセルされた場合でも返金の対象外となります。",
+      q5: "他の言語にも対応してもらえますか？",
+      a5: "はい、追加費用なしですべてのプロジェクトに含まれています。25年以上の実績を持つ翻訳会社Asiatisと提携し、機械翻訳ではない、海外のお客様にも自然かつ正確に伝わるサイトに仕上げます。"
     },
     whyNotTemplate: {
       heading: "テンプレートは、使わない",
