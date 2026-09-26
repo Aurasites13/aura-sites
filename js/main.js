@@ -13,7 +13,11 @@ function setTier(tier, opts) {
   opts = opts || {};
   activeTier = tier;
   const days = getTierDays(tier);
-  tierTabs.forEach(tab => tab.classList.toggle('active', tab.dataset.tier === tier));
+  tierTabs.forEach(tab => {
+    const selected = tab.dataset.tier === tier;
+    tab.classList.toggle('active', selected);
+    tab.setAttribute('aria-selected', String(selected));
+  });
 
   if (opts.instant) {
     stepDays.forEach((el, i) => { el.textContent = days[i]; });
@@ -180,14 +184,29 @@ document.querySelectorAll('.faq-item').forEach(item => {
 const navToggle = document.getElementById('nav-toggle');
 const navLinks = document.getElementById('nav-links');
 if (navToggle && navLinks) {
+  // Below the 760px collapse breakpoint (see .nav-links in style.css), the
+  // closed menu is hidden with opacity/pointer-events rather than display:none
+  // so it can transition in, which otherwise leaves its links and language
+  // buttons focusable by keyboard even while invisible. `inert` removes them
+  // from tab order whenever the menu is closed on a narrow viewport, and is
+  // re-synced on toggle and on resize since it must never apply at desktop
+  // widths, where these same links are always visible.
+  const mobileNavQuery = window.matchMedia('(max-width: 760px)');
+  function syncNavInert() {
+    navLinks.inert = mobileNavQuery.matches && !navLinks.classList.contains('open');
+  }
   function closeNavMenu() {
     navLinks.classList.remove('open');
     navToggle.setAttribute('aria-expanded', 'false');
+    syncNavInert();
   }
   navToggle.addEventListener('click', () => {
     const isOpen = navLinks.classList.toggle('open');
     navToggle.setAttribute('aria-expanded', String(isOpen));
+    syncNavInert();
   });
+  mobileNavQuery.addEventListener('change', syncNavInert);
+  syncNavInert();
   navLinks.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', closeNavMenu);
   });

@@ -2,7 +2,13 @@
 const t = (key) => window.AuraI18n.t(key);
 
 // --- Netlify Forms submission ---
-// Posts to the static form declared in index.html (name="project-inquiry").
+// Posts to one of the two static forms declared in index.html. The
+// "initial" stage (fired on Submit) goes to "project-inquiry", the form
+// with email notifications turned on, since it's the one real completed
+// inquiry. The "partial" and "extras" stages are an abandonment safety net
+// rather than a new inquiry, so they go to "project-inquiry-lead" instead --
+// same field list, notifications off -- which is what keeps a completed
+// questionnaire down to a single notification email instead of three.
 // Always sent as multipart/form-data (via FormData) rather than urlencoded,
 // since the logo/photo fields carry actual File objects and Netlify Forms
 // requires multipart for any submission that includes a file upload; plain
@@ -12,9 +18,9 @@ const t = (key) => window.AuraI18n.t(key);
 // Outside of Netlify hosting (e.g. the local dev server) this endpoint doesn't
 // exist, so failures are expected there and are swallowed rather than shown
 // to the user; the questionnaire flow never blocks on this.
-function submitToNetlify(fields) {
+function submitToNetlify(formName, fields) {
   const formData = new FormData();
-  formData.append('form-name', 'project-inquiry');
+  formData.append('form-name', formName);
   Object.entries(fields).forEach(([key, value]) => {
     if (Array.isArray(value)) {
       value.forEach(v => formData.append(key, v));
@@ -121,10 +127,42 @@ function goBack() {
 }
 
 // --- open / close ---
+// Basic modal focus management: the rest of the page is made inert (so
+// background content can't be tabbed to or read by a screen reader while
+// the overlay is up), Tab is trapped inside the modal, and focus returns to
+// whatever opened the quiz once it closes.
+let lastFocusedBeforeOpen = null;
+
+function setBackgroundInert(isInert) {
+  Array.from(document.body.children).forEach(el => {
+    if (el !== overlay) el.inert = isInert;
+  });
+}
+
+function trapFocus(e) {
+  if (e.key !== 'Tab') return;
+  const focusable = Array.from(modal.querySelectorAll(
+    'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )).filter(el => el.offsetParent !== null);
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
 // `tier` is set when opened from a specific pricing card's button (Launch,
 // Grow, or Studio), rather than a generic entry point like the nav link,
 // which doesn't know a tier yet.
 function openQuiz(tier) {
+  lastFocusedBeforeOpen = document.activeElement;
+  setBackgroundInert(true);
+  document.addEventListener('keydown', trapFocus);
   quiz.answers = {};
   if (tier) quiz.answers.preselectedTier = tier;
   quiz.currentStepId = STEP_DEFS[0].id;
@@ -153,6 +191,12 @@ function closeQuiz() {
   overlay.classList.remove('show');
   document.body.style.overflow = '';
   setTimeout(() => overlay.classList.remove('open'), 300);
+  document.removeEventListener('keydown', trapFocus);
+  setBackgroundInert(false);
+  if (lastFocusedBeforeOpen && document.body.contains(lastFocusedBeforeOpen)) {
+    lastFocusedBeforeOpen.focus();
+  }
+  lastFocusedBeforeOpen = null;
 }
 
 document.querySelectorAll('.js-open-quiz').forEach(el => {
@@ -205,7 +249,7 @@ document.querySelectorAll('.quiz-step .quiz-next').forEach(btn => {
       // Captured as soon as Phase 1 is done, so an inquiry with just a
       // business name, description, and email on file isn't lost entirely
       // if the visitor abandons the questionnaire before ever hitting Submit.
-      submitToNetlify({ 'submission-stage': 'partial', ...buildFormFields() });
+      submitToNetlify('project-inquiry-lead', { 'submission-stage': 'partial', ...buildFormFields() });
       goNext();
       return;
     }
@@ -316,7 +360,7 @@ document.getElementById('quiz-submit').addEventListener('click', () => {
   // submission just carries the fuller answer set now that Phase 4 is done.
   // Captured now so the lead isn't lost even if the visitor closes the modal
   // before reaching (or instead of completing) the optional extras step.
-  submitToNetlify({ 'submission-stage': 'initial', ...buildFormFields() });
+  submitToNetlify('project-inquiry', { 'submission-stage': 'initial', ...buildFormFields() });
 
   lastFirstName = name.split(' ')[0];
   const heading = document.getElementById('quiz-thanks-heading');
@@ -345,6 +389,15 @@ function setupDropzone(dropzoneEl, fileInputEl, filesContainerEl, onFilesChosen)
     onFilesChosen(names, fileObjects);
   }
   dropzoneEl.addEventListener('click', () => fileInputEl.click());
+  // The dropzone is a div with role="button" (drag-and-drop needs a plain
+  // element, not a real <button>, to avoid native button drag behavior), so
+  // Enter/Space activation has to be wired up by hand to keep it reachable
+  // from the keyboard.
+  dropzoneEl.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    fileInputEl.click();
+  });
   fileInputEl.addEventListener('change', () => handleFiles(fileInputEl.files));
   ['dragover', 'dragenter'].forEach(evt => {
     dropzoneEl.addEventListener(evt, (e) => { e.preventDefault(); dropzoneEl.classList.add('dragover'); });
@@ -401,7 +454,7 @@ function finishExtras() {
   // A second, fuller submission, only when the visitor actually completed this
   // step (not skipped) since skipping adds no new information over the
   // initial submission already sent when they hit Submit.
-  submitToNetlify({ 'submission-stage': 'extras', ...buildFormFields() });
+  submitToNetlify('project-inquiry-lead', { 'submission-stage': 'extras', ...buildFormFields() });
   goToStep('thanks');
 }
 

@@ -6,7 +6,7 @@
 window.AURA_I18N = {
   en: {
     meta: {
-      title: "Aura Sites — Custom Website Design, Built Fast",
+      title: "Aura Sites – Custom Website Design, Built Fast",
       description: "Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds."
     },
     nav: {
@@ -144,13 +144,13 @@ window.AURA_I18N = {
     faq: {
       heading: "Questions, answered",
       q1: "How fast can you actually turn this around?",
-      a1: "Turnaround for custom website design depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary.",
+      a1: "Turnaround depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary.",
       q2: "How many rounds of revisions do I get?",
-      a2: "Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your custom website design needs. Additional rounds can always be added if required.",
+      a2: "Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your specific needs. Additional rounds can always be added if required.",
       q3: "What do you need from me to get started?",
-      a3: "We begin with a short discovery call to understand your goals for your custom website design. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps.",
+      a3: "We begin with a short discovery call to understand your goals for the project. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps.",
       q4: "What's your refund policy?",
-      a4: "If you cancel before we deliver the first concept for your custom website design, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.",
+      a4: "If you cancel before we deliver the first concept, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.",
       q5: "Do you offer the website in other languages?",
       a5: "Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated."
     },
@@ -444,13 +444,13 @@ window.AURA_I18N = {
     faq: {
       heading: "よくあるご質問",
       q1: "実際のところ、どのくらいのスピードで対応できますか？",
-      a1: "ホームページ制作の納期はプランによって異なります。Launchサイトは通常3日以内に公開、Growサイトは1〜2週間以内に公開となります。Studioのビルドは案件ごとに幅が大きいため、個別にご相談のうえ決定します。",
+      a1: "納期はプランによって異なります。Launchサイトは通常3日以内に公開、Growサイトは1〜2週間以内に公開となります。Studioのビルドは案件ごとに幅が大きいため、個別にご相談のうえ決定します。",
       q2: "修正は何回までお願いできますか？",
-      a2: "Launchプランには修正1回、Growプランには修正3回が含まれています。Studioは案件ごとのホームページ制作の内容に応じて個別に設定します。必要であれば、追加の修正回数をご用意することも可能です。",
+      a2: "Launchプランには修正1回、Growプランには修正3回が含まれています。Studioは案件の内容に応じて個別に設定します。必要であれば、追加の修正回数をご用意することも可能です。",
       q3: "始めるにあたって、何を用意すればいいですか？",
-      a3: "まずは短いヒアリングを行い、ホームページ制作のご要望を伺うところから始めます。そのうえで、ロゴ、写真、ブランドカラー、既存のテキスト、可能であればドメインやホスティングアカウントへのアクセス情報などがあるとスムーズです。まだお持ちでない場合も、私たちがサポートしますのでご安心ください。",
+      a3: "まずは短いヒアリングを行い、ご要望を伺うところから始めます。そのうえで、ロゴ、写真、ブランドカラー、既存のテキスト、可能であればドメインやホスティングアカウントへのアクセス情報などがあるとスムーズです。まだお持ちでない場合も、私たちがサポートしますのでご安心ください。",
       q4: "返金についてのポリシーを教えてください。",
-      a4: "ホームページ制作の最初のデザイン案(初稿デザイン)をお渡しする前にキャンセルされた場合、作業はほとんど発生していないため、全額返金いたします。初稿デザインの提出後は、それまでのデザイン・開発にかかった時間を完了した業務とみなすため、以降キャンセルされた場合でも返金の対象外となります。",
+      a4: "最初のデザイン案(初稿デザイン)をお渡しする前にキャンセルされた場合、作業はほとんど発生していないため、全額返金いたします。初稿デザインの提出後は、それまでのデザイン・開発にかかった時間を完了した業務とみなすため、以降キャンセルされた場合でも返金の対象外となります。",
       q5: "他の言語にも対応してもらえますか？",
       a5: "はい、追加費用なしですべてのプロジェクトに含まれています。25年以上の実績を持つ翻訳会社Asiatisと提携し、機械翻訳ではない、海外のお客様にも自然かつ正確に伝わるサイトに仕上げます。"
     },

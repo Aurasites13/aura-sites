@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-i18n="meta.title">Aura Sites — Custom Website Design, Built Fast</title>
+<title data-i18n="meta.title">Aura Sites – Custom Website Design, Built Fast</title>
 <meta name="description" content="Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds." data-i18n-content="meta.description">
 
 <!-- Favicon: temporary placeholder using the hero's aura/orb motif, simplified
@@ -19,13 +19,13 @@
      and social crawlers fetch the raw HTML without running JS, so in
      practice they'll usually see whichever language is in this static
      markup (English) rather than a visitor's chosen language. -->
-<meta property="og:title" content="Aura Sites — Custom Website Design, Built Fast" data-i18n-content="meta.title">
+<meta property="og:title" content="Aura Sites – Custom Website Design, Built Fast" data-i18n-content="meta.title">
 <meta property="og:description" content="Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds." data-i18n-content="meta.description">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://aurasites13.netlify.app/assets/og-image.jpg">
 <meta property="og:url" content="https://aurasites13.netlify.app/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Aura Sites — Custom Website Design, Built Fast" data-i18n-content="meta.title">
+<meta name="twitter:title" content="Aura Sites – Custom Website Design, Built Fast" data-i18n-content="meta.title">
 <meta name="twitter:description" content="Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds." data-i18n-content="meta.description">
 <meta name="twitter:image" content="https://aurasites13.netlify.app/assets/og-image.jpg">
 
@@ -36,14 +36,47 @@
 <body>
 
 <!--
-  Static form for Netlify Forms detection. Netlify's build step parses this
-  file's raw HTML (not the JS-driven modal below) to learn the form's name
+  Static forms for Netlify Forms detection. Netlify's build step parses this
+  file's raw HTML (not the JS-driven modal below) to learn each form's name
   and field list, so every field the questionnaire can ever submit must be
-  listed here even though this form is never shown or submitted directly.
-  The actual submission is a JS fetch() POST from quiz.js.
+  listed here even though neither form is ever shown or submitted directly.
+  The actual submissions are JS fetch() POSTs from quiz.js.
+
+  Split across two form names on purpose: "project-inquiry" only ever
+  receives the one submission that fires when the visitor hits Submit on a
+  completed questionnaire, so email notifications for it (configured in the
+  Netlify dashboard) mean one email per completed inquiry. The earlier
+  "partial" (sent right after the email step) and later "extras" (sent from
+  the optional post-submit step) submissions are an abandonment safety net,
+  not a new inquiry, so they go to "project-inquiry-lead" instead -- leave
+  notifications off for that form in the Netlify dashboard, and check its
+  submissions there directly if you want to see partial/abandoned leads.
 -->
 <form name="project-inquiry" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" hidden>
   <input type="hidden" name="form-name" value="project-inquiry">
+  <input type="hidden" name="submission-stage">
+  <p hidden><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
+  <input type="text" name="business-name">
+  <input type="text" name="description">
+  <input type="text" name="has-logo">
+  <input type="text" name="size">
+  <input type="text" name="pages">
+  <input type="text" name="complexity">
+  <input type="text" name="complexity-detail">
+  <input type="text" name="vibe">
+  <input type="text" name="recommended-tier">
+  <input type="text" name="name">
+  <input type="email" name="email">
+  <input type="text" name="logo-design-request">
+  <input type="file" name="logo-files" multiple>
+  <input type="text" name="photo-choice">
+  <input type="file" name="files" multiple>
+  <input type="text" name="domain">
+  <input type="text" name="hosting-interest">
+</form>
+
+<form name="project-inquiry-lead" method="POST" enctype="multipart/form-data" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="project-inquiry-lead">
   <input type="hidden" name="submission-stage">
   <p hidden><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
   <input type="text" name="business-name">
@@ -151,9 +184,9 @@
   </div>
 
   <div class="tier-toggle" role="tablist" data-i18n-aria-label="process.tierToggleAriaLabel" aria-label="Pricing tier">
-    <button class="tier-tab" data-tier="launch" role="tab" data-i18n="process.tabLaunch">Launch</button>
+    <button class="tier-tab" data-tier="launch" role="tab" aria-selected="false" data-i18n="process.tabLaunch">Launch</button>
     <button class="tier-tab active" data-tier="grow" role="tab" aria-selected="true" data-i18n="process.tabGrow">Grow</button>
-    <button class="tier-tab" data-tier="studio" role="tab" data-i18n="process.tabStudio">Studio</button>
+    <button class="tier-tab" data-tier="studio" role="tab" aria-selected="false" data-i18n="process.tabStudio">Studio</button>
   </div>
 
   <div class="timeline">
@@ -344,7 +377,7 @@
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a1">Turnaround for custom website design depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary.</p>
+        <p data-i18n="faq.a1">Turnaround depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -353,7 +386,7 @@
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a2">Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your custom website design needs. Additional rounds can always be added if required.</p>
+        <p data-i18n="faq.a2">Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your specific needs. Additional rounds can always be added if required.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -362,7 +395,7 @@
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a3">We begin with a short discovery call to understand your goals for your custom website design. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps.</p>
+        <p data-i18n="faq.a3">We begin with a short discovery call to understand your goals for the project. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -371,7 +404,7 @@
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a4">If you cancel before we deliver the first concept for your custom website design, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.</p>
+        <p data-i18n="faq.a4">If you cancel before we deliver the first concept, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.</p>
       </div>
     </div>
     <div class="faq-item">
@@ -400,7 +433,7 @@
       "name": "How fast can you actually turn this around?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turnaround for custom website design depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary."
+        "text": "Turnaround depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary."
       }
     },
     {
@@ -408,7 +441,7 @@
       "name": "How many rounds of revisions do I get?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your custom website design needs. Additional rounds can always be added if required."
+        "text": "Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your specific needs. Additional rounds can always be added if required."
       }
     },
     {
@@ -416,7 +449,7 @@
       "name": "What do you need from me to get started?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We begin with a short discovery call to understand your goals for your custom website design. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps."
+        "text": "We begin with a short discovery call to understand your goals for the project. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps."
       }
     },
     {
@@ -424,7 +457,7 @@
       "name": "What's your refund policy?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "If you cancel before we deliver the first concept for your custom website design, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue."
+        "text": "If you cancel before we deliver the first concept, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue."
       }
     },
     {
@@ -570,7 +603,7 @@
           <button class="option-card" data-value="no" data-i18n="quiz.common.no">No</button>
         </div>
 
-        <div class="dropzone" id="quiz-logo-dropzone" hidden style="margin-top:16px;">
+        <div class="dropzone" id="quiz-logo-dropzone" tabindex="0" role="button" hidden style="margin-top:16px;">
           <input type="file" id="quiz-logo-file-input" multiple hidden>
           <span class="dropzone-label" data-i18n="quiz.postSubmit.dropzoneLabel">Drag &amp; drop files here, or click to choose</span>
           <div class="dropzone-files" id="logo-dropzone-files"></div>
@@ -586,7 +619,7 @@
 
         <p class="quiz-subtext" style="margin-top:24px;" data-i18n="quiz.postSubmit.subtext">Got any photos handy? Drop them now to speed things up, or skip and we'll sort it when we talk.</p>
 
-        <div class="dropzone" id="quiz-dropzone">
+        <div class="dropzone" id="quiz-dropzone" tabindex="0" role="button">
           <input type="file" id="quiz-file-input" multiple hidden>
           <span class="dropzone-label" data-i18n="quiz.postSubmit.dropzoneLabel">Drag &amp; drop files here, or click to choose</span>
           <div class="dropzone-files" id="dropzone-files"></div>
