@@ -45,7 +45,8 @@ function buildFormFields() {
     'pages': (quiz.answers.pages || []).join(', '),
     'complexity': quiz.answers.complexity || '',
     'complexity-detail': quiz.answers.complexityDetail || '',
-    'vibe': quiz.answers.vibe || '',
+    'vibe': (quiz.answers.vibes || []).join(', '),
+    'vibe-other': quiz.answers.vibeOther || '',
     'recommended-tier': quiz.answers.recommendedTier || '',
     'name': quiz.answers.name || '',
     'email': quiz.answers.email || '',
@@ -168,6 +169,9 @@ function openQuiz(tier) {
   quiz.currentStepId = STEP_DEFS[0].id;
   document.querySelectorAll('.quiz-input').forEach(el => { el.value = ''; el.style.borderColor = ''; });
   document.querySelectorAll('.option-card.selected').forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll('.option-card[aria-pressed]').forEach(el => el.setAttribute('aria-pressed', 'false'));
+  document.querySelectorAll('.quiz-options.error').forEach(el => el.classList.remove('error'));
+  document.getElementById('quiz-vibe-other-input').hidden = true;
   document.querySelectorAll('#quiz-pages-checklist input').forEach(el => { el.checked = false; });
   document.querySelectorAll('#quiz-pages-checklist .check-card').forEach(el => el.classList.remove('checked'));
   document.getElementById('dropzone-files').innerHTML = '';
@@ -181,6 +185,8 @@ function openQuiz(tier) {
   document.getElementById('quiz-booking-confirmed-subtext').hidden = true;
   document.getElementById('quiz-skip-booking').hidden = false;
   document.getElementById('quiz-booking-done').hidden = true;
+  calEmbedInitialized = false;
+  document.getElementById('quiz-cal-embed').innerHTML = '';
   renderStep(quiz.currentStepId);
   overlay.classList.add('open');
   requestAnimationFrame(() => overlay.classList.add('show'));
@@ -254,6 +260,15 @@ document.querySelectorAll('.quiz-step .quiz-next').forEach(btn => {
       return;
     }
 
+    if (step.dataset.step === 'vibe') {
+      const group = step.querySelector('.quiz-options[data-field="vibes"]');
+      if (!quiz.answers.vibes || !quiz.answers.vibes.length) {
+        group.classList.add('error');
+        return;
+      }
+      group.classList.remove('error');
+    }
+
     if (input) quiz.answers[input.dataset.field] = input.value.trim();
     if (step.dataset.step === 'pages-checklist') {
       quiz.answers.pages = Array.from(step.querySelectorAll('input:checked')).map(el => el.value);
@@ -266,11 +281,23 @@ document.querySelectorAll('.quiz-step .quiz-back').forEach(btn => {
   btn.addEventListener('click', goBack);
 });
 
-// --- single-select option cards (auto-advance) ---
+// --- option cards: single-select auto-advances; multi-select (data-multi,
+// currently just vibe) toggles selection and waits for Next instead ---
 document.querySelectorAll('.quiz-options[data-field]').forEach(group => {
   const field = group.dataset.field;
+  const isMulti = group.dataset.multi === 'true';
   group.querySelectorAll('.option-card').forEach(card => {
     card.addEventListener('click', () => {
+      if (isMulti) {
+        const selected = card.classList.toggle('selected');
+        card.setAttribute('aria-pressed', String(selected));
+        quiz.answers[field] = Array.from(group.querySelectorAll('.option-card.selected')).map(c => c.dataset.value);
+        group.classList.remove('error');
+        if (card.dataset.value === 'other') {
+          document.getElementById('quiz-vibe-other-input').hidden = !selected;
+        }
+        return;
+      }
       group.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
       card.classList.add('selected');
       quiz.answers[field] = card.dataset.value;
@@ -470,7 +497,12 @@ document.getElementById('quiz-thanks-continue').addEventListener('click', () => 
 
 // The embed step is display:none until active, and Cal's inline embed needs
 // a visible container to size itself into, so it's initialized lazily on
-// first activation rather than eagerly on page load.
+// first activation rather than eagerly on page load. Reset (see openQuiz)
+// whenever the modal reopens, so a visitor who reaches the booking step more
+// than once in the same page load -- e.g. once via the skip-to-booking
+// shortcut with no name/email yet, then again later after completing the
+// full flow -- gets a fresh embed with whatever's actually known by then,
+// rather than being stuck with the first attempt's (possibly blank) prefill.
 let calEmbedInitialized = false;
 
 // Swap the booking step into its post-booking state: hide the "book later"

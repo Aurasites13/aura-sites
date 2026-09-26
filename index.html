@@ -64,6 +64,7 @@
   <input type="text" name="complexity">
   <input type="text" name="complexity-detail">
   <input type="text" name="vibe">
+  <input type="text" name="vibe-other">
   <input type="text" name="recommended-tier">
   <input type="text" name="name">
   <input type="email" name="email">
@@ -87,6 +88,7 @@
   <input type="text" name="complexity">
   <input type="text" name="complexity-detail">
   <input type="text" name="vibe">
+  <input type="text" name="vibe-other">
   <input type="text" name="recommended-tier">
   <input type="text" name="name">
   <input type="email" name="email">
@@ -243,7 +245,7 @@
         <h3 data-i18n="work.pecTitle">PEC</h3>
         <p data-i18n="work.pecDesc">Private education concierge for tutoring, IELTS/EIKEN, study abroad.</p>
         <div class="tags"><span data-i18n="work.pecTag1">Education</span><span data-i18n="work.pecTag2">Concierge</span></div>
-        <a class="work-link" href="https://exquisite-gecko-c965c4.netlify.app/" target="_blank" rel="noopener" data-i18n="work.pecLinkText">View site ↗</a>
+        <a class="work-link" href="https://pec-website.netlify.app/" target="_blank" rel="noopener" data-i18n="work.pecLinkText">View site ↗</a>
       </div>
     </div>
 
@@ -571,14 +573,16 @@
       </div>
 
       <div class="quiz-step" data-step="vibe">
-        <div class="quiz-question" data-i18n="quiz.vibe.question">Pick the vibe you're going for</div>
-        <div class="quiz-options quiz-options-grid" data-field="vibe">
-          <button class="option-card" data-value="clean" data-i18n="quiz.vibe.clean">Clean &amp; minimal</button>
-          <button class="option-card" data-value="warm" data-i18n="quiz.vibe.warm">Warm &amp; friendly</button>
-          <button class="option-card" data-value="bold" data-i18n="quiz.vibe.bold">Bold &amp; modern</button>
-          <button class="option-card" data-value="corporate" data-i18n="quiz.vibe.corporate">Professional &amp; corporate</button>
+        <div class="quiz-question" data-i18n="quiz.vibe.question">Pick the vibe you're going for (choose as many as fit)</div>
+        <div class="quiz-options quiz-options-grid" data-field="vibes" data-multi="true">
+          <button class="option-card" data-value="clean" data-i18n="quiz.vibe.clean" aria-pressed="false">Clean &amp; minimal</button>
+          <button class="option-card" data-value="warm" data-i18n="quiz.vibe.warm" aria-pressed="false">Warm &amp; friendly</button>
+          <button class="option-card" data-value="bold" data-i18n="quiz.vibe.bold" aria-pressed="false">Bold &amp; modern</button>
+          <button class="option-card" data-value="corporate" data-i18n="quiz.vibe.corporate" aria-pressed="false">Professional &amp; corporate</button>
+          <button class="option-card" data-value="other" data-i18n="quiz.vibe.other" aria-pressed="false">Something else</button>
         </div>
-        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><span></span></div>
+        <input type="text" class="quiz-input" id="quiz-vibe-other-input" data-field="vibeOther" hidden style="margin-top:16px;" placeholder="e.g. Minimal but playful, with a hand-drawn feel" data-i18n-placeholder="quiz.vibe.otherPlaceholder" autocomplete="off">
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
       </div>
 
       <div class="quiz-step" data-step="recommendation">
@@ -646,8 +650,7 @@
       </div>
 
       <div class="quiz-step" data-step="thanks">
-        <div class="quiz-question" id="quiz-thanks-heading">Thanks! We'll be in touch soon</div>
-        <p class="quiz-subtext" data-i18n="quiz.thanks.subtext">Usually within one business day.</p>
+        <div class="quiz-question" id="quiz-thanks-heading">Thanks! Let's find a time to talk.</div>
         <div class="quiz-nav"><span></span><button class="btn primary" id="quiz-thanks-continue" data-i18n="quiz.thanks.continueBtn">Continue</button></div>
       </div>
 

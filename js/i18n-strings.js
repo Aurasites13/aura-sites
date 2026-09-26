@@ -258,11 +258,13 @@ window.AURA_I18N = {
         placeholder: "e.g. Stripe checkout for 3 products, or a booking calendar"
       },
       vibe: {
-        question: "Pick the vibe you're going for",
+        question: "Pick the vibe you're going for (choose as many as fit)",
         clean: "Clean &amp; minimal",
         warm: "Warm &amp; friendly",
         bold: "Bold &amp; modern",
-        corporate: "Professional &amp; corporate"
+        corporate: "Professional &amp; corporate",
+        other: "Something else",
+        otherPlaceholder: "e.g. Minimal but playful, with a hand-drawn feel"
       },
       recommendation: {
         question: "Here's what we'd suggest",
@@ -289,8 +291,7 @@ window.AURA_I18N = {
         finishBtn: "Finish"
       },
       thanks: {
-        headingTemplate: "Thanks, {name}! We'll be in touch soon",
-        subtext: "Usually within one business day.",
+        headingTemplate: "Thanks, {name}! Let's find a time to talk.",
         continueBtn: "Continue"
       },
       booking: {
@@ -558,11 +559,13 @@ window.AURA_I18N = {
         placeholder: "例：Stripeを使った商品3点の決済、予約カレンダーなど"
       },
       vibe: {
-        question: "目指す雰囲気を選んでください",
+        question: "目指す雰囲気を選んでください（複数選択可）",
         clean: "クリーン＆ミニマル",
         warm: "温かみ＆親しみやすさ",
         bold: "大胆＆モダン",
-        corporate: "フォーマル＆コーポレート"
+        corporate: "フォーマル＆コーポレート",
+        other: "その他",
+        otherPlaceholder: "例：ミニマルだけど遊び心のある、手描き風の雰囲気"
       },
       recommendation: {
         question: "こちらのプランをご提案します",
@@ -589,8 +592,7 @@ window.AURA_I18N = {
         finishBtn: "完了"
       },
       thanks: {
-        headingTemplate: "{name}様、ありがとうございます！近日中にご連絡いたします",
-        subtext: "通常、1営業日以内にご連絡します。",
+        headingTemplate: "{name}様、ありがとうございます！日程を決めましょう。",
         continueBtn: "次へ"
       },
       booking: {
