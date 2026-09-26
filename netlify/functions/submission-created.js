@@ -203,6 +203,18 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: 'Skipped (honeypot triggered)' };
     }
 
+    // This function fires on every form submission on the whole site, for
+    // both the project-inquiry and project-inquiry-lead forms alike, and for
+    // all three submission stages the questionnaire ever sends (partial at
+    // the email step, initial at Submit, extras at the post-submit finish).
+    // Without this check it would send three emails for one completed
+    // questionnaire. Only "initial" is an actual completed inquiry worth
+    // notifying on; partial/extras stay recorded in Netlify Forms but don't
+    // trigger email.
+    if (data['submission-stage'] && data['submission-stage'] !== 'initial') {
+      return { statusCode: 200, body: `Skipped (stage: ${data['submission-stage']})` };
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
     const toEmail = process.env.TO_EMAIL;
     const fromEmail = process.env.FROM_EMAIL || 'Aura Sites <onboarding@resend.dev>';
