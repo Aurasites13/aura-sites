@@ -1137,6 +1137,7 @@ footer{
 }
 .quiz-input::placeholder{ color: var(--ink-dim); }
 .quiz-input:focus{ border-color: rgba(77,232,255,0.5); box-shadow: 0 0 0 3px rgba(77,232,255,0.08); }
+textarea.quiz-input{ resize:vertical; min-height:88px; line-height:1.5; }
 
 .quiz-options{
   display:flex;

@@ -177,12 +177,17 @@ document.addEventListener('keydown', (e) => {
 });
 
 // --- text input steps ---
-document.querySelectorAll('.quiz-input[data-field]').forEach(input => {
+// Enter advances a step the same way clicking its primary button would,
+// for every single-line field (including quiz-name and quiz-domain, which
+// have no data-field since they're read directly by id rather than via
+// quiz.answers). Textareas are excluded so Enter keeps its normal job of
+// inserting a newline instead of submitting the step.
+document.querySelectorAll('.quiz-input').forEach(input => {
+  if (input.tagName === 'TEXTAREA') return;
   input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      input.closest('.quiz-step').querySelector('.quiz-next')?.click();
-    }
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    input.closest('.quiz-step').querySelector('.quiz-nav .btn.primary')?.click();
   });
 });
 
