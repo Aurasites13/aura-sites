@@ -45,6 +45,21 @@ const FIELD_DEFS = [
   { key: 'hosting-interest', label: 'Interested in hosting', enum: true }
 ];
 
+// Fields that only ever exist on the post-submit "extras" stage (the logo/
+// photo upload step happens after Submit, so an "initial" submission can
+// never carry them). The extras follow-up email only shows this subset
+// instead of repeating everything already sent in the initial email.
+const POST_SUBMIT_KEYS = new Set([
+  'has-logo', 'logo-design-request', 'logo-files', 'photo-choice', 'files', 'domain', 'hosting-interest'
+]);
+
+function hasFileValue(value) {
+  if (!value) return false;
+  if (Array.isArray(value)) return value.length > 0;
+  if (typeof value === 'string') return value.trim() !== '';
+  return true;
+}
+
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -124,23 +139,22 @@ function fileLinksHtml(value) {
     .join('<br>');
 }
 
-function buildEmailHtml(data) {
+function buildEmailHtml(data, opts = {}) {
   const name = data.name || '(no name given)';
   const email = data.email || '';
-  const stage = data['submission-stage'];
-  let stageBadgeColor = '#FF9F45';
-  let stageBadgeText = 'Initial submission';
-  if (stage === 'extras') {
-    stageBadgeColor = '#4DE8FF';
-    stageBadgeText = 'Includes post-submit extras';
-  } else if (stage === 'partial') {
-    // Fired right after Phase 1 (business name, description, email) so
-    // there's a contactable record even if the visitor never finishes.
-    stageBadgeColor = '#1F8FE8';
-    stageBadgeText = 'Early capture (left after phase 1)';
-  }
+  const isFollowUp = opts.followUp === true;
+  const heading = isFollowUp ? 'Files added to inquiry' : 'New project inquiry';
+  const stageBadgeColor = isFollowUp ? '#4DE8FF' : '#FF9F45';
+  const stageBadgeText = isFollowUp
+    ? 'Post-submit extras (already emailed once for this inquiry)'
+    : 'Initial submission';
 
-  const rows = FIELD_DEFS
+  // The follow-up only shows the fields that are new at this stage (logo/
+  // photo uploads, domain, hosting interest) instead of repeating everything
+  // already sent in the initial email.
+  const fieldDefs = isFollowUp ? FIELD_DEFS.filter((f) => POST_SUBMIT_KEYS.has(f.key)) : FIELD_DEFS;
+
+  const rows = fieldDefs
     .filter((f) => data[f.key] && String(data[f.key]).trim() !== '')
     .map((f) => {
       if (f.file) return fieldRowHtml(f.label, fileLinksHtml(data[f.key]), { raw: true });
@@ -153,7 +167,7 @@ function buildEmailHtml(data) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>New project inquiry</title>
+<title>${escapeHtml(heading)}</title>
 </head>
 <body style="margin:0; padding:0; background-color:#05060A;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#05060A; padding:32px 16px;">
@@ -163,7 +177,7 @@ function buildEmailHtml(data) {
           <tr>
             <td style="padding:32px 32px 20px; border-bottom:1px solid rgba(77,232,255,0.15);">
               <div style="font-family:Georgia,serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:#4DE8FF; margin-bottom:10px;">Aura Sites</div>
-              <div style="font-family:Helvetica,Arial,sans-serif; font-size:22px; font-weight:700; color:#EAF6FF; margin-bottom:12px;">New project inquiry</div>
+              <div style="font-family:Helvetica,Arial,sans-serif; font-size:22px; font-weight:700; color:#EAF6FF; margin-bottom:12px;">${escapeHtml(heading)}</div>
               <span style="display:inline-block; font-family:Helvetica,Arial,sans-serif; font-size:11px; font-weight:600; letter-spacing:0.03em; color:#05060A; background-color:${stageBadgeColor}; padding:4px 10px; border-radius:100px;">${stageBadgeText}</span>
             </td>
           </tr>
@@ -205,14 +219,25 @@ exports.handler = async (event) => {
 
     // This function fires on every form submission on the whole site, for
     // both the project-inquiry and project-inquiry-lead forms alike, and for
-    // all three submission stages the questionnaire ever sends (partial at
-    // the email step, initial at Submit, extras at the post-submit finish).
-    // Without this check it would send three emails for one completed
-    // questionnaire. Only "initial" is an actual completed inquiry worth
-    // notifying on; partial/extras stay recorded in Netlify Forms but don't
-    // trigger email.
-    if (data['submission-stage'] && data['submission-stage'] !== 'initial') {
-      return { statusCode: 200, body: `Skipped (stage: ${data['submission-stage']})` };
+    // all three submission stages the questionnaire ever sends:
+    //   partial  - right after the email step; never emailed, just a
+    //              contactable record in case the visitor abandons early.
+    //   initial  - fired on Submit. Always emailed: this is the one
+    //              guaranteed notification for every completed inquiry.
+    //   extras   - fired from the post-submit step's Finish button, which is
+    //              the *only* stage that can ever carry the logo/photo
+    //              uploads (those steps happen after Submit, so "initial"
+    //              can never contain them). Only emailed when it actually
+    //              carries files, as a short follow-up -- most inquiries
+    //              still produce exactly one email; only the ones with
+    //              uploads produce a second, clearly-labeled one.
+    const stage = data['submission-stage'];
+    if (stage === 'partial') {
+      return { statusCode: 200, body: 'Skipped (stage: partial)' };
+    }
+    const isExtrasFollowUp = stage === 'extras';
+    if (isExtrasFollowUp && !hasFileValue(data['logo-files']) && !hasFileValue(data['files'])) {
+      return { statusCode: 200, body: 'Skipped (stage: extras, no files attached)' };
     }
 
     const apiKey = process.env.RESEND_API_KEY;
@@ -225,6 +250,7 @@ exports.handler = async (event) => {
     }
 
     const subjectName = data.name || data.email || 'a new lead';
+    const subjectPrefix = isExtrasFollowUp ? 'Files added to inquiry' : 'New project inquiry';
     const res = await fetch(RESEND_ENDPOINT, {
       method: 'POST',
       headers: {
@@ -234,8 +260,8 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         from: fromEmail,
         to: [toEmail],
-        subject: `New project inquiry: ${subjectName}`,
-        html: buildEmailHtml(data)
+        subject: `${subjectPrefix}: ${subjectName}`,
+        html: buildEmailHtml(data, { followUp: isExtrasFollowUp })
       })
     });
 
