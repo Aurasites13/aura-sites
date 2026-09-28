@@ -1,0 +1,12 @@
+# Deliberately minimal: this repo has no build step (plain static
+# HTML/CSS/JS served as-is), so [build] settings (publish directory, build
+# command) are left exactly as configured in the Netlify dashboard rather
+# than duplicated here, where a mismatch could break the working deploy.
+#
+# This file exists only to make the functions directory explicit rather
+# than relying on Netlify auto-detecting netlify/functions/, as a hedge
+# while diagnosing why netlify/functions/submission-created.js doesn't
+# appear to be sending email -- if it was never being discovered/deployed
+# as a function at all, this rules that out.
+[functions]
+  directory = "netlify/functions"

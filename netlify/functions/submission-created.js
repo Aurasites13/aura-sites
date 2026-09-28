@@ -21,7 +21,40 @@
 // sending domain (or use their onboarding@resend.dev domain for testing),
 // then generate an API key.
 
-const RESEND_ENDPOINT = 'https://api.resend.com/emails';
+const https = require('https');
+
+// Posts to Resend using Node's built-in https module rather than the global
+// fetch() -- Netlify's function runtime version isn't something this repo
+// controls, and older Node runtimes don't have fetch defined at all, which
+// would throw immediately and get swallowed by the catch block below,
+// silently producing "no email, no error visible" exactly like a real
+// delivery failure would. https.request has been available in every Node
+// version Netlify could plausibly be running, so this removes that variable
+// entirely regardless of which runtime the function executes under.
+function postToResend(apiKey, body) {
+  return new Promise((resolve, reject) => {
+    const payload = JSON.stringify(body);
+    const req = https.request(
+      'https://api.resend.com/emails',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(payload)
+        }
+      },
+      (res) => {
+        let raw = '';
+        res.on('data', (chunk) => { raw += chunk; });
+        res.on('end', () => resolve({ status: res.statusCode, body: raw }));
+      }
+    );
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
 
 // Fields shown in the email body, in display order. `enum: true` fields get
 // light formatting (hyphens to spaces, capitalized) since their values are
@@ -251,29 +284,22 @@ exports.handler = async (event) => {
 
     const subjectName = data.name || data.email || 'a new lead';
     const subjectPrefix = isExtrasFollowUp ? 'Files added to inquiry' : 'New project inquiry';
-    const res = await fetch(RESEND_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        from: fromEmail,
-        to: [toEmail],
-        subject: `${subjectPrefix}: ${subjectName}`,
-        html: buildEmailHtml(data, { followUp: isExtrasFollowUp })
-      })
+    const res = await postToResend(apiKey, {
+      from: fromEmail,
+      to: [toEmail],
+      subject: `${subjectPrefix}: ${subjectName}`,
+      html: buildEmailHtml(data, { followUp: isExtrasFollowUp })
     });
 
-    if (!res.ok) {
-      const errText = await res.text();
-      console.error('submission-created: Resend API error', res.status, errText);
-      return { statusCode: 200, body: 'Email not sent: Resend API error' };
+    if (res.status < 200 || res.status >= 300) {
+      console.error('submission-created: Resend API error', res.status, res.body);
+      return { statusCode: 200, body: `Email not sent: Resend API error (${res.status})` };
     }
 
+    console.log('submission-created: email sent', res.status, res.body);
     return { statusCode: 200, body: 'Email sent' };
   } catch (err) {
-    console.error('submission-created: unexpected error', err);
-    return { statusCode: 200, body: 'Email not sent: unexpected error' };
+    console.error('submission-created: unexpected error', err && err.stack ? err.stack : err);
+    return { statusCode: 200, body: `Email not sent: unexpected error (${err && err.message})` };
   }
 };
