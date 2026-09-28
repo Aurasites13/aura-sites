@@ -43,78 +43,24 @@ tierTabs.forEach(tab => {
 // keep the currently displayed tier's day labels in sync with the active language
 window.AuraI18n.onChange(() => setTier(activeTier, { instant: true }));
 
-// --- Social proof: rotating testimonial pairs ---
-const quoteGrid = document.getElementById('quote-grid');
-const quoteText1 = document.getElementById('quote-text-1');
-const quoteAttr1 = document.getElementById('quote-attr-1');
-const quoteText2 = document.getElementById('quote-text-2');
-const quoteAttr2 = document.getElementById('quote-attr-2');
+// --- Founding clients: optional "what they say" row, only once real quotes
+// exist in js/i18n-strings.js (founding.quotes). Empty for now by design.
+const foundingQuotesRow = document.getElementById('founding-quotes');
+const foundingQuotesGrid = document.getElementById('founding-quotes-grid');
 
-if (quoteGrid && quoteText1 && quoteText2) {
-  const QUOTE_ROTATE_MS = 20000;
-  const QUOTE_FADE_MS = 400;
-  let quotePairIndex = 0;
-  let quoteRotateTimer = null;
-
-  function getQuotes() {
+if (foundingQuotesRow && foundingQuotesGrid) {
+  function renderFoundingQuotes() {
     const dict = window.AURA_I18N[window.AuraI18n.lang] || window.AURA_I18N.en;
-    return (dict.socialProof && dict.socialProof.quotes) || window.AURA_I18N.en.socialProof.quotes;
+    const quotes = (dict.founding && dict.founding.quotes) || [];
+    foundingQuotesRow.hidden = quotes.length === 0;
+    foundingQuotesGrid.innerHTML = quotes.map(q => `
+      <div class="founding-quote-card">
+        <p class="founding-quote-text">${q.text}</p>
+        <div class="founding-quote-attr">${q.attr}</div>
+      </div>
+    `).join('');
   }
-
-  function renderQuotePair(instant) {
-    const quotes = getQuotes();
-    const count = quotes.length;
-    const q1 = quotes[(quotePairIndex * 2) % count];
-    const q2 = quotes[(quotePairIndex * 2 + 1) % count];
-    const fields = [quoteText1, quoteAttr1, quoteText2, quoteAttr2];
-
-    function apply() {
-      quoteText1.textContent = q1.text;
-      quoteAttr1.textContent = q1.attr;
-      quoteText2.textContent = q2.text;
-      quoteAttr2.textContent = q2.attr;
-    }
-
-    if (instant) {
-      apply();
-      return;
-    }
-    fields.forEach(el => el.classList.add('quote-fade'));
-    setTimeout(() => {
-      apply();
-      fields.forEach(el => el.classList.remove('quote-fade'));
-    }, QUOTE_FADE_MS);
-  }
-
-  function advanceQuotePair() {
-    const pairCount = Math.ceil(getQuotes().length / 2);
-    quotePairIndex = (quotePairIndex + 1) % pairCount;
-    renderQuotePair(false);
-  }
-
-  function startQuoteRotation() {
-    stopQuoteRotation();
-    quoteRotateTimer = setInterval(advanceQuotePair, QUOTE_ROTATE_MS);
-  }
-
-  function stopQuoteRotation() {
-    if (quoteRotateTimer) {
-      clearInterval(quoteRotateTimer);
-      quoteRotateTimer = null;
-    }
-  }
-
-  // Pause on hover or focus so an actively reading visitor isn't interrupted
-  // mid-read, and give them a fresh 20s once they move away.
-  quoteGrid.addEventListener('mouseenter', stopQuoteRotation);
-  quoteGrid.addEventListener('mouseleave', startQuoteRotation);
-  quoteGrid.addEventListener('focusin', stopQuoteRotation);
-  quoteGrid.addEventListener('focusout', startQuoteRotation);
-
-  // Re-render instantly (no crossfade) on language switch, same as the
-  // tier timeline above.
-  window.AuraI18n.onChange(() => renderQuotePair(true));
-  startQuoteRotation();
+  window.AuraI18n.onChange(renderFoundingQuotes);
 }
 
 // --- Info-tap tooltips ---

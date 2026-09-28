@@ -283,15 +283,41 @@
       <div class="stat-label" data-i18n="socialProof.stat3Label">fixed pricing tiers, no surprises</div>
     </div>
   </div>
-  <div class="quote-grid" id="quote-grid">
-    <div class="quote-card">
-      <p class="quote-text" id="quote-text-1">"They took a vague idea and gave it shape in days, not months. It felt like working with a design studio, not a software vendor."</p>
-      <div class="quote-attr" id="quote-attr-1">Founder, independent retail brand</div>
+</section>
+
+<section class="founding-clients">
+  <div class="founding-clients-head">
+    <div class="eyebrow" data-i18n="founding.eyebrow">Founding clients</div>
+    <h2 class="display" data-i18n="founding.heading">Be one of our first five.</h2>
+    <p data-i18n="founding.body">Aura Sites is new, and we're building our portfolio with a small number of founding clients. In return for a short testimonial and permission to feature your project once it's live, you get a special founding rate and direct access to the person building your site.</p>
+  </div>
+  <div class="founding-points">
+    <div class="founding-point">
+      <h3 data-i18n="founding.point1Label">Founding rate</h3>
+      <p data-i18n="founding.point1Body">Special pricing on Launch or Grow, for our first five projects only.</p>
     </div>
-    <div class="quote-card">
-      <p class="quote-text" id="quote-text-2">"The process was refreshingly simple. One call, a few quiet days of progress, then a site that actually looked like us."</p>
-      <div class="quote-attr" id="quote-attr-2">Operator, hospitality business</div>
+    <div class="founding-point">
+      <h3 data-i18n="founding.point2Label">Direct access</h3>
+      <p data-i18n="founding.point2Body">You work with the founder from first call to launch, with no hand-offs.</p>
     </div>
+    <div class="founding-point">
+      <h3 data-i18n="founding.point3Label">Featured project</h3>
+      <p data-i18n="founding.point3Body">With your permission, we showcase your business in our portfolio and on social media.</p>
+    </div>
+  </div>
+  <div class="founding-cta">
+    <button class="btn primary js-open-quiz" data-i18n="founding.button">Claim a founding spot</button>
+    <div class="founding-note" data-i18n="founding.note">Limited to five projects.</div>
+  </div>
+  <!--
+    Deliberately empty and hidden until real founding-client testimonials
+    exist. js/main.js reveals this and fills it in only if
+    founding.quotes (js/i18n-strings.js) has entries -- add real quotes
+    there when they exist; no HTML/CSS changes needed to bring this row in.
+  -->
+  <div class="founding-quotes" id="founding-quotes" hidden>
+    <h3 class="founding-quotes-heading" data-i18n="founding.quotesHeading">What founding clients say</h3>
+    <div class="founding-quotes-grid" id="founding-quotes-grid"></div>
   </div>
 </section>
 

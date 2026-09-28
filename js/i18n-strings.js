@@ -65,19 +65,25 @@ window.AURA_I18N = {
       stat2Number: "100%",
       stat2Label: "custom-designed, no templates",
       stat3Number: "3",
-      stat3Label: "fixed pricing tiers, no surprises",
-      quotes: [
-        { text: "\"They took a vague idea and gave it shape in days, not months. It felt like working with a design studio, not a software vendor.\"", attr: "Founder, independent retail brand" },
-        { text: "\"The process was refreshingly simple. One call, a few quiet days of progress, then a site that actually looked like us.\"", attr: "Operator, hospitality business" },
-        { text: "\"I've worked with three agencies before. This was the first time nobody tried to talk me into features I didn't need.\"", attr: "Owner, boutique fitness studio" },
-        { text: "\"They pushed back on my first idea, and they were right to. The final site converts better than anything we've had.\"", attr: "Partner, consulting firm" },
-        { text: "\"Every revision came back within a day. I stopped worrying about the timeline after the first week.\"", attr: "Broker, real estate agency" },
-        { text: "\"Parents mention the site before they mention the tutoring. That's not something I expected to hear.\"", attr: "Director, tutoring center" },
-        { text: "\"It doesn't look like a template with our logo on it. It looks like something built specifically for us.\"", attr: "Owner, wellness studio" },
-        { text: "\"Reservations picked up the week the new site went live. I wasn't expecting a number I could actually point to.\"", attr: "Owner, restaurant group" },
-        { text: "\"They asked better questions about my work than most clients do. The site reflects that.\"", attr: "Photographer, independent studio" },
-        { text: "\"We had a tiny budget and a real deadline. They treated both like they mattered.\"", attr: "Program lead, nonprofit organization" }
-      ]
+      stat3Label: "fixed pricing tiers, no surprises"
+    },
+    founding: {
+      eyebrow: "Founding clients",
+      heading: "Be one of our first five.",
+      body: "Aura Sites is new, and we're building our portfolio with a small number of founding clients. In return for a short testimonial and permission to feature your project once it's live, you get a special founding rate and direct access to the person building your site.",
+      point1Label: "Founding rate",
+      point1Body: "Special pricing on Launch or Grow, for our first five projects only.",
+      point2Label: "Direct access",
+      point2Body: "You work with the founder from first call to launch, with no hand-offs.",
+      point3Label: "Featured project",
+      point3Body: "With your permission, we showcase your business in our portfolio and on social media.",
+      button: "Claim a founding spot",
+      note: "Limited to five projects.",
+      quotesHeading: "What founding clients say",
+      // Empty until real founding-client testimonials exist. See the
+      // comment above #founding-quotes in index.html -- add {text, attr}
+      // objects here and the row reveals itself, no other changes needed.
+      quotes: []
     },
     pricing: {
       heading: "Pricing",
@@ -366,19 +372,22 @@ window.AURA_I18N = {
       stat2Number: "100%",
       stat2Label: "テンプレートを使わない完全オーダーメイド",
       stat3Number: "3",
-      stat3Label: "追加費用のない、明確な3つの料金プラン",
-      quotes: [
-        { text: "「漠然としたイメージしかなかったのに、数日で形にしてくれました。まるで専属のデザイナーがいるような安心感でした。」", attr: "オーナー、飲食店" },
-        { text: "「打ち合わせは一度だけ。あとは静かに進んで、気づいたら私たちらしいサイトが出来上がっていました。」", attr: "経営者、美容サロン" },
-        { text: "「予約数がサイト公開直後から増えました。効果を数字で実感できたのは初めてです。」", attr: "支配人、旅館" },
-        { text: "「テンプレート感が一切なく、うちのブランドのために作られたと感じます。」", attr: "店主、セレクトショップ" },
-        { text: "「保護者の方から、サイトを見て安心したという声をいただくようになりました。」", attr: "塾長、学習塾" },
-        { text: "「無駄な機能を勧められることが一度もありませんでした。必要なものだけを、的確に。」", attr: "オーナー、フィットネススタジオ" },
-        { text: "「最初の案には率直に意見をくれました。結果的にそれが正解でした。」", attr: "代表、コンサルティング会社" },
-        { text: "「修正の対応が早く、スケジュールへの不安がすぐになくなりました。」", attr: "仲介業者、不動産会社" },
-        { text: "「作品について、他のどのクライアントよりも深く質問してくれました。」", attr: "写真家、フリーランス" },
-        { text: "「予算も期限も厳しい中、どちらも真剣に向き合ってくれました。」", attr: "プログラム責任者、NPO法人" }
-      ]
+      stat3Label: "追加費用のない、明確な3つの料金プラン"
+    },
+    founding: {
+      eyebrow: "モニター募集",
+      heading: "最初の5件、モニター価格でご提供します。",
+      body: "Aura Sitesは立ち上げ間もないスタジオです。実績づくりのため、少数のモニターのお客様を募集しています。モニター価格でのご提供に加え、制作を担当する代表が最初から最後まで直接対応します。その代わりに、公開後の短い感想（お客様の声）と、制作事例としての掲載許可をお願いしています。",
+      point1Label: "モニター価格",
+      point1Body: "LaunchまたはGrowプランを特別価格で。先着5件限定です。",
+      point2Label: "代表が直接対応",
+      point2Body: "最初のご相談から公開まで、担当者の引き継ぎはありません。",
+      point3Label: "制作事例として掲載",
+      point3Body: "ご了承いただければ、ポートフォリオやSNSで貴店・貴社をご紹介します。",
+      button: "モニターに申し込む",
+      note: "募集は先着5件までです。",
+      quotesHeading: "モニターのお客様の声",
+      quotes: []
     },
     pricing: {
       heading: "料金",
