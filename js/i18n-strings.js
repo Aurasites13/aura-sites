@@ -89,6 +89,7 @@ window.AURA_I18N = {
       heading: "Pricing",
       body: "Fixed packages, not open-ended quotes, so you know what you're getting before we start.",
       foundingLabel: "Founding rate, first five projects",
+      paymentNote: "Project fees are paid in two parts: 50% to start, 50% after you approve the finished site. Optional hosting is billed monthly.",
       launch: {
         name: "Launch",
         desc: "A single-page or small brand site, done right.",
@@ -158,10 +159,12 @@ window.AURA_I18N = {
       a2: "Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your specific needs. Additional rounds can always be added if required.",
       q3: "What do you need from me to get started?",
       a3: "We begin with a short discovery call to understand your goals for the project. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps.",
-      q4: "What's your refund policy?",
-      a4: "If you cancel before we deliver the first concept, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.",
-      q5: "Do you offer the website in other languages?",
-      a5: "Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated."
+      q4: "How does payment work?",
+      a4: "We split the project fee in two: 50% to start, and the remaining 50% after you've reviewed and approved the finished site. If you cancel before we deliver the first design concept, you receive a full refund. Optional hosting is billed separately each month. Your timeline begins once we've received the deposit and the basic materials we need (text, photos, logo).",
+      q5: "What's your refund policy?",
+      a5: "If you cancel before we deliver the first concept, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.",
+      q6: "Do you offer the website in other languages?",
+      a6: "Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated."
     },
     whyNotTemplate: {
       heading: "Not another template",
@@ -396,6 +399,7 @@ window.AURA_I18N = {
       heading: "料金",
       body: "料金は固定パッケージ制。青天井の見積もりではないので、始める前に内容をしっかりご確認いただけます。",
       foundingLabel: "モニター価格・先着5件",
+      paymentNote: "制作費は2回に分けて、着手時に50％、完成後のご承認をいただいてから残り50％をお支払いいただきます。ホスティング（任意）は別途月額です。",
       launch: {
         name: "Launch",
         desc: "1ページ、または小規模なブランドサイトを、確かな品質で。",
@@ -465,10 +469,12 @@ window.AURA_I18N = {
       a2: "Launchプランには修正1回、Growプランには修正3回が含まれています。Studioは案件の内容に応じて個別に設定します。必要であれば、追加の修正回数をご用意することも可能です。",
       q3: "始めるにあたって、何を用意すればいいですか？",
       a3: "まずは短いヒアリングを行い、ご要望を伺うところから始めます。そのうえで、ロゴ、写真、ブランドカラー、既存のテキスト、可能であればドメインやホスティングアカウントへのアクセス情報などがあるとスムーズです。まだお持ちでない場合も、私たちがサポートしますのでご安心ください。",
-      q4: "返金についてのポリシーを教えてください。",
-      a4: "最初のデザイン案(初稿デザイン)をお渡しする前にキャンセルされた場合、作業はほとんど発生していないため、全額返金いたします。初稿デザインの提出後は、それまでのデザイン・開発にかかった時間を完了した業務とみなすため、以降キャンセルされた場合でも返金の対象外となります。",
-      q5: "他の言語にも対応してもらえますか？",
-      a5: "はい、追加費用なしですべてのプロジェクトに含まれています。25年以上の実績を持つ翻訳会社Asiatisと提携し、機械翻訳ではない、海外のお客様にも自然かつ正確に伝わるサイトに仕上げます。"
+      q4: "お支払いはどのようになりますか？",
+      a4: "制作費は2回に分けてお支払いいただきます。制作開始時に50％、完成したサイトをご確認・ご承認いただいた後に残りの50％です。最初のデザイン案をお渡しする前にキャンセルされた場合は、全額を返金いたします。ホスティング（任意）は、別途月額でのお支払いです。ご入金と、必要な素材（文章・写真・ロゴ）を確認できた時点から、制作期間が始まります。",
+      q5: "返金についてのポリシーを教えてください。",
+      a5: "最初のデザイン案(初稿デザイン)をお渡しする前にキャンセルされた場合、作業はほとんど発生していないため、全額返金いたします。初稿デザインの提出後は、それまでのデザイン・開発にかかった時間を完了した業務とみなすため、以降キャンセルされた場合でも返金の対象外となります。",
+      q6: "他の言語にも対応してもらえますか？",
+      a6: "はい、追加費用なしですべてのプロジェクトに含まれています。25年以上の実績を持つ翻訳会社Asiatisと提携し、機械翻訳ではない、海外のお客様にも自然かつ正確に伝わるサイトに仕上げます。"
     },
     whyNotTemplate: {
       heading: "テンプレートは、使わない",
