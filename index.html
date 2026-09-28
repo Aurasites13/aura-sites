@@ -57,6 +57,7 @@
   <input type="hidden" name="submission-stage">
   <p hidden><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
   <input type="text" name="business-name">
+  <input type="text" name="program">
   <input type="text" name="description">
   <input type="text" name="has-logo">
   <input type="text" name="size">
@@ -81,6 +82,7 @@
   <input type="hidden" name="submission-stage">
   <p hidden><label>Don't fill this out if you're human: <input name="bot-field"></label></p>
   <input type="text" name="business-name">
+  <input type="text" name="program">
   <input type="text" name="description">
   <input type="text" name="has-logo">
   <input type="text" name="size">
@@ -306,7 +308,7 @@
     </div>
   </div>
   <div class="founding-cta">
-    <button class="btn primary js-open-quiz" data-i18n="founding.button">Claim a founding spot</button>
+    <button class="btn primary js-open-quiz" data-program="founding" data-i18n="founding.button">Claim a founding spot</button>
     <div class="founding-note" data-i18n="founding.note">Limited to five projects.</div>
   </div>
   <!--
@@ -331,7 +333,11 @@
     <div class="price-card">
       <div class="price-name" data-i18n="pricing.launch.name">Launch</div>
       <div class="price-desc" data-i18n="pricing.launch.desc">A single-page or small brand site, done right.</div>
-      <div class="price-amount" data-i18n="pricing.launch.price">¥180,000<span>〜</span></div>
+      <div class="price-amount">
+        <span class="price-founding" data-i18n="pricing.launch.foundingPrice">¥120,000<span>〜</span></span>
+        <span class="price-regular" data-i18n="pricing.launch.price">¥180,000<span>〜</span></span>
+      </div>
+      <div class="price-founding-label" data-i18n="pricing.foundingLabel">Founding rate, first five projects</div>
       <div class="price-turnaround" data-i18n="pricing.launch.turnaround">~3 day turnaround</div>
       <ul class="price-features">
         <li data-i18n="pricing.launch.feature1">Up to 3 pages</li>
@@ -347,7 +353,11 @@
       <div class="price-badge" data-i18n="pricing.grow.badge">Most popular</div>
       <div class="price-name" data-i18n="pricing.grow.name">Grow</div>
       <div class="price-desc" data-i18n="pricing.grow.desc">A full multi-page site for a growing business.</div>
-      <div class="price-amount" data-i18n="pricing.grow.price">¥480,000<span>〜</span></div>
+      <div class="price-amount">
+        <span class="price-founding" data-i18n="pricing.grow.foundingPrice">¥320,000<span>〜</span></span>
+        <span class="price-regular" data-i18n="pricing.grow.price">¥480,000<span>〜</span></span>
+      </div>
+      <div class="price-founding-label" data-i18n="pricing.foundingLabel">Founding rate, first five projects</div>
       <div class="price-turnaround" data-i18n="pricing.grow.turnaround">~1–2 week turnaround</div>
       <ul class="price-features">
         <li data-i18n="pricing.grow.feature1">Up to 8 pages</li>

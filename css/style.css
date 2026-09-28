@@ -632,12 +632,34 @@ h1 em{
   min-height:42px;
 }
 .price-amount{
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:4px 10px;
   font-family:'Space Grotesk', sans-serif;
   font-size:30px;
   font-weight:600;
   margin-bottom:4px;
 }
-.price-amount span{ font-size:16px; color: var(--ink-dim); font-weight:400; }
+/* Scoped to the tilde span nested inside a price string (either the plain
+   price or, on Launch/Grow, the .price-founding/.price-regular wrapper
+   spans below) -- not to those wrapper spans themselves. */
+.price-amount span span{ font-size:16px; color: var(--ink-dim); font-weight:400; }
+.price-founding{ color: var(--cyan); }
+.price-founding span{ color: rgba(77,232,255,0.7); }
+.price-regular{
+  font-size:17px;
+  font-weight:500;
+  color: var(--ink-dim);
+  text-decoration: line-through;
+  text-decoration-color: rgba(110,130,145,0.6);
+}
+.price-founding-label{
+  font-size:11px;
+  color: var(--ink-dim);
+  letter-spacing:0.02em;
+  margin-bottom:14px;
+}
 .price-turnaround{
   font-size:13px;
   color: var(--cyan);

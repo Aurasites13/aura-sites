@@ -62,6 +62,7 @@ function postToResend(apiKey, body) {
 // exactly as submitted since it's free text the visitor typed themselves.
 const FIELD_DEFS = [
   { key: 'business-name', label: 'Business name' },
+  { key: 'program', label: 'Program', enum: true },
   { key: 'description', label: 'One-line description' },
   { key: 'has-logo', label: 'Has a logo already', enum: true },
   { key: 'size', label: 'Scope', enum: true },
@@ -120,7 +121,8 @@ const VALUE_LABELS = {
   grow: 'Grow',
   studio: 'Studio',
   stock: 'Use stock photos',
-  ai: 'Use AI-generated'
+  ai: 'Use AI-generated',
+  founding: 'Founding client'
 };
 
 function humanizeEnum(value) {

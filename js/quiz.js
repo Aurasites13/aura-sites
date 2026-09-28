@@ -39,6 +39,7 @@ function submitToNetlify(formName, fields) {
 function buildFormFields() {
   return {
     'business-name': quiz.answers.businessName || '',
+    'program': quiz.answers.program || '',
     'description': quiz.answers.description || '',
     'has-logo': quiz.answers.hasLogo || '',
     'size': quiz.answers.size || '',
@@ -159,13 +160,17 @@ function trapFocus(e) {
 
 // `tier` is set when opened from a specific pricing card's button (Launch,
 // Grow, or Studio), rather than a generic entry point like the nav link,
-// which doesn't know a tier yet.
-function openQuiz(tier) {
+// which doesn't know a tier yet. `program` marks the entry point itself
+// (currently only "founding", from the founding-clients button) so the
+// inquiry email can show who applied through it; every other entry point
+// leaves it unset.
+function openQuiz(tier, program) {
   lastFocusedBeforeOpen = document.activeElement;
   setBackgroundInert(true);
   document.addEventListener('keydown', trapFocus);
   quiz.answers = {};
   if (tier) quiz.answers.preselectedTier = tier;
+  if (program) quiz.answers.program = program;
   quiz.currentStepId = STEP_DEFS[0].id;
   document.querySelectorAll('.quiz-input').forEach(el => { el.value = ''; el.style.borderColor = ''; });
   document.querySelectorAll('.option-card.selected').forEach(el => el.classList.remove('selected'));
@@ -208,7 +213,7 @@ function closeQuiz() {
 document.querySelectorAll('.js-open-quiz').forEach(el => {
   el.addEventListener('click', (e) => {
     e.preventDefault();
-    openQuiz(el.dataset.tier);
+    openQuiz(el.dataset.tier, el.dataset.program);
   });
 });
 
