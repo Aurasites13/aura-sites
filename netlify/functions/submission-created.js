@@ -13,13 +13,10 @@
 //   RESEND_API_KEY   Your Resend API key (Resend dashboard -> API Keys)
 //   TO_EMAIL         The address that should receive new inquiries
 //   FROM_EMAIL       Optional. Defaults to onboarding@resend.dev (Resend's
-//                    shared testing address). For production, verify your
-//                    own sending domain in Resend and set this to an address
-//                    on that domain, e.g. "Aura Sites <aurasitesstudio@gmail.com>".
-//
-// Steps still needed on the Resend side: sign up at resend.com, verify a
-// sending domain (or use their onboarding@resend.dev domain for testing),
-// then generate an API key.
+//                    shared testing address, commonly spam-filtered). In
+//                    production this is set to "Aura Sites
+//                    <notifications@aurasites.studio>", a domain verified
+//                    (DKIM + SPF) in Resend.
 
 const https = require('https');
 
