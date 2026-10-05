@@ -1,5 +1,20 @@
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// Coarse low-end-device heuristic (narrow viewport, the usual mobile signal
+// already used elsewhere in this codebase, plus a low logical core count
+// where the browser reports one) so the smooth-glass geometry below can
+// scale itself down rather than spend vertices a small/weak GPU doesn't
+// need. Doesn't affect the wireframe overlay, which stays at its current
+// density everywhere since that's a deliberate brand element, not a
+// quality knob.
+const isLowEndDevice = window.innerWidth < 760
+  || (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 4);
+// 64x48 was the lowest tested resolution with no visible faceting at the
+// silhouette (32x24 showed a faint kink, 48x36 was clean); the low-end step
+// below that still held up clean in testing while cutting the vertex count
+// further for a weak GPU.
+const SMOOTH_SHELL_SEGMENTS = isLowEndDevice ? [48, 36] : [64, 48];
+
 // --- Aura 3D object ---
 const canvas = document.getElementById('aura-canvas');
 let width = window.innerWidth, height = window.innerHeight;
@@ -64,7 +79,32 @@ for (let i = 0; i < particleCount; i++) {
 }
 const particleGeo = new THREE.BufferGeometry();
 particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
-const particleMat = new THREE.PointsMaterial({ color: 0x4DE8FF, size: 0.03, transparent: true, opacity: 0.18, sizeAttenuation: true });
+
+// A plain PointsMaterial with no map renders each point as a flat filled
+// square (the raw gl_PointCoord quad), which is what made these read as
+// small squares. A tiny generated radial-gradient sprite, used as the
+// point's map, gives every particle a soft round falloff instead --
+// one 32x32 canvas texture shared by all 340 points, created once up front.
+const particleCanvas = document.createElement('canvas');
+particleCanvas.width = particleCanvas.height = 32;
+const particleCtx = particleCanvas.getContext('2d');
+const particleGradient = particleCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
+particleGradient.addColorStop(0, 'rgba(255,255,255,1)');
+particleGradient.addColorStop(0.4, 'rgba(255,255,255,0.6)');
+particleGradient.addColorStop(1, 'rgba(255,255,255,0)');
+particleCtx.fillStyle = particleGradient;
+particleCtx.fillRect(0, 0, 32, 32);
+const particleSprite = new THREE.CanvasTexture(particleCanvas);
+
+const particleMat = new THREE.PointsMaterial({
+  color: 0x4DE8FF,
+  size: 0.03,
+  map: particleSprite,
+  transparent: true,
+  opacity: 0.18,
+  sizeAttenuation: true,
+  depthWrite: false
+});
 const particles = new THREE.Points(particleGeo, particleMat);
 scene.add(particles);
 
@@ -101,12 +141,19 @@ const solidMaterial = new THREE.MeshPhysicalMaterial({
   transparent: true,
   opacity: 0.6,
   metalness: 0.5,
-  roughness: 0.22,
+  // Tightened from 0.22/0.24: the wider of the two was spreading the point
+  // lights' reflection into a soft, blobby highlight rather than a clean
+  // specular point. Lower values narrow that same highlight without
+  // changing its color/position, which come from the lights themselves.
+  roughness: 0.1,
   clearcoat: 0.8,
-  clearcoatRoughness: 0.24,
+  clearcoatRoughness: 0.06,
   emissive: 0x0f4a5c,
   emissiveIntensity: 0.85,
-  side: THREE.DoubleSide
+  side: THREE.DoubleSide,
+  // Breaks up 8-bit banding in the smooth cyan/blue gradient across the
+  // glass surface. Negligible cost: one dither op per fragment.
+  dithering: true
 });
 // smooth sphere with shared vertex normals. The low-poly icosahedron above
 // is kept only for the wireframe linework; the lit surface needs a geometry
@@ -117,12 +164,22 @@ const sphereBasePositions = sphereGeometry.attributes.position.array.slice();
 const solidMesh = new THREE.Mesh(sphereGeometry, solidMaterial);
 scene.add(solidMesh);
 
-const glowGeo = new THREE.IcosahedronGeometry(2.02, 4);
+// Smooth static spheres, not the low-poly icosahedron the wireframe `mesh`
+// uses. These two shells never get the per-frame noise/ripple displacement
+// solidMesh and mesh do (they only rotate), so the extra vertices are a
+// one-time GPU cost, not a per-frame CPU one -- the subdivision bump below
+// is effectively free. Was IcosahedronGeometry(2.02, 4), ~500 facets: coarse
+// enough that its own facet edges read as visible straight segments right
+// at the orb's silhouette, since that's exactly where this glow is
+// brightest.
+const glowGeo = new THREE.SphereGeometry(2.02, ...SMOOTH_SHELL_SEGMENTS);
 const glowMat = new THREE.MeshBasicMaterial({ color: 0x1F8FE8, transparent: true, opacity: 0.05, side: THREE.BackSide });
 const glowMesh = new THREE.Mesh(glowGeo, glowMat);
 
-// fresnel rim: the edge-brightening that reads as "real" translucent/energy material
-const rimGeo = new THREE.IcosahedronGeometry(2.06, 4);
+// fresnel rim: the edge-brightening that reads as "real" translucent/energy
+// material. Same smooth-shell reasoning as glowGeo above (was
+// IcosahedronGeometry(2.06, 4)).
+const rimGeo = new THREE.SphereGeometry(2.06, ...SMOOTH_SHELL_SEGMENTS);
 const rimMaterial = new THREE.ShaderMaterial({
   uniforms: {
     glowColor: { value: new THREE.Color(0x8FF3FF) },
@@ -151,7 +208,20 @@ const rimMaterial = new THREE.ShaderMaterial({
   transparent: true,
   side: THREE.FrontSide,
   blending: THREE.AdditiveBlending,
-  depthWrite: false
+  depthWrite: false,
+  // This is the actual fix for the dark patches on the surface: rimMesh's
+  // own radius is fixed, but solidMesh right beneath it gets displaced by
+  // noise/ripples every frame and can locally bulge out past rimMesh's
+  // radius. With depth testing on (the default), solidMesh would then win
+  // the depth test in exactly those spots and rimMesh's fragments there
+  // get silently discarded, so the additive glow just never lands there --
+  // producing irregular dark islands that track the noise animation.
+  // Confirmed by isolating rimMesh alone against solidMesh under flat
+  // lighting: the islands appeared and disappeared with rimMesh's
+  // visibility, independent of its geometry's facet density. depthTest:
+  // false makes rimMesh a pure view-angle-driven overlay, as intended --
+  // always drawn regardless of what's in the depth buffer beneath it.
+  depthTest: false
 });
 const rimMesh = new THREE.Mesh(rimGeo, rimMaterial);
 scene.add(rimMesh);
