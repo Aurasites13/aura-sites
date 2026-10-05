@@ -515,12 +515,19 @@ h1 em{
   font-size:16px;
   line-height:1.6;
 }
+/* Fixed 2-up grid now that there are four cards (was auto-fit, tuned for
+   three): a narrower max-width keeps each card close to its original size
+   instead of stretching two cards across the old three-card width. Drops to
+   a single column at the same breakpoint the nav collapses at. */
 .work-grid{
   width:100%;
-  max-width:1180px;
+  max-width:900px;
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap:32px;
+}
+@media (max-width:760px){
+  .work-grid{ grid-template-columns: 1fr; }
 }
 .work-card{
   border-radius:14px;

@@ -58,7 +58,13 @@ window.AURA_I18N = {
       ljTag1: "Travel",
       ljTag2: "AI/DX",
       ljAlt: "Aura Sites custom website design example for Luxury Japan, a homepage hero with a Zen rock garden and a blossoming weeping cherry tree beside a traditional plaster wall",
-      ljLinkText: "luxuryjapan.tv ↗"
+      ljLinkText: "luxuryjapan.tv ↗",
+      asiatisTitle: "Asiatis",
+      asiatisDesc: "Certified translation agency, bilingual English and French site with service pages, a blog and a quote flow.",
+      asiatisTag1: "Translation",
+      asiatisTag2: "Bilingual",
+      asiatisAlt: "Aura Sites custom website design example for Asiatis, a bilingual certified translation agency site",
+      asiatisLinkText: "asiatis.ca ↗"
     },
     socialProof: {
       stat1Number: "3 to 14",
@@ -372,7 +378,13 @@ window.AURA_I18N = {
       ljTag1: "旅行",
       ljTag2: "AI/DX",
       ljAlt: "オーラサイトによるホームページ制作事例、Luxury Japan。しだれ桜と伝統的な土塀を配した、枯山水の庭園を写したトップページのヒーロー画像。",
-      ljLinkText: "luxuryjapan.tv ↗"
+      ljLinkText: "luxuryjapan.tv ↗",
+      asiatisTitle: "Asiatis",
+      asiatisDesc: "認定翻訳会社のサイト。英語とフランス語の2言語対応で、サービス紹介ページ、ブログ、見積りの流れを備えています。",
+      asiatisTag1: "翻訳",
+      asiatisTag2: "2言語",
+      asiatisAlt: "オーラサイトによるホームページ制作事例、Asiatis（英語とフランス語に対応する認定翻訳会社）のトップページのヒーロー画像。",
+      asiatisLinkText: "asiatis.ca ↗"
     },
     socialProof: {
       stat1Number: "3〜14",
