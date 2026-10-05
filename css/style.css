@@ -77,12 +77,31 @@
 
 *{box-sizing:border-box; margin:0; padding:0;}
 html{scroll-behavior:smooth;}
+/* Consistent on-brand keyboard-focus ring for every interactive element.
+   :focus-visible (not :focus) so it only appears for keyboard/assistive-tech
+   navigation, not on an ordinary mouse click, and it replaces rather than
+   stacks on the browser's own default outline since both target the same
+   property. .quiz-input keeps its own dedicated :focus treatment (a border/
+   glow suited to a text field) instead of this ring. */
+a:focus-visible,
+button:focus-visible,
+.option-card:focus-visible,
+[tabindex]:focus-visible{
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
 body{
   background: var(--bg);
   color: var(--ink);
   font-family: 'Inter', sans-serif;
   overflow-x:hidden;
-  word-break: keep-all;
+  /* word-break: keep-all (removed) disabled the normal per-character wrapping
+     Japanese text relies on, since it has no spaces to break at the way
+     English does -- with no other break opportunity, headings and body copy
+     in Japanese would render as a single unbroken line and overflow their
+     container on narrow viewports. overflow-wrap:break-word alone still
+     protects English from an unbreakable long token (e.g. a URL). */
   overflow-wrap: break-word;
 }
 .display{ font-family:'Space Grotesk', sans-serif; }
@@ -1025,7 +1044,9 @@ h1 em{
   border-radius:12px;
   background: var(--bg-2);
   overflow:hidden;
+  transition: border-color 0.3s ease;
 }
+.faq-item:hover{ border-color: rgba(77,232,255,0.3); }
 .faq-question{
   width:100%;
   display:flex;

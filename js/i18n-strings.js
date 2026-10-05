@@ -13,7 +13,8 @@ window.AURA_I18N = {
       work: "Work",
       process: "Process",
       pricing: "Pricing",
-      contact: "Get started"
+      contact: "Get started",
+      langToggleAriaLabel: "Language"
     },
     hero: {
       introCaption: "Aura Sites",
@@ -326,7 +327,8 @@ window.AURA_I18N = {
       work: "実績",
       process: "制作の流れ",
       pricing: "料金",
-      contact: "はじめる"
+      contact: "はじめる",
+      langToggleAriaLabel: "言語"
     },
     hero: {
       introCaption: "Aura Sites",
