@@ -76,11 +76,19 @@ const STEP_DEFS = [
   { id: 'recommendation', phaseKey: 'quiz.phaseRecommendation' }
 ];
 
+// Launch and Grow carry a founding rate alongside the regular price (see the
+// pricing cards in index.html); Studio never has one. Both this screen and
+// the pricing cards read the exact same pricing.* keys from js/i18n-strings.js
+// via t(), so the two can't drift apart -- this just adds the founding-rate
+// fields the pricing cards already use to the same lookup.
 function getTierInfo(tier) {
+  const hasFoundingRate = tier === 'launch' || tier === 'grow';
   return {
     name: t(`pricing.${tier}.name`),
     price: t(`pricing.${tier}.price`),
-    turnaround: t(`pricing.${tier}.turnaround`)
+    turnaround: t(`pricing.${tier}.turnaround`),
+    foundingPrice: hasFoundingRate ? t(`pricing.${tier}.foundingPrice`) : null,
+    foundingLabel: hasFoundingRate ? t('pricing.foundingLabel') : null
   };
 }
 
@@ -357,7 +365,16 @@ function renderRecommendation() {
   document.getElementById('quiz-recommend-question').textContent =
     t(preselected ? 'quiz.recommendation.questionConfirm' : 'quiz.recommendation.question');
   document.getElementById('recommend-tier').textContent = info.name;
-  document.getElementById('recommend-price').innerHTML = info.price;
+  const priceEl = document.getElementById('recommend-price');
+  const foundingLabelEl = document.getElementById('recommend-founding-label');
+  if (info.foundingPrice) {
+    priceEl.innerHTML = `<span class="price-founding">${info.foundingPrice}</span><span class="price-regular">${info.price}</span>`;
+    foundingLabelEl.textContent = info.foundingLabel;
+    foundingLabelEl.hidden = false;
+  } else {
+    priceEl.innerHTML = info.price;
+    foundingLabelEl.hidden = true;
+  }
   document.getElementById('recommend-turnaround').textContent = info.turnaround;
   document.getElementById('recommend-blurb').textContent = blurb;
 }

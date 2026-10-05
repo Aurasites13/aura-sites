@@ -1358,12 +1358,20 @@ textarea.quiz-input{ resize:vertical; min-height:88px; line-height:1.5; }
   margin-bottom:4px;
 }
 .recommend-price{
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:4px 10px;
   font-family:'Space Grotesk', sans-serif;
   font-size:22px;
   font-weight:600;
   color: var(--cyan);
   margin-bottom:2px;
 }
+/* On Launch/Grow, recommend-price holds the same .price-founding/.price-regular
+   pair the pricing cards use (and #recommend-founding-label reuses the
+   pricing cards' own .price-founding-label class), so no separate styling
+   is needed here beyond this flex layout. */
 .recommend-turnaround{
   font-size:13px;
   color: var(--ink-dim);

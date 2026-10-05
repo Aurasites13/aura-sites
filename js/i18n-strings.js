@@ -141,7 +141,7 @@ window.AURA_I18N = {
       title: "Hosting",
       bodyPre: "An optional add-on, independent of your plan. Turn it on now or add it later. You'll also need a domain",
       bodyPost: "pointing at your site.",
-      amount: "¥3,500–5,000",
+      amount: "¥4,000",
       period: "/month"
     },
     tooltips: {
@@ -452,8 +452,8 @@ window.AURA_I18N = {
       title: "ホスティング",
       bodyPre: "プランとは別のオプションアイテムです。今すぐでも後からでも有効にできます。サイトを公開するには、ドメイン",
       bodyPost: "を指定する必要もあります。",
-      amount: "¥3,500〜5,000",
-      period: "/月"
+      amount: "月額¥4,000",
+      period: ""
     },
     tooltips: {
       cms: "コーディング不要で、あとから自分でテキストや写真を編集できるシンプルな管理画面です。",
