@@ -1,0 +1,40 @@
+# Aura Sites allows every crawler listed here. AI answer engines (ChatGPT,
+# Claude, Perplexity) and search engines (Google, Bing, Apple) are explicitly
+# allowed below so this site can be found and cited. Default: allow everyone,
+# everything, including the AI-training bots (GPTBot, ClaudeBot,
+# Google-Extended, CCBot, Applebot-Extended) -- for a small business, more
+# exposure is the right default, and blocking training bots does not remove
+# a site from AI search answers anyway (that depends on the search/fetch
+# bots above, not the training ones).
+
+User-agent: *
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+Sitemap: https://aurasites.studio/sitemap.xml

@@ -12,6 +12,7 @@ window.AURA_I18N = {
     nav: {
       work: "Work",
       process: "Process",
+      forRestaurants: "For restaurants",
       pricing: "Pricing",
       contact: "Get started",
       langToggleAriaLabel: "Language"
@@ -108,6 +109,7 @@ window.AURA_I18N = {
         feature3: "Mobile-optimized",
         feature4: "1 revision round",
         feature5: "Professional translation included (English + more)",
+        feature6: "AI search ready (basic setup)",
         cta: "Get started"
       },
       grow: {
@@ -124,6 +126,7 @@ window.AURA_I18N = {
         feature4: "Copywriting support",
         feature5: "3 revision rounds",
         feature6: "Professional translation included (English + more)",
+        feature7: "AI search optimization",
         cta: "Get started"
       },
       studio: {
@@ -136,8 +139,19 @@ window.AURA_I18N = {
         feature3: "Bespoke interaction &amp; motion",
         feature4: "Dedicated support",
         feature5: "Professional translation included (English + more)",
+        feature6: "AI search optimization",
         cta: "Talk to us"
       }
+    },
+    aiSearch: {
+      heading: "Found by tourists, wherever they search",
+      body: "Every site we build is set up to appear on Google, and in AI assistants like ChatGPT, Claude and Perplexity.",
+      termLabel: "AI search optimization",
+      restaurantLink: "See how this works for restaurants in Tokyo"
+    },
+    aiReport: {
+      title: "Monthly AI visibility report",
+      note: "Pricing coming soon"
     },
     globalReach: {
       heading: "Speak your customers' language.",
@@ -156,7 +170,11 @@ window.AURA_I18N = {
       hosting: "Where your website actually lives online. Without it, your site can't go live.",
       hostingAriaLabel: "What's hosting?",
       domain: "Your website's address, what people type to find you, like aurasites.com.",
-      domainAriaLabel: "What's a domain?"
+      domainAriaLabel: "What's a domain?",
+      aiSearchGeneral: "Setting up your site so that when someone asks an AI like ChatGPT \"Where should I eat in Shibuya?\", your business is more likely to be recommended.",
+      aiSearchGeneralAriaLabel: "What's AI search optimization?",
+      aiSearchPro: "Includes research into what people actually ask AI assistants, FAQ content written to answer those questions, and bilingual setup so both languages are easy for AI to read and recommend.",
+      aiSearchProAriaLabel: "What's included in AI search optimization?"
     },
     faq: {
       heading: "Questions, answered",
@@ -171,7 +189,9 @@ window.AURA_I18N = {
       q5: "What's your refund policy?",
       a5: "If you cancel before we deliver the first concept, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.",
       q6: "Do you offer the website in other languages?",
-      a6: "Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated."
+      a6: "Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated.",
+      q7: "Can you guarantee my restaurant appears in ChatGPT?",
+      a7: "No one can guarantee that, because AI answers change by person and by day. What we do is make your site as easy as possible for AI to find, understand and recommend, and we can show you where you appear each month."
     },
     whyNotTemplate: {
       heading: "Not another template",
@@ -180,7 +200,68 @@ window.AURA_I18N = {
     footer: {
       tagline: "Websites that feel handcrafted. At a pace that isn't.",
       copyright: "© 2026 Aura Sites. All rights reserved.",
-      privacyLink: "Privacy policy"
+      privacyLink: "Privacy policy",
+      aboutLink: "About",
+      restaurantPageLink: "Restaurant websites in Tokyo",
+      caseStudyLink: "Case study: Asiatis"
+    },
+    restaurantPage: {
+      pageTitle: "English websites for restaurants in Tokyo | Aura Sites",
+      metaDescription: "Aura Sites builds English and bilingual websites for restaurants in Tokyo, so foreign tourists can find you on Google and AI assistants like ChatGPT. Fixed pricing from ¥120,000.",
+      backLink: "&larr; Back to home",
+      breadcrumbHome: "Home",
+      breadcrumbCurrent: "Restaurant websites in Tokyo",
+      lastUpdated: "Last updated: October 19, 2026",
+      title: "English websites for restaurants in Tokyo",
+      intro: "Aura Sites is a Tokyo-based web design studio that builds English and bilingual websites for restaurants and small businesses in Japan, so foreign tourists and customers can find you, read your menu, and get in touch, whether they're searching on Google or asking an AI assistant.",
+      q1Heading: "Who builds English websites for restaurants in Tokyo?",
+      q1Body: "Aura Sites does. We're a small studio founded by Maximilien, working directly with restaurant owners and small businesses across Tokyo and Japan to build custom, handcrafted websites, not templates. Every project includes professional English translation, done in partnership with Asiatis, a translation agency with over 25 years of experience.",
+      q2Heading: "Do I need an English website for my restaurant in Japan?",
+      q2Body: "If you want foreign tourists and residents to find you, yes. Many visitors search for restaurants in English before they arrive, and an AI assistant asked for a recommendation can only mention your restaurant if it can find and understand information about it online. A Japanese-only site, or no site at all, makes that much harder.",
+      q3Heading: "How much does a restaurant website cost in Japan?",
+      q3Body: "Aura Sites has three fixed tiers, so there's no open-ended quote. Launch (a single page or small site) is ¥180,000, currently ¥120,000 as a founding rate for our first five projects. Grow (a full multi-page site) is ¥480,000, currently ¥320,000 as a founding rate. Studio (complex builds, e-commerce, or bespoke work) is scoped and quoted per project. See the full breakdown on the",
+      q3LinkText: "pricing section",
+      q3End: ".",
+      q4Heading: "How can my restaurant attract foreign tourists online?",
+      q4Body: "Start with a site that actually answers what a visitor needs: your menu, hours, location, and whether you take reservations, in English as well as Japanese. From there, the same site needs to be easy for search engines and AI assistants to read, which is what AI search optimization (included from the Launch tier up) is for.",
+      q5Heading: "How do I get my restaurant recommended by ChatGPT?",
+      q5Body: "No one can guarantee a specific AI recommendation, because AI answers change by person and by day. What actually helps is making your site easy for AI to find, understand, and quote: clear English text (not just a photo of your menu), a current address and hours, and answers to the questions people actually ask. That's the basis of AI search optimization.",
+      ctaHeading: "See pricing and get started",
+      ctaBody: "Fixed packages for Launch, Grow and Studio, with AI search optimization included from Launch up.",
+      ctaButton: "See pricing"
+    },
+    aboutPage: {
+      pageTitle: "About | Aura Sites",
+      backLink: "&larr; Back to home",
+      breadcrumbHome: "Home",
+      breadcrumbCurrent: "About",
+      lastUpdated: "Last updated: October 19, 2026",
+      title: "About Aura Sites",
+      photoTodo: "TODO: add a founder photo here",
+      intro: "Aura Sites is run by Maximilien, a web designer and developer based in Tokyo, working in English, Japanese and French.",
+      whyHeading: "Why Aura Sites exists",
+      whyBody: "Most small businesses in Japan, restaurants especially, are stuck choosing between an expensive agency, a generic template builder, or no real website at all. Aura Sites exists to build the middle option: a custom, handcrafted site, delivered fast, at a fixed price, with professional translation and AI search optimization included rather than sold as a confusing extra.",
+      approachHeading: "How we work",
+      approachBody: "Every project starts from a blank canvas, not a template, and goes through the same process regardless of tier: a discovery call, a first look at the design, then a short path to launch. Translation is handled by Asiatis, a translation agency with over 25 years of experience, not machine translation.",
+      basedHeading: "Based in Tokyo",
+      basedBody: "Aura Sites is based in Tokyo and works with businesses across Japan, in person where useful and remotely everywhere else."
+    },
+    caseStudyAsiatis: {
+      pageTitle: "Case study: Asiatis | Aura Sites",
+      backLink: "&larr; Back to home",
+      breadcrumbHome: "Home",
+      breadcrumbCurrent: "Case study: Asiatis",
+      lastUpdated: "Last updated: October 19, 2026",
+      title: "Case study: Asiatis",
+      intro: "Asiatis is a certified translation agency. Aura Sites built their bilingual English and French website, including service pages, a blog and a quote request flow.",
+      whoHeading: "Who it was for",
+      whoBody: "Asiatis is a certified translation agency serving businesses, law firms and institutions, with services including certified translation prepared to IRCC requirements.",
+      whatHeading: "What was built",
+      whatBody: "A full bilingual site in English and French, with dedicated service pages, a blog, and a quote request flow for new clients. The site visit is available at",
+      whatLinkText: "asiatis.ca",
+      whatEnd: ".",
+      resultsHeading: "Results",
+      resultsTodo: "TODO: add real results once available (for example, quote requests or search visibility, with the client's permission to share them)."
     },
     privacy: {
       pageTitle: "Privacy policy | Aura Sites",
@@ -332,6 +413,7 @@ window.AURA_I18N = {
     nav: {
       work: "実績",
       process: "制作の流れ",
+      forRestaurants: "飲食店の方へ",
       pricing: "料金",
       contact: "はじめる",
       langToggleAriaLabel: "言語"
@@ -425,6 +507,7 @@ window.AURA_I18N = {
         feature3: "モバイル最適化",
         feature4: "修正1回",
         feature5: "プロによる翻訳込み（英語ほか対応）",
+        feature6: "AI検索対策（基本）",
         cta: "はじめる"
       },
       grow: {
@@ -441,6 +524,7 @@ window.AURA_I18N = {
         feature4: "コピーライティングサポート",
         feature5: "修正3回",
         feature6: "プロによる翻訳込み（英語ほか対応）",
+        feature7: "AI検索対策（本格）",
         cta: "はじめる"
       },
       studio: {
@@ -453,8 +537,19 @@ window.AURA_I18N = {
         feature3: "オーダーメイドのインタラクション・モーション",
         feature4: "専任サポート",
         feature5: "プロによる翻訳込み（英語ほか対応）",
+        feature6: "AI検索対策（本格）",
         cta: "ご相談ください"
       }
+    },
+    aiSearch: {
+      heading: "観光客に、見つけてもらえるサイトに",
+      body: "Google検索はもちろん、ChatGPTなどのAI検索でも紹介されやすいサイトを制作します。",
+      termLabel: "AI検索対策",
+      restaurantLink: "飲食店向けの詳しい内容を見る"
+    },
+    aiReport: {
+      title: "月次AI検索レポート",
+      note: "価格は近日公開"
     },
     globalReach: {
       heading: "お客様の言葉で、話そう。",
@@ -473,7 +568,11 @@ window.AURA_I18N = {
       hosting: "あなたのウェブサイトが実際に置かれている場所のことです。これがないと、サイトを公開できません。",
       hostingAriaLabel: "ホスティングとは？",
       domain: "ウェブサイトの住所のようなものです。aurasites.comのように、人々があなたを見つけるために入力するものです。",
-      domainAriaLabel: "ドメインとは？"
+      domainAriaLabel: "ドメインとは？",
+      aiSearchGeneral: "ChatGPTなどのAIに『渋谷でおすすめのレストランは？』と聞かれたとき、あなたのお店が紹介されやすくなるようにサイトを整えることです。",
+      aiSearchGeneralAriaLabel: "AI検索対策とは？",
+      aiSearchPro: "AIに実際に聞かれそうな質問の調査、その質問に答えるFAQ文章の作成、AIが読み取りやすい日英バイリンガル対応を含みます。",
+      aiSearchProAriaLabel: "AI検索対策（本格）には何が含まれますか？"
     },
     faq: {
       heading: "よくあるご質問",
@@ -488,7 +587,9 @@ window.AURA_I18N = {
       q5: "返金についてのポリシーを教えてください。",
       a5: "最初のデザイン案(初稿デザイン)をお渡しする前にキャンセルされた場合、作業はほとんど発生していないため、全額返金いたします。初稿デザインの提出後は、それまでのデザイン・開発にかかった時間を完了した業務とみなすため、以降キャンセルされた場合でも返金の対象外となります。",
       q6: "他の言語にも対応してもらえますか？",
-      a6: "はい、追加費用なしですべてのプロジェクトに含まれています。25年以上の実績を持つ翻訳会社Asiatisと提携し、機械翻訳ではない、海外のお客様にも自然かつ正確に伝わるサイトに仕上げます。"
+      a6: "はい、追加費用なしですべてのプロジェクトに含まれています。25年以上の実績を持つ翻訳会社Asiatisと提携し、機械翻訳ではない、海外のお客様にも自然かつ正確に伝わるサイトに仕上げます。",
+      q7: "自分のお店がChatGPTに表示されることを保証してもらえますか？",
+      a7: "それを保証できる人はいません。AIの回答は、聞く人や日によって変わるからです。私たちができるのは、AIがあなたのサイトをできるだけ見つけやすく、理解しやすく、紹介しやすい状態に整えることです。毎月、どのように紹介されているかをお見せすることもできます。"
     },
     whyNotTemplate: {
       heading: "テンプレートは、使わない",
@@ -497,7 +598,68 @@ window.AURA_I18N = {
     footer: {
       tagline: "手仕事のような丁寧さを、驚くほどの速さで届けるウェブサイト。",
       copyright: "© 2026 Aura Sites. 無断複写・転載を禁じます。",
-      privacyLink: "プライバシーポリシー"
+      privacyLink: "プライバシーポリシー",
+      aboutLink: "Aura Sitesについて",
+      restaurantPageLink: "東京の飲食店向け英語ホームページ制作",
+      caseStudyLink: "制作事例：Asiatis"
+    },
+    restaurantPage: {
+      pageTitle: "東京の飲食店向け 英語ホームページ制作 | Aura Sites",
+      metaDescription: "Aura Sitesは、東京の飲食店向けに英語・バイリンガルサイトを制作します。GoogleでもChatGPTなどのAI検索でも見つけてもらえるサイトを、¥120,000からの固定価格で。",
+      backLink: "&larr; ホームに戻る",
+      breadcrumbHome: "ホーム",
+      breadcrumbCurrent: "東京の飲食店向け英語ホームページ制作",
+      lastUpdated: "最終更新日：2026年10月19日",
+      title: "東京の飲食店向け 英語ホームページ制作",
+      intro: "Aura Sitesは、東京を拠点に、日本国内の飲食店・小規模事業者向けに英語・バイリンガルサイトを制作するウェブデザインスタジオです。外国人観光客やお客様が、Google検索でもAIアシスタントに尋ねた場合でも、あなたのお店を見つけ、メニューを読み、連絡を取れるようにします。",
+      q1Heading: "東京で飲食店の英語ホームページを制作しているのは？",
+      q1Body: "Aura Sitesです。創業者Maximilienが運営する小さなスタジオで、東京をはじめ日本各地の飲食店・小規模事業者と直接やり取りしながら、テンプレートではないオーダーメイドのサイトを制作しています。すべてのプロジェクトには、25年以上の実績を持つ翻訳会社Asiatisによるプロの英語翻訳が含まれます。",
+      q2Heading: "日本の飲食店に英語ホームページは必要ですか？",
+      q2Body: "外国人観光客や在住者に見つけてもらいたいなら、必要です。多くの旅行者は来日前に英語でレストランを検索します。また、AIアシスタントがおすすめを聞かれたとき、オンライン上で情報を見つけて理解できなければ、あなたのお店を紹介することはできません。日本語のみのサイト、またはサイト自体がない場合、それがずっと難しくなります。",
+      q3Heading: "飲食店のホームページ制作の費用は？",
+      q3Body: "Aura Sitesには3つの固定プランがあり、青天井の見積もりはありません。Launch（1ページまたは小規模サイト）は通常¥180,000、現在は先着5件限定のモニター価格で¥120,000です。Grow（本格的な複数ページサイト）は通常¥480,000、現在はモニター価格で¥320,000です。Studio（複雑な構築、ECサイト、オーダーメイドのインタラクション）は案件ごとの個別見積もりです。詳しい内訳は",
+      q3LinkText: "料金セクション",
+      q3End: "。",
+      q4Heading: "外国人観光客を集客するには？",
+      q4Body: "まずは、訪れる人が実際に必要とする情報、メニュー、営業時間、場所、予約の可否などに、日本語だけでなく英語でもきちんと答えられるサイトを用意することから始まります。そのうえで、同じサイトが検索エンジンやAIアシスタントにも読み取りやすい状態になっている必要があります。これがAI検索対策（Launchプラン以上に含まれます）の役割です。",
+      q5Heading: "自分のお店がChatGPTにおすすめされるには？",
+      q5Body: "特定のAIによるおすすめを保証できる人はいません。AIの回答は、聞く人や日によって変わるからです。実際に役立つのは、AIがあなたのサイトを見つけやすく、理解しやすく、引用しやすい状態にすることです。メニューを写真だけでなく明確な英語のテキストで示す、最新の住所・営業時間を記載する、お客様が実際に尋ねる質問に答える、といった対応です。これがAI検索対策の基本です。",
+      ctaHeading: "料金を見て、はじめる",
+      ctaBody: "Launch・Grow・Studioの固定パッケージ。Launchプラン以上でAI検索対策が含まれます。",
+      ctaButton: "料金を見る"
+    },
+    aboutPage: {
+      pageTitle: "Aura Sitesについて | Aura Sites",
+      backLink: "&larr; ホームに戻る",
+      breadcrumbHome: "ホーム",
+      breadcrumbCurrent: "Aura Sitesについて",
+      lastUpdated: "最終更新日：2026年10月19日",
+      title: "Aura Sitesについて",
+      photoTodo: "TODO：創業者の写真をここに追加",
+      intro: "Aura Sitesは、東京を拠点に、英語・日本語・フランス語で活動するウェブデザイナー兼開発者のMaximilienが運営しています。",
+      whyHeading: "Aura Sitesが生まれた理由",
+      whyBody: "日本の多くの小規模事業者、特に飲食店は、高額な制作会社か、汎用的なテンプレートビルダーか、あるいはまともなウェブサイトを持たないかという選択を迫られています。Aura Sitesは、その中間の選択肢を提供するために生まれました。オーダーメイドのサイトを、スピーディーに、固定価格で、プロの翻訳とAI検索対策を分かりにくい追加オプションとしてではなく、最初から含めてお届けします。",
+      approachHeading: "制作の進め方",
+      approachBody: "どのプロジェクトも、テンプレートではなく白紙の状態から始まり、プランに関わらず同じプロセスを踏みます。ヒアリング、デザイン初稿の確認、そして短期間での公開です。翻訳は機械翻訳ではなく、25年以上の実績を持つ翻訳会社Asiatisが担当します。",
+      basedHeading: "拠点は東京",
+      basedBody: "Aura Sitesは東京を拠点に、日本各地の事業者と対応しています。可能な場合は対面で、それ以外はリモートで対応します。"
+    },
+    caseStudyAsiatis: {
+      pageTitle: "制作事例：Asiatis | Aura Sites",
+      backLink: "&larr; ホームに戻る",
+      breadcrumbHome: "ホーム",
+      breadcrumbCurrent: "制作事例：Asiatis",
+      lastUpdated: "最終更新日：2026年10月19日",
+      title: "制作事例：Asiatis",
+      intro: "Asiatisは認定翻訳会社です。Aura Sitesは、サービス紹介ページ、ブログ、見積り依頼の流れを備えた、英語・フランス語によるバイリンガルサイトを制作しました。",
+      whoHeading: "どのようなお客様か",
+      whoBody: "Asiatisは、企業、法律事務所、各種機関向けにサービスを提供する認定翻訳会社で、IRCC（カナダ移民局）の要件に対応した認定翻訳なども手がけています。",
+      whatHeading: "制作した内容",
+      whatBody: "英語・フランス語によるフルバイリンガルサイトで、サービス紹介ページ、ブログ、新規のお客様向けの見積り依頼フローを備えています。サイトは",
+      whatLinkText: "asiatis.ca",
+      whatEnd: "。",
+      resultsHeading: "成果",
+      resultsTodo: "TODO：具体的な成果（見積り依頼数や検索での見え方など）が確認でき、かつお客様の許可が得られ次第、ここに追加します。"
     },
     privacy: {
       pageTitle: "プライバシーポリシー | Aura Sites",

@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title data-i18n="meta.title">Aura Sites – Custom Website Design, Built Fast</title>
 <meta name="description" content="Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds." data-i18n-content="meta.description">
+<!-- This page serves English and Japanese from one URL via the client-side
+     language toggle (js/i18n.js), rather than separate /en/ and /ja/ URLs,
+     so there is no second URL for hreflang to point at. Canonical only. -->
+<link rel="canonical" href="https://aurasites.studio/">
 
 <!-- Favicon: temporary placeholder using the hero's aura/orb motif, simplified
      for legibility at small sizes. Swap for the real logo mark once it exists. -->
@@ -30,6 +34,30 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+
+<!-- Site identity for AI/search crawlers. sameAs is left out rather than
+     filled with placeholder strings, which would make the URLs invalid --
+     add real profile URLs here once they exist (TODO: Instagram, LinkedIn,
+     Google Business Profile). -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Aura Sites",
+  "url": "https://aurasites.studio/",
+  "logo": "https://aurasites.studio/assets/logo/aura-sites-icon.svg",
+  "description": "Aura Sites is a Tokyo-based web design studio building custom, handcrafted websites for restaurants and small businesses, with bilingual English/Japanese sites designed to be easy for search engines and AI assistants to find and recommend.",
+  "areaServed": [
+    { "@type": "City", "name": "Tokyo" },
+    { "@type": "Country", "name": "Japan" }
+  ],
+  "availableLanguage": ["en", "ja", "fr"],
+  "founder": {
+    "@type": "Person",
+    "name": "Maximilien"
+  }
+}
+</script>
 </head>
 <body>
 
@@ -111,6 +139,7 @@
   <div class="nav-links" id="nav-links">
     <a href="#work" data-i18n="nav.work">Work</a>
     <a href="#process" data-i18n="nav.process">Process</a>
+    <a href="/restaurant-websites-tokyo" data-i18n="nav.forRestaurants">For restaurants</a>
     <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
     <a href="#" class="js-open-quiz" data-i18n="nav.contact">Get started</a>
     <div class="lang-toggle" role="group" aria-label="Language" data-i18n-aria-label="nav.langToggleAriaLabel">
@@ -310,7 +339,7 @@
   <div class="founding-points">
     <div class="founding-point">
       <h3 data-i18n="founding.point1Label">Founding rate</h3>
-      <p data-i18n="founding.point1Body">Special pricing on Launch or Grow, for our first five projects only.</p>
+      <p data-i18n="founding.point1Body">Launch at ¥120,000 (regular ¥180,000) or Grow at ¥320,000 (regular ¥480,000), for our first five projects only.</p>
     </div>
     <div class="founding-point">
       <h3 data-i18n="founding.point2Label">Direct access</h3>
@@ -359,6 +388,7 @@
         <li data-i18n="pricing.launch.feature3">Mobile-optimized</li>
         <li data-i18n="pricing.launch.feature4">1 revision round</li>
         <li data-i18n="pricing.launch.feature5">Professional translation included (English + more)</li>
+        <li data-i18n="pricing.launch.feature6">AI search ready (basic setup)</li>
       </ul>
       <button class="btn price-btn js-open-quiz" data-tier="launch" data-i18n="pricing.launch.cta">Get started</button>
     </div>
@@ -380,6 +410,7 @@
         <li data-i18n="pricing.grow.feature4">Copywriting support</li>
         <li data-i18n="pricing.grow.feature5">3 revision rounds</li>
         <li data-i18n="pricing.grow.feature6">Professional translation included (English + more)</li>
+        <li><span data-i18n="pricing.grow.feature7">AI search optimization</span> <button class="info-tap" type="button" aria-label="What's included in AI search optimization?" data-i18n-aria-label="tooltips.aiSearchProAriaLabel" data-tooltip="Includes research into what people actually ask AI assistants, FAQ content written to answer those questions, and bilingual setup so both languages are easy for AI to read and recommend." data-i18n-tooltip="tooltips.aiSearchPro"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></li>
       </ul>
       <button class="btn primary price-btn js-open-quiz" data-tier="grow" data-i18n="pricing.grow.cta">Get started</button>
     </div>
@@ -395,6 +426,7 @@
         <li data-i18n="pricing.studio.feature3">Bespoke interaction &amp; motion</li>
         <li data-i18n="pricing.studio.feature4">Dedicated support</li>
         <li data-i18n="pricing.studio.feature5">Professional translation included (English + more)</li>
+        <li><span data-i18n="pricing.studio.feature6">AI search optimization</span> <button class="info-tap" type="button" aria-label="What's included in AI search optimization?" data-i18n-aria-label="tooltips.aiSearchProAriaLabel" data-tooltip="Includes research into what people actually ask AI assistants, FAQ content written to answer those questions, and bilingual setup so both languages are easy for AI to read and recommend." data-i18n-tooltip="tooltips.aiSearchPro"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></li>
       </ul>
       <button class="btn price-btn js-open-quiz" data-tier="studio" data-i18n="pricing.studio.cta">Talk to us</button>
     </div>
@@ -409,10 +441,76 @@
       <p><span data-i18n="hosting.bodyPre">An optional add-on, independent of your plan. Turn it on now or add it later. You'll also need a domain</span> <button class="info-tap" type="button" aria-label="What's a domain?" data-i18n-aria-label="tooltips.domainAriaLabel" data-tooltip="Your website's address, what people type to find you, like aurasites.com." data-i18n-tooltip="tooltips.domain"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button> <span data-i18n="hosting.bodyPost">pointing at your site.</span></p>
     </div>
     <div class="hosting-addon-price">
-      <span class="hosting-amount" data-i18n="hosting.amount">¥3,500–5,000</span>
+      <span class="hosting-amount" data-i18n="hosting.amount">¥4,000</span>
       <span class="hosting-period" data-i18n="hosting.period">/month</span>
     </div>
   </div>
+
+  <!-- TODO: re-enable once a price is set for the "Monthly AI visibility
+       report" add-on. Hidden (not deleted) on request since it had no real
+       price yet. To bring it back: uncomment this block and set
+       aiReport.note (js/i18n-strings.js, both en and ja) to the real price
+       instead of "Pricing coming soon" / "価格は近日公開".
+  <div class="hosting-addon">
+    <div class="hosting-addon-text">
+      <h3 class="hosting-addon-title"><span data-i18n="aiReport.title">Monthly AI visibility report</span></h3>
+      <p><span data-i18n="aiSearch.termLabel">AI search optimization</span> <button class="info-tap" type="button" aria-label="What's AI search optimization?" data-i18n-aria-label="tooltips.aiSearchGeneralAriaLabel" data-tooltip="Setting up your site so that when someone asks an AI like ChatGPT &quot;Where should I eat in Shibuya?&quot;, your business is more likely to be recommended." data-i18n-tooltip="tooltips.aiSearchGeneral"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></p>
+    </div>
+    <div class="hosting-addon-price">
+      <span class="hosting-amount" data-i18n="aiReport.note">Pricing coming soon</span>
+    </div>
+  </div>
+  -->
+</section>
+
+<!-- Structured data for the pricing section above. Prices here are the
+     regular (standing) price shown struck through on Launch/Grow, not the
+     limited-time founding rate, so this doesn't go stale once the founding
+     promotion ends. Studio has no fixed price, so it's described without
+     one rather than inventing a number. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Custom website design",
+  "provider": {
+    "@type": "ProfessionalService",
+    "name": "Aura Sites"
+  },
+  "areaServed": "JP",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Aura Sites pricing",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "Launch",
+        "description": "A single-page or small brand site, done right. Up to 3 pages, custom design, mobile-optimized, 1 revision round, professional translation, basic AI search setup.",
+        "price": "180000",
+        "priceCurrency": "JPY"
+      },
+      {
+        "@type": "Offer",
+        "name": "Grow",
+        "description": "A full multi-page site for a growing business. Up to 8 pages, CMS, copywriting support, 3 revision rounds, professional translation, AI search optimization.",
+        "price": "480000",
+        "priceCurrency": "JPY"
+      },
+      {
+        "@type": "Offer",
+        "name": "Studio",
+        "description": "Complex builds, e-commerce, or bespoke interaction. Unlimited pages, e-commerce and integrations, dedicated support, professional translation, AI search optimization. Scoped and quoted per project."
+      }
+    ]
+  }
+}
+</script>
+
+<section class="ai-search-feature">
+  <h2 class="display" data-i18n="aiSearch.heading">Found by tourists, wherever they search</h2>
+  <p data-i18n="aiSearch.body">Every site we build is set up to appear on Google, and in AI assistants like ChatGPT, Claude and Perplexity.</p>
+  <p class="feature-term-tag"><span data-i18n="aiSearch.termLabel">AI search optimization</span> <button class="info-tap" type="button" aria-label="What's AI search optimization?" data-i18n-aria-label="tooltips.aiSearchGeneralAriaLabel" data-tooltip="Setting up your site so that when someone asks an AI like ChatGPT &quot;Where should I eat in Shibuya?&quot;, your business is more likely to be recommended." data-i18n-tooltip="tooltips.aiSearchGeneral"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></p>
+  <p><a href="/restaurant-websites-tokyo" data-i18n="aiSearch.restaurantLink">See how this works for restaurants in Tokyo</a></p>
 </section>
 
 <section class="global-reach">
@@ -479,6 +577,15 @@
         <p data-i18n="faq.a6">Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated.</p>
       </div>
     </div>
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false">
+        <span data-i18n="faq.q7">Can you guarantee my restaurant appears in ChatGPT?</span>
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq.a7">No one can guarantee that, because AI answers change by person and by day. What we do is make your site as easy as possible for AI to find, understand and recommend, and we can show you where you appear each month.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -538,6 +645,14 @@
         "@type": "Answer",
         "text": "Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Can you guarantee my restaurant appears in ChatGPT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No one can guarantee that, because AI answers change by person and by day. What we do is make your site as easy as possible for AI to find, understand and recommend, and we can show you where you appear each month."
+      }
     }
   ]
 }
@@ -567,6 +682,12 @@
   </div>
   <div class="footer-bottom">
     <span data-i18n="footer.copyright">© 2026 Aura Sites. All rights reserved.</span>
+    <span class="footer-bottom-sep" aria-hidden="true">&middot;</span>
+    <a class="footer-bottom-link" href="/about" data-i18n="footer.aboutLink">About</a>
+    <span class="footer-bottom-sep" aria-hidden="true">&middot;</span>
+    <a class="footer-bottom-link" href="/restaurant-websites-tokyo" data-i18n="footer.restaurantPageLink">Restaurant websites in Tokyo</a>
+    <span class="footer-bottom-sep" aria-hidden="true">&middot;</span>
+    <a class="footer-bottom-link" href="/case-study-asiatis" data-i18n="footer.caseStudyLink">Case study: Asiatis</a>
     <span class="footer-bottom-sep" aria-hidden="true">&middot;</span>
     <a class="footer-bottom-link" href="/privacy" data-i18n="footer.privacyLink">Privacy policy</a>
   </div>

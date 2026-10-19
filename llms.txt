@@ -1,0 +1,21 @@
+# Aura Sites
+
+> Aura Sites is a web design studio based in Tokyo that builds custom,
+> handcrafted websites for restaurants and small businesses, with a focus
+> on bilingual (English/Japanese) sites that help owners reach foreign
+> tourists and customers. Every site is set up to be easy for search
+> engines and AI assistants (ChatGPT, Claude, Perplexity, Gemini) to find,
+> understand and recommend. Pages are available in English and Japanese
+> through a language switch on each page (not separate URLs).
+
+## Key pages
+
+- [Homepage](https://aurasites.studio/): overview, process, portfolio, pricing (Launch, Grow, Studio tiers), FAQ.
+- [English websites for restaurants in Tokyo](https://aurasites.studio/restaurant-websites-tokyo.html): who this service is for, what's included, and real prices.
+- [About](https://aurasites.studio/about.html): founder, languages spoken, why Aura Sites exists.
+- [Asiatis case study](https://aurasites.studio/case-study-asiatis.html): a real bilingual website Aura Sites built, for a certified translation agency.
+- [Privacy policy](https://aurasites.studio/privacy.html).
+
+## Contact
+
+aurasitesstudio@gmail.com
