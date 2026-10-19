@@ -1,12 +1,52 @@
-# Deliberately minimal: this repo has no build step (plain static
-# HTML/CSS/JS served as-is), so [build] settings (publish directory, build
-# command) are left exactly as configured in the Netlify dashboard rather
-# than duplicated here, where a mismatch could break the working deploy.
+# Build: regenerate every static page (both languages) from
+# templates/*.html + js/i18n-strings.js before each deploy, so the live
+# site can never drift from the templates even if a rebuild was forgotten
+# locally before committing. Plain Node (fs, path, Function) with zero npm
+# dependencies and no package.json, so there's nothing here that depends
+# on which Node version Netlify's build image happens to run, and no
+# npm-install step to go wrong.
 #
-# This file exists only to make the functions directory explicit rather
+# publish/base deliberately left unset: already configured in the Netlify
+# dashboard (repo root), kept out of this file so a mismatch here can't
+# fight the dashboard's working config.
+[build]
+  command = "node scripts/build.js"
+
+# This file also exists to make the functions directory explicit rather
 # than relying on Netlify auto-detecting netlify/functions/, as a hedge
 # while diagnosing why netlify/functions/submission-created.js doesn't
 # appear to be sending email -- if it was never being discovered/deployed
 # as a function at all, this rules that out.
 [functions]
   directory = "netlify/functions"
+
+# --- Redirects ---
+
+# templates/ and scripts/ are build-time source files, not pages meant to
+# be browsed, but they have to live inside the published folder (the
+# repo root) for the build step above to find them. robots.txt only asks
+# well-behaved bots to stay out; it does nothing to stop a human or a
+# scraper from requesting the file directly, so block both paths at the
+# server level instead. force = true is required because files actually
+# exist at these paths -- without it Netlify would just serve them.
+[[redirects]]
+  from = "/templates/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/scripts/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Safety net only: English pages live under /en/, but Japanese lives at
+# the root rather than under a matching /ja/ -- anyone guessing the
+# symmetric prefix lands on the real page instead of a 404. This matches
+# on an explicit /ja/... URL only; it never inspects or redirects based on
+# the visitor's browser/Accept-Language.
+[[redirects]]
+  from = "/ja/*"
+  to = "/:splat"
+  status = 301

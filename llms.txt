@@ -5,16 +5,22 @@
 > on bilingual (English/Japanese) sites that help owners reach foreign
 > tourists and customers. Every site is set up to be easy for search
 > engines and AI assistants (ChatGPT, Claude, Perplexity, Gemini) to find,
-> understand and recommend. Pages are available in English and Japanese
-> through a language switch on each page (not separate URLs).
+> understand and recommend. Japanese and English are separate static
+> pages (Japanese at the root, English under /en/), not a client-side
+> toggle, so either version can be read directly.
 
 ## Key pages
 
-- [Homepage](https://aurasites.studio/): overview, process, portfolio, pricing (Launch, Grow, Studio tiers), FAQ.
-- [English websites for restaurants in Tokyo](https://aurasites.studio/restaurant-websites-tokyo.html): who this service is for, what's included, and real prices.
-- [About](https://aurasites.studio/about.html): founder, languages spoken, why Aura Sites exists.
-- [Asiatis case study](https://aurasites.studio/case-study-asiatis.html): a real bilingual website Aura Sites built, for a certified translation agency.
-- [Privacy policy](https://aurasites.studio/privacy.html).
+- Homepage: overview, process, portfolio, pricing (Launch, Grow, Studio tiers), FAQ.
+  [Japanese](https://aurasites.studio/) / [English](https://aurasites.studio/en/)
+- English websites for restaurants in Tokyo: who this service is for, what's included, and real prices.
+  [Japanese](https://aurasites.studio/restaurant-websites-tokyo.html) / [English](https://aurasites.studio/en/restaurant-websites-tokyo.html)
+- About: founder, languages spoken, why Aura Sites exists.
+  [Japanese](https://aurasites.studio/about.html) / [English](https://aurasites.studio/en/about.html)
+- Asiatis case study: a real bilingual website Aura Sites built, for a certified translation agency.
+  [Japanese](https://aurasites.studio/case-study-asiatis.html) / [English](https://aurasites.studio/en/case-study-asiatis.html)
+- Privacy policy.
+  [Japanese](https://aurasites.studio/privacy.html) / [English](https://aurasites.studio/en/privacy.html)
 
 ## Contact
 

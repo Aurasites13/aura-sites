@@ -7,34 +7,58 @@
 # a site from AI search answers anyway (that depends on the search/fetch
 # bots above, not the training ones).
 
+# templates/ and scripts/ are build-time source files, not pages. The
+# real block is a Netlify redirect rule that 404s both paths (robots.txt
+# alone only asks bots nicely); these lines are just a courtesy for the
+# well-behaved crawlers that do read this file.
 User-agent: *
 Allow: /
+Disallow: /templates/
+Disallow: /scripts/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /templates/
+Disallow: /scripts/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /templates/
+Disallow: /scripts/
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /templates/
+Disallow: /scripts/
 
 User-agent: Claude-User
 Allow: /
+Disallow: /templates/
+Disallow: /scripts/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /templates/
+Disallow: /scripts/
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /templates/
+Disallow: /scripts/
 
 User-agent: Googlebot
 Allow: /
+Disallow: /templates/
+Disallow: /scripts/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /templates/
+Disallow: /scripts/
 
 User-agent: Applebot
 Allow: /
+Disallow: /templates/
+Disallow: /scripts/
 
 Sitemap: https://aurasites.studio/sitemap.xml
