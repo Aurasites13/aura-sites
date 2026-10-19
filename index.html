@@ -1,44 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-i18n="meta.title">Aura Sites – Custom Website Design, Built Fast</title>
-<meta name="description" content="Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds." data-i18n-content="meta.description">
-<!-- This page serves English and Japanese from one URL via the client-side
-     language toggle (js/i18n.js), rather than separate /en/ and /ja/ URLs,
-     so there is no second URL for hreflang to point at. Canonical only. -->
+<title data-i18n="meta.title">オーラサイト｜高品質でスピーディーなホームページ制作</title>
+<meta name="description" content="テンプレートを使わないオリジナルのホームページ制作。オーラサイトは日本国内外の事業者向けに、スピーディーで高品質なウェブサイトを制作します。" data-i18n-content="meta.description">
 <link rel="canonical" href="https://aurasites.studio/">
+<link rel="alternate" hreflang="ja" href="https://aurasites.studio/">
+<link rel="alternate" hreflang="en" href="https://aurasites.studio/en/">
+<link rel="alternate" hreflang="x-default" href="https://aurasites.studio/">
 
 <!-- Favicon: temporary placeholder using the hero's aura/orb motif, simplified
      for legibility at small sizes. Swap for the real logo mark once it exists. -->
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="assets/favicon-180.png" sizes="180x180" type="image/png">
-<link rel="apple-touch-icon" href="assets/favicon-180.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-180.png" sizes="180x180" type="image/png">
+<link rel="apple-touch-icon" href="/assets/favicon-180.png">
 
-<!-- Open Graph / Twitter Card. Title/description do switch with the
-     language toggle via data-i18n-content, but note that most link-preview
-     and social crawlers fetch the raw HTML without running JS, so in
-     practice they'll usually see whichever language is in this static
-     markup (English) rather than a visitor's chosen language. -->
-<meta property="og:title" content="Aura Sites – Custom Website Design, Built Fast" data-i18n-content="meta.title">
-<meta property="og:description" content="Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds." data-i18n-content="meta.description">
+<!-- Open Graph / Twitter Card. Each generated page is a real, separate
+     static file per language now (see scripts/build.mjs), so a crawler
+     reading the raw HTML sees exactly the language this page is for. -->
+<meta property="og:title" content="オーラサイト｜高品質でスピーディーなホームページ制作" data-i18n-content="meta.title">
+<meta property="og:description" content="テンプレートを使わないオリジナルのホームページ制作。オーラサイトは日本国内外の事業者向けに、スピーディーで高品質なウェブサイトを制作します。" data-i18n-content="meta.description">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://aurasites.studio/assets/og-image.jpg">
 <meta property="og:url" content="https://aurasites.studio/">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Aura Sites – Custom Website Design, Built Fast" data-i18n-content="meta.title">
-<meta name="twitter:description" content="Custom website design without templates. Aura Sites builds fast, handcrafted sites for businesses in Japan and beyond, from single-page launches to full custom builds." data-i18n-content="meta.description">
+<meta name="twitter:title" content="オーラサイト｜高品質でスピーディーなホームページ制作" data-i18n-content="meta.title">
+<meta name="twitter:description" content="テンプレートを使わないオリジナルのホームページ制作。オーラサイトは日本国内外の事業者向けに、スピーディーで高品質なウェブサイトを制作します。" data-i18n-content="meta.description">
 <meta name="twitter:image" content="https://aurasites.studio/assets/og-image.jpg">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <!-- Site identity for AI/search crawlers. sameAs is left out rather than
      filled with placeholder strings, which would make the URLs invalid --
      add real profile URLs here once they exist (TODO: Instagram, LinkedIn,
-     Google Business Profile). -->
+     Google Business Profile). Generated per-language by scripts/build.mjs
+     (see buildProfessionalServiceJsonLd) -- not hand-edited here. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -46,12 +45,23 @@
   "name": "Aura Sites",
   "url": "https://aurasites.studio/",
   "logo": "https://aurasites.studio/assets/logo/aura-sites-icon.svg",
-  "description": "Aura Sites is a Tokyo-based web design studio building custom, handcrafted websites for restaurants and small businesses, with bilingual English/Japanese sites designed to be easy for search engines and AI assistants to find and recommend.",
+  "description": "テンプレートを使わないオリジナルのホームページ制作。オーラサイトは日本国内外の事業者向けに、スピーディーで高品質なウェブサイトを制作します。",
+  "inLanguage": "ja",
   "areaServed": [
-    { "@type": "City", "name": "Tokyo" },
-    { "@type": "Country", "name": "Japan" }
+    {
+      "@type": "City",
+      "name": "Tokyo"
+    },
+    {
+      "@type": "Country",
+      "name": "Japan"
+    }
   ],
-  "availableLanguage": ["en", "ja", "fr"],
+  "availableLanguage": [
+    "en",
+    "ja",
+    "fr"
+  ],
   "founder": {
     "@type": "Person",
     "name": "Maximilien"
@@ -130,23 +140,23 @@
 
 <nav>
   <a href="#" class="aura-logo aura-logo--horizontal" aria-label="Aura Sites, home">
-    <img src="assets/logo/aura-sites-icon.svg" alt="" width="40" height="40" class="aura-logo__mark">
+    <img src="/assets/logo/aura-sites-icon.svg" alt="" width="40" height="40" class="aura-logo__mark">
     <span class="aura-logo__word aura-font-display">AURA <span class="aura-logo__word--dim">SITES</span></span>
   </a>
   <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
   <div class="nav-links" id="nav-links">
-    <a href="#work" data-i18n="nav.work">Work</a>
-    <a href="#process" data-i18n="nav.process">Process</a>
-    <a href="/restaurant-websites-tokyo" data-i18n="nav.forRestaurants">For restaurants</a>
-    <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
-    <a href="#" class="js-open-quiz" data-i18n="nav.contact">Get started</a>
-    <div class="lang-toggle" role="group" aria-label="Language" data-i18n-aria-label="nav.langToggleAriaLabel">
-      <button type="button" class="lang-btn" data-lang="en">EN</button>
-      <span class="lang-sep">/</span>
-      <button type="button" class="lang-btn" data-lang="ja">JP</button>
-    </div>
+    <a href="#work" data-i18n="nav.work">実績</a>
+    <a href="#process" data-i18n="nav.process">制作の流れ</a>
+    <a href="/restaurant-websites-tokyo" data-i18n="nav.forRestaurants">飲食店の方へ</a>
+    <a href="#pricing" data-i18n="nav.pricing">料金</a>
+    <a href="#" class="js-open-quiz" data-i18n="nav.contact">はじめる</a>
+    <div class="lang-toggle" role="group" aria-label="言語" data-i18n-aria-label="nav.langToggleAriaLabel">
+    <a href="/en/" class="lang-btn">EN</a>
+    <span class="lang-sep">/</span>
+    <span class="lang-btn active" aria-current="page">JP</span>
+  </div>
   </div>
 </nav>
 
@@ -188,21 +198,21 @@
     </script>
 
     <div class="intro-caption" id="intro-caption">
-      <img src="assets/logo/aura-sites-icon.svg" alt="" class="intro-caption__mark">
+      <img src="/assets/logo/aura-sites-icon.svg" alt="" class="intro-caption__mark">
       <div class="word display" data-i18n="hero.introCaption">Aura Sites</div>
     </div>
 
     <div class="hero-content" id="hero-content">
-      <h1 class="display" data-i18n="hero.h1">Websites that feel <em>handcrafted</em>,<br>at a pace that isn't</h1>
-      <p class="sub" data-i18n="hero.sub">Studio-quality design, delivered in days, not months.</p>
+      <h1 class="display" data-i18n="hero.h1">手仕事のような<br><em>丁寧さ</em>を、<br>驚くほどの速さで</h1>
+      <p class="sub" data-i18n="hero.sub">スタジオ品質のデザインを、数ヶ月ではなく数日で。</p>
       <div class="cta-row">
-        <button class="btn primary js-open-quiz" data-i18n="hero.ctaPrimary">Start a project</button>
-        <button class="btn js-scroll-work" data-i18n="hero.ctaSecondary">See the work</button>
+        <button class="btn primary js-open-quiz" data-i18n="hero.ctaPrimary">プロジェクトを始める</button>
+        <button class="btn js-scroll-work" data-i18n="hero.ctaSecondary">実績を見る</button>
       </div>
     </div>
 
     <div class="scroll-cue" id="scroll-cue">
-      <span data-i18n="hero.scrollCue">scroll to enter</span>
+      <span data-i18n="hero.scrollCue">スクロールして進む</span>
       <div class="line"></div>
     </div>
   </div>
@@ -210,8 +220,8 @@
 
 <section class="assembly" id="process">
   <div class="assembly-head">
-    <h2 class="display" data-i18n="process.heading">Watch a site come together</h2>
-    <p data-i18n="process.body">Every project starts from a blank canvas and takes shape in front of you. No templates, no recycled layouts.</p>
+    <h2 class="display" data-i18n="process.heading">サイトが形になっていく様子を</h2>
+    <p data-i18n="process.body">どのプロジェクトも、白紙の状態からあなたの目の前で形になっていきます。テンプレートも、使い回しのレイアウトもありません。</p>
   </div>
 
   <div class="tier-toggle" role="tablist" data-i18n-aria-label="process.tierToggleAriaLabel" aria-label="Pricing tier">
@@ -223,17 +233,17 @@
   <div class="timeline">
     <div class="timeline-step">
       <span class="step-num">1</span>
-      <span class="step-label" data-i18n="process.stepDiscovery">Discovery call</span>
+      <span class="step-label" data-i18n="process.stepDiscovery">ヒアリング</span>
       <span class="step-day">Day 1</span>
     </div>
     <div class="timeline-step">
       <span class="step-num">2</span>
-      <span class="step-label" data-i18n="process.stepFirstLook">First look</span>
+      <span class="step-label" data-i18n="process.stepFirstLook">初稿デザイン</span>
       <span class="step-day">Day 5</span>
     </div>
     <div class="timeline-step">
       <span class="step-num">3</span>
-      <span class="step-label" data-i18n="process.stepLive">Live</span>
+      <span class="step-label" data-i18n="process.stepLive">公開</span>
       <span class="step-day">Day 10–14</span>
     </div>
   </div>
@@ -241,8 +251,8 @@
 
 <section class="work" id="work">
   <div class="work-head">
-    <h2 class="display" data-i18n="work.heading">Recent work</h2>
-    <p data-i18n="work.body">A few examples of how far the same process can stretch, from editorial and warm to clean and functional.</p>
+    <h2 class="display" data-i18n="work.heading">最近の実績</h2>
+    <p data-i18n="work.body">同じプロセスがどれほど幅広い表現に対応できるか、いくつかの実例でご紹介します。編集的で温かみのあるものから、クリーンで機能的なものまで。</p>
   </div>
   <div class="work-grid">
 
@@ -250,14 +260,14 @@
       <div class="mock">
         <div class="mock-chrome"><span></span><span></span><span></span></div>
         <picture class="mock-shot">
-          <source srcset="assets/work/jingu.webp" type="image/webp">
-          <img src="assets/work/jingu.jpg" alt="Aura Sites custom website design example for the JINGŪ matcha brand, an editorial homepage hero with a bowl of whisked matcha" data-i18n-alt="work.jinguAlt" loading="lazy">
+          <source srcset="/assets/work/jingu.webp" type="image/webp">
+          <img src="/assets/work/jingu.jpg" alt="オーラサイトによるホームページ制作事例、JINGŪ（抹茶ブランド）。点てた抹茶が入った茶碗を写した、エディトリアルなトップページのヒーロー画像。" data-i18n-alt="work.jinguAlt" loading="lazy">
         </picture>
       </div>
       <div class="work-meta">
         <h3 data-i18n="work.jinguTitle">JINGŪ</h3>
-        <p data-i18n="work.jinguDesc">Premium matcha brand, editorial Japanese aesthetic, multi-page.</p>
-        <div class="tags"><span data-i18n="work.jinguTag1">Brand</span><span data-i18n="work.jinguTag2">E-commerce</span></div>
+        <p data-i18n="work.jinguDesc">高級抹茶ブランド。和の美意識を活かしたエディトリアルデザイン、複数ページ構成。</p>
+        <div class="tags"><span data-i18n="work.jinguTag1">ブランド</span><span data-i18n="work.jinguTag2">EC</span></div>
         <a class="work-link" href="https://jingumatcha.netlify.app" target="_blank" rel="noopener" data-i18n="work.jinguLinkText">jingumatcha.netlify.app ↗</a>
       </div>
     </div>
@@ -266,15 +276,15 @@
       <div class="mock">
         <div class="mock-chrome"><span></span><span></span><span></span></div>
         <picture class="mock-shot">
-          <source srcset="assets/work/pec.webp" type="image/webp">
-          <img src="assets/work/pec.jpg" alt="Aura Sites custom website design example for PEC, a private education concierge site for Tokyo families" data-i18n-alt="work.pecAlt" loading="lazy">
+          <source srcset="/assets/work/pec.webp" type="image/webp">
+          <img src="/assets/work/pec.jpg" alt="オーラサイトによるホームページ制作事例、PEC（東京のご家庭向けプライベート教育コンシェルジュ）。トップページのヒーロー画像。" data-i18n-alt="work.pecAlt" loading="lazy">
         </picture>
       </div>
       <div class="work-meta">
         <h3 data-i18n="work.pecTitle">PEC</h3>
-        <p data-i18n="work.pecDesc">Private education concierge for tutoring, IELTS/EIKEN, study abroad.</p>
-        <div class="tags"><span data-i18n="work.pecTag1">Education</span><span data-i18n="work.pecTag2">Concierge</span></div>
-        <a class="work-link" href="https://pec-website.netlify.app/" target="_blank" rel="noopener" data-i18n="work.pecLinkText">View site ↗</a>
+        <p data-i18n="work.pecDesc">家庭教師、IELTS・英検対策、留学まで対応する、プライベート教育コンシェルジュ。</p>
+        <div class="tags"><span data-i18n="work.pecTag1">教育</span><span data-i18n="work.pecTag2">コンシェルジュ</span></div>
+        <a class="work-link" href="https://pec-website.netlify.app/" target="_blank" rel="noopener" data-i18n="work.pecLinkText">サイトを見る ↗</a>
       </div>
     </div>
 
@@ -282,14 +292,14 @@
       <div class="mock">
         <div class="mock-chrome"><span></span><span></span><span></span></div>
         <picture class="mock-shot">
-          <source srcset="assets/work/luxury-japan.webp" type="image/webp">
-          <img src="assets/work/luxury-japan.jpg" alt="Aura Sites custom website design example for Luxury Japan, a homepage hero with a Zen rock garden and a blossoming weeping cherry tree beside a traditional plaster wall" data-i18n-alt="work.ljAlt" loading="lazy">
+          <source srcset="/assets/work/luxury-japan.webp" type="image/webp">
+          <img src="/assets/work/luxury-japan.jpg" alt="オーラサイトによるホームページ制作事例、Luxury Japan。しだれ桜と伝統的な土塀を配した、枯山水の庭園を写したトップページのヒーロー画像。" data-i18n-alt="work.ljAlt" loading="lazy">
         </picture>
       </div>
       <div class="work-meta">
         <h3 data-i18n="work.ljTitle">Luxury Japan</h3>
-        <p data-i18n="work.ljDesc">Bespoke inbound travel concierge. AI/DX tooling and workflow automation for their team.</p>
-        <div class="tags"><span data-i18n="work.ljTag1">Travel</span><span data-i18n="work.ljTag2">AI/DX</span></div>
+        <p data-i18n="work.ljDesc">オーダーメイドのインバウンド旅行コンシェルジュ。チーム向けにAI/DXツールと業務自動化を構築。</p>
+        <div class="tags"><span data-i18n="work.ljTag1">旅行</span><span data-i18n="work.ljTag2">AI/DX</span></div>
         <a class="work-link" href="https://luxuryjapan.tv" target="_blank" rel="noopener" data-i18n="work.ljLinkText">luxuryjapan.tv ↗</a>
       </div>
     </div>
@@ -298,14 +308,14 @@
       <div class="mock">
         <div class="mock-chrome"><span></span><span></span><span></span></div>
         <picture class="mock-shot">
-          <source srcset="assets/work/asiatis.webp" type="image/webp">
-          <img src="assets/work/asiatis.jpg" alt="Aura Sites custom website design example for Asiatis, a bilingual certified translation agency site" data-i18n-alt="work.asiatisAlt" loading="lazy">
+          <source srcset="/assets/work/asiatis.webp" type="image/webp">
+          <img src="/assets/work/asiatis.jpg" alt="オーラサイトによるホームページ制作事例、Asiatis（英語とフランス語に対応する認定翻訳会社）のトップページのヒーロー画像。" data-i18n-alt="work.asiatisAlt" loading="lazy">
         </picture>
       </div>
       <div class="work-meta">
         <h3 data-i18n="work.asiatisTitle">Asiatis</h3>
-        <p data-i18n="work.asiatisDesc">Certified translation agency, bilingual English and French site with service pages, a blog and a quote flow.</p>
-        <div class="tags"><span data-i18n="work.asiatisTag1">Translation</span><span data-i18n="work.asiatisTag2">Bilingual</span></div>
+        <p data-i18n="work.asiatisDesc">認定翻訳会社のサイト。英語とフランス語の2言語対応で、サービス紹介ページ、ブログ、見積りの流れを備えています。</p>
+        <div class="tags"><span data-i18n="work.asiatisTag1">翻訳</span><span data-i18n="work.asiatisTag2">2言語</span></div>
         <a class="work-link" href="https://asiatis.ca/en" target="_blank" rel="noopener" data-i18n="work.asiatisLinkText">asiatis.ca ↗</a>
       </div>
     </div>
@@ -316,43 +326,43 @@
 <section class="social-proof">
   <div class="social-stats">
     <div class="stat-item">
-      <div class="stat-number display" data-i18n="socialProof.stat1Number">3 to 14</div>
-      <div class="stat-label" data-i18n="socialProof.stat1Label">days from kickoff to launch</div>
+      <div class="stat-number display" data-i18n="socialProof.stat1Number">3〜14</div>
+      <div class="stat-label" data-i18n="socialProof.stat1Label">キックオフから公開までの日数</div>
     </div>
     <div class="stat-item">
       <div class="stat-number display" data-i18n="socialProof.stat2Number">100%</div>
-      <div class="stat-label" data-i18n="socialProof.stat2Label">custom-designed, no templates</div>
+      <div class="stat-label" data-i18n="socialProof.stat2Label">テンプレートを使わない完全オーダーメイド</div>
     </div>
     <div class="stat-item">
       <div class="stat-number display" data-i18n="socialProof.stat3Number">3</div>
-      <div class="stat-label" data-i18n="socialProof.stat3Label">fixed pricing tiers, no surprises</div>
+      <div class="stat-label" data-i18n="socialProof.stat3Label">追加費用のない、明確な3つの料金プラン</div>
     </div>
   </div>
 </section>
 
 <section class="founding-clients">
   <div class="founding-clients-head">
-    <div class="eyebrow" data-i18n="founding.eyebrow">Founding clients</div>
-    <h2 class="display" data-i18n="founding.heading">Be one of our first five.</h2>
-    <p data-i18n="founding.body">Aura Sites is new, and we're building our portfolio with a small number of founding clients. In return for a short testimonial and permission to feature your project once it's live, you get a special founding rate and direct access to the person building your site.</p>
+    <div class="eyebrow" data-i18n="founding.eyebrow">モニター募集</div>
+    <h2 class="display" data-i18n="founding.heading">最初の5件、モニター価格でご提供します。</h2>
+    <p data-i18n="founding.body">Aura Sitesは立ち上げ間もないスタジオです。実績づくりのため、少数のモニターのお客様を募集しています。モニター価格でのご提供に加え、制作を担当する代表が最初から最後まで直接対応します。その代わりに、公開後の短い感想（お客様の声）と、制作事例としての掲載許可をお願いしています。</p>
   </div>
   <div class="founding-points">
     <div class="founding-point">
-      <h3 data-i18n="founding.point1Label">Founding rate</h3>
-      <p data-i18n="founding.point1Body">Launch at ¥120,000 (regular ¥180,000) or Grow at ¥320,000 (regular ¥480,000), for our first five projects only.</p>
+      <h3 data-i18n="founding.point1Label">モニター価格</h3>
+      <p data-i18n="founding.point1Body">Launchプランは¥120,000（通常¥180,000）、Growプランは¥320,000（通常¥480,000）。先着5件限定です。</p>
     </div>
     <div class="founding-point">
-      <h3 data-i18n="founding.point2Label">Direct access</h3>
-      <p data-i18n="founding.point2Body">You work with the founder from first call to launch, with no hand-offs.</p>
+      <h3 data-i18n="founding.point2Label">代表が直接対応</h3>
+      <p data-i18n="founding.point2Body">最初のご相談から公開まで、担当者の引き継ぎはありません。</p>
     </div>
     <div class="founding-point">
-      <h3 data-i18n="founding.point3Label">Featured project</h3>
-      <p data-i18n="founding.point3Body">With your permission, we showcase your business in our portfolio and on social media.</p>
+      <h3 data-i18n="founding.point3Label">制作事例として掲載</h3>
+      <p data-i18n="founding.point3Body">ご了承いただければ、ポートフォリオやSNSで貴店・貴社をご紹介します。</p>
     </div>
   </div>
   <div class="founding-cta">
-    <button class="btn primary js-open-quiz" data-program="founding" data-i18n="founding.button">Claim a founding spot</button>
-    <div class="founding-note" data-i18n="founding.note">Limited to five projects.</div>
+    <button class="btn primary js-open-quiz" data-program="founding" data-i18n="founding.button">モニターに申し込む</button>
+    <div class="founding-note" data-i18n="founding.note">募集は先着5件までです。</div>
   </div>
   <!--
     Deliberately empty and hidden until real founding-client testimonials
@@ -361,88 +371,88 @@
     there when they exist; no HTML/CSS changes needed to bring this row in.
   -->
   <div class="founding-quotes" id="founding-quotes" hidden>
-    <h3 class="founding-quotes-heading" data-i18n="founding.quotesHeading">What founding clients say</h3>
+    <h3 class="founding-quotes-heading" data-i18n="founding.quotesHeading">モニターのお客様の声</h3>
     <div class="founding-quotes-grid" id="founding-quotes-grid"></div>
   </div>
 </section>
 
 <section class="pricing" id="pricing">
   <div class="pricing-head">
-    <h2 class="display" data-i18n="pricing.heading">Pricing</h2>
-    <p data-i18n="pricing.body">Fixed packages, not open-ended quotes, so you know what you're getting before we start.</p>
+    <h2 class="display" data-i18n="pricing.heading">料金</h2>
+    <p data-i18n="pricing.body">料金は固定パッケージ制。青天井の見積もりではないので、始める前に内容をしっかりご確認いただけます。</p>
   </div>
   <div class="pricing-grid">
 
     <div class="price-card">
       <div class="price-name" data-i18n="pricing.launch.name">Launch</div>
-      <div class="price-desc" data-i18n="pricing.launch.desc">A single-page or small brand site, done right.</div>
+      <div class="price-desc" data-i18n="pricing.launch.desc">1ページ、または小規模なブランドサイトを、確かな品質で。</div>
       <div class="price-amount">
         <span class="price-founding" data-i18n="pricing.launch.foundingPrice">¥120,000<span>〜</span></span>
         <span class="price-regular" data-i18n="pricing.launch.price">¥180,000<span>〜</span></span>
       </div>
-      <div class="price-founding-label" data-i18n="pricing.foundingLabel">Founding rate, first five projects</div>
-      <div class="price-turnaround" data-i18n="pricing.launch.turnaround">~3 day turnaround</div>
+      <div class="price-founding-label" data-i18n="pricing.foundingLabel">モニター価格・先着5件</div>
+      <div class="price-turnaround" data-i18n="pricing.launch.turnaround">約3日で納品</div>
       <ul class="price-features">
-        <li data-i18n="pricing.launch.feature1">Up to 3 pages</li>
-        <li data-i18n="pricing.launch.feature2">Custom design, no templates</li>
-        <li data-i18n="pricing.launch.feature3">Mobile-optimized</li>
-        <li data-i18n="pricing.launch.feature4">1 revision round</li>
-        <li data-i18n="pricing.launch.feature5">Professional translation included (English + more)</li>
-        <li data-i18n="pricing.launch.feature6">AI search ready (basic setup)</li>
+        <li data-i18n="pricing.launch.feature1">最大3ページ</li>
+        <li data-i18n="pricing.launch.feature2">テンプレートを使わないオーダーメイドデザイン</li>
+        <li data-i18n="pricing.launch.feature3">モバイル最適化</li>
+        <li data-i18n="pricing.launch.feature4">修正1回</li>
+        <li data-i18n="pricing.launch.feature5">プロによる翻訳込み（英語ほか対応）</li>
+        <li data-i18n="pricing.launch.feature6">AI検索対策（基本）</li>
       </ul>
-      <button class="btn price-btn js-open-quiz" data-tier="launch" data-i18n="pricing.launch.cta">Get started</button>
+      <button class="btn price-btn js-open-quiz" data-tier="launch" data-i18n="pricing.launch.cta">はじめる</button>
     </div>
 
     <div class="price-card featured">
-      <div class="price-badge" data-i18n="pricing.grow.badge">Most popular</div>
+      <div class="price-badge" data-i18n="pricing.grow.badge">人気No.1</div>
       <div class="price-name" data-i18n="pricing.grow.name">Grow</div>
-      <div class="price-desc" data-i18n="pricing.grow.desc">A full multi-page site for a growing business.</div>
+      <div class="price-desc" data-i18n="pricing.grow.desc">成長するビジネスのための、本格的な複数ページサイト。</div>
       <div class="price-amount">
         <span class="price-founding" data-i18n="pricing.grow.foundingPrice">¥320,000<span>〜</span></span>
         <span class="price-regular" data-i18n="pricing.grow.price">¥480,000<span>〜</span></span>
       </div>
-      <div class="price-founding-label" data-i18n="pricing.foundingLabel">Founding rate, first five projects</div>
-      <div class="price-turnaround" data-i18n="pricing.grow.turnaround">~1–2 week turnaround</div>
+      <div class="price-founding-label" data-i18n="pricing.foundingLabel">モニター価格・先着5件</div>
+      <div class="price-turnaround" data-i18n="pricing.grow.turnaround">約1〜2週間で納品</div>
       <ul class="price-features">
-        <li data-i18n="pricing.grow.feature1">Up to 8 pages</li>
-        <li data-i18n="pricing.grow.feature2">Custom design, no templates</li>
-        <li><span data-i18n="pricing.grow.feature3Pre">CMS</span> <button class="info-tap" type="button" aria-label="What's a CMS?" data-i18n-aria-label="tooltips.cmsAriaLabel" data-tooltip="A simple dashboard for editing your own text and photos later, no coding needed." data-i18n-tooltip="tooltips.cms"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button> <span data-i18n="pricing.grow.feature3Post">for easy updates</span></li>
-        <li data-i18n="pricing.grow.feature4">Copywriting support</li>
-        <li data-i18n="pricing.grow.feature5">3 revision rounds</li>
-        <li data-i18n="pricing.grow.feature6">Professional translation included (English + more)</li>
-        <li><span data-i18n="pricing.grow.feature7">AI search optimization</span> <button class="info-tap" type="button" aria-label="What's included in AI search optimization?" data-i18n-aria-label="tooltips.aiSearchProAriaLabel" data-tooltip="Includes research into what people actually ask AI assistants, FAQ content written to answer those questions, and bilingual setup so both languages are easy for AI to read and recommend." data-i18n-tooltip="tooltips.aiSearchPro"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></li>
+        <li data-i18n="pricing.grow.feature1">最大8ページ</li>
+        <li data-i18n="pricing.grow.feature2">テンプレートを使わないオーダーメイドデザイン</li>
+        <li><span data-i18n="pricing.grow.feature3Pre">CMS</span> <button class="info-tap" type="button" aria-label="CMSとは？" data-i18n-aria-label="tooltips.cmsAriaLabel" data-tooltip="コーディング不要で、あとから自分でテキストや写真を編集できるシンプルな管理画面です。" data-i18n-tooltip="tooltips.cms"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button> <span data-i18n="pricing.grow.feature3Post">で簡単に更新</span></li>
+        <li data-i18n="pricing.grow.feature4">コピーライティングサポート</li>
+        <li data-i18n="pricing.grow.feature5">修正3回</li>
+        <li data-i18n="pricing.grow.feature6">プロによる翻訳込み（英語ほか対応）</li>
+        <li><span data-i18n="pricing.grow.feature7">AI検索対策（本格）</span> <button class="info-tap" type="button" aria-label="AI検索対策（本格）には何が含まれますか？" data-i18n-aria-label="tooltips.aiSearchProAriaLabel" data-tooltip="AIに実際に聞かれそうな質問の調査、その質問に答えるFAQ文章の作成、AIが読み取りやすい日英バイリンガル対応を含みます。" data-i18n-tooltip="tooltips.aiSearchPro"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></li>
       </ul>
-      <button class="btn primary price-btn js-open-quiz" data-tier="grow" data-i18n="pricing.grow.cta">Get started</button>
+      <button class="btn primary price-btn js-open-quiz" data-tier="grow" data-i18n="pricing.grow.cta">はじめる</button>
     </div>
 
     <div class="price-card">
       <div class="price-name" data-i18n="pricing.studio.name">Studio</div>
-      <div class="price-desc" data-i18n="pricing.studio.desc">Complex builds, e-commerce, or bespoke interaction.</div>
-      <div class="price-amount" data-i18n="pricing.studio.price">Custom quote</div>
-      <div class="price-turnaround" data-i18n="pricing.studio.turnaround">Scoped per project</div>
+      <div class="price-desc" data-i18n="pricing.studio.desc">複雑な構築、ECサイト、オーダーメイドのインタラクションまで。</div>
+      <div class="price-amount" data-i18n="pricing.studio.price">個別見積もり</div>
+      <div class="price-turnaround" data-i18n="pricing.studio.turnaround">案件ごとに個別対応</div>
       <ul class="price-features">
-        <li data-i18n="pricing.studio.feature1">Unlimited pages</li>
-        <li data-i18n="pricing.studio.feature2">E-commerce &amp; integrations</li>
-        <li data-i18n="pricing.studio.feature3">Bespoke interaction &amp; motion</li>
-        <li data-i18n="pricing.studio.feature4">Dedicated support</li>
-        <li data-i18n="pricing.studio.feature5">Professional translation included (English + more)</li>
-        <li><span data-i18n="pricing.studio.feature6">AI search optimization</span> <button class="info-tap" type="button" aria-label="What's included in AI search optimization?" data-i18n-aria-label="tooltips.aiSearchProAriaLabel" data-tooltip="Includes research into what people actually ask AI assistants, FAQ content written to answer those questions, and bilingual setup so both languages are easy for AI to read and recommend." data-i18n-tooltip="tooltips.aiSearchPro"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></li>
+        <li data-i18n="pricing.studio.feature1">ページ数無制限</li>
+        <li data-i18n="pricing.studio.feature2">ECサイト・外部連携</li>
+        <li data-i18n="pricing.studio.feature3">オーダーメイドのインタラクション・モーション</li>
+        <li data-i18n="pricing.studio.feature4">専任サポート</li>
+        <li data-i18n="pricing.studio.feature5">プロによる翻訳込み（英語ほか対応）</li>
+        <li><span data-i18n="pricing.studio.feature6">AI検索対策（本格）</span> <button class="info-tap" type="button" aria-label="AI検索対策（本格）には何が含まれますか？" data-i18n-aria-label="tooltips.aiSearchProAriaLabel" data-tooltip="AIに実際に聞かれそうな質問の調査、その質問に答えるFAQ文章の作成、AIが読み取りやすい日英バイリンガル対応を含みます。" data-i18n-tooltip="tooltips.aiSearchPro"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></li>
       </ul>
-      <button class="btn price-btn js-open-quiz" data-tier="studio" data-i18n="pricing.studio.cta">Talk to us</button>
+      <button class="btn price-btn js-open-quiz" data-tier="studio" data-i18n="pricing.studio.cta">ご相談ください</button>
     </div>
 
   </div>
 
-  <p class="pricing-payment-note" data-i18n="pricing.paymentNote">Project fees are paid in two parts: 50% to start, 50% after you approve the finished site. Optional hosting is billed monthly.</p>
+  <p class="pricing-payment-note" data-i18n="pricing.paymentNote">制作費は2回に分けて、着手時に50％、完成後のご承認をいただいてから残り50％をお支払いいただきます。ホスティング（任意）は別途月額です。</p>
 
   <div class="hosting-addon">
     <div class="hosting-addon-text">
-      <h3 class="hosting-addon-title"><span data-i18n="hosting.title">Hosting</span> <button class="info-tap" type="button" aria-label="What's hosting?" data-i18n-aria-label="tooltips.hostingAriaLabel" data-tooltip="Where your website actually lives online. Without it, your site can't go live." data-i18n-tooltip="tooltips.hosting"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></h3>
-      <p><span data-i18n="hosting.bodyPre">An optional add-on, independent of your plan. Turn it on now or add it later. You'll also need a domain</span> <button class="info-tap" type="button" aria-label="What's a domain?" data-i18n-aria-label="tooltips.domainAriaLabel" data-tooltip="Your website's address, what people type to find you, like aurasites.com." data-i18n-tooltip="tooltips.domain"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button> <span data-i18n="hosting.bodyPost">pointing at your site.</span></p>
+      <h3 class="hosting-addon-title"><span data-i18n="hosting.title">ホスティング</span> <button class="info-tap" type="button" aria-label="ホスティングとは？" data-i18n-aria-label="tooltips.hostingAriaLabel" data-tooltip="あなたのウェブサイトが実際に置かれている場所のことです。これがないと、サイトを公開できません。" data-i18n-tooltip="tooltips.hosting"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></h3>
+      <p><span data-i18n="hosting.bodyPre">プランとは別のオプションアイテムです。今すぐでも後からでも有効にできます。サイトを公開するには、ドメイン</span> <button class="info-tap" type="button" aria-label="ドメインとは？" data-i18n-aria-label="tooltips.domainAriaLabel" data-tooltip="ウェブサイトの住所のようなものです。aurasites.comのように、人々があなたを見つけるために入力するものです。" data-i18n-tooltip="tooltips.domain"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button> <span data-i18n="hosting.bodyPost">を指定する必要もあります。</span></p>
     </div>
     <div class="hosting-addon-price">
-      <span class="hosting-amount" data-i18n="hosting.amount">¥4,000</span>
-      <span class="hosting-period" data-i18n="hosting.period">/month</span>
+      <span class="hosting-amount" data-i18n="hosting.amount">月額¥4,000</span>
+      <span class="hosting-period" data-i18n="hosting.period"></span>
     </div>
   </div>
 
@@ -453,11 +463,11 @@
        instead of "Pricing coming soon" / "価格は近日公開".
   <div class="hosting-addon">
     <div class="hosting-addon-text">
-      <h3 class="hosting-addon-title"><span data-i18n="aiReport.title">Monthly AI visibility report</span></h3>
-      <p><span data-i18n="aiSearch.termLabel">AI search optimization</span> <button class="info-tap" type="button" aria-label="What's AI search optimization?" data-i18n-aria-label="tooltips.aiSearchGeneralAriaLabel" data-tooltip="Setting up your site so that when someone asks an AI like ChatGPT &quot;Where should I eat in Shibuya?&quot;, your business is more likely to be recommended." data-i18n-tooltip="tooltips.aiSearchGeneral"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></p>
+      <h3 class="hosting-addon-title"><span data-i18n="aiReport.title">月次AI検索レポート</span></h3>
+      <p><span data-i18n="aiSearch.termLabel">AI検索対策</span> <button class="info-tap" type="button" aria-label="AI検索対策とは？" data-i18n-aria-label="tooltips.aiSearchGeneralAriaLabel" data-tooltip="ChatGPTなどのAIに『渋谷でおすすめのレストランは？』と聞かれたとき、あなたのお店が紹介されやすくなるようにサイトを整えることです。" data-i18n-tooltip="tooltips.aiSearchGeneral"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></p>
     </div>
     <div class="hosting-addon-price">
-      <span class="hosting-amount" data-i18n="aiReport.note">Pricing coming soon</span>
+      <span class="hosting-amount" data-i18n="aiReport.note">価格は近日公開</span>
     </div>
   </div>
   -->
@@ -467,7 +477,8 @@
      regular (standing) price shown struck through on Launch/Grow, not the
      limited-time founding rate, so this doesn't go stale once the founding
      promotion ends. Studio has no fixed price, so it's described without
-     one rather than inventing a number. -->
+     one rather than inventing a number. Generated per-language by
+     scripts/build.mjs (see buildServiceJsonLd) -- not hand-edited here. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -478,6 +489,7 @@
     "name": "Aura Sites"
   },
   "areaServed": "JP",
+  "inLanguage": "ja",
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Aura Sites pricing",
@@ -485,21 +497,21 @@
       {
         "@type": "Offer",
         "name": "Launch",
-        "description": "A single-page or small brand site, done right. Up to 3 pages, custom design, mobile-optimized, 1 revision round, professional translation, basic AI search setup.",
+        "description": "1ページ、または小規模なブランドサイトを、確かな品質で。",
         "price": "180000",
         "priceCurrency": "JPY"
       },
       {
         "@type": "Offer",
         "name": "Grow",
-        "description": "A full multi-page site for a growing business. Up to 8 pages, CMS, copywriting support, 3 revision rounds, professional translation, AI search optimization.",
+        "description": "成長するビジネスのための、本格的な複数ページサイト。",
         "price": "480000",
         "priceCurrency": "JPY"
       },
       {
         "@type": "Offer",
         "name": "Studio",
-        "description": "Complex builds, e-commerce, or bespoke interaction. Unlimited pages, e-commerce and integrations, dedicated support, professional translation, AI search optimization. Scoped and quoted per project."
+        "description": "複雑な構築、ECサイト、オーダーメイドのインタラクションまで。"
       }
     ]
   }
@@ -507,151 +519,152 @@
 </script>
 
 <section class="ai-search-feature">
-  <h2 class="display" data-i18n="aiSearch.heading">Found by tourists, wherever they search</h2>
-  <p data-i18n="aiSearch.body">Every site we build is set up to appear on Google, and in AI assistants like ChatGPT, Claude and Perplexity.</p>
-  <p class="feature-term-tag"><span data-i18n="aiSearch.termLabel">AI search optimization</span> <button class="info-tap" type="button" aria-label="What's AI search optimization?" data-i18n-aria-label="tooltips.aiSearchGeneralAriaLabel" data-tooltip="Setting up your site so that when someone asks an AI like ChatGPT &quot;Where should I eat in Shibuya?&quot;, your business is more likely to be recommended." data-i18n-tooltip="tooltips.aiSearchGeneral"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></p>
-  <p><a href="/restaurant-websites-tokyo" data-i18n="aiSearch.restaurantLink">See how this works for restaurants in Tokyo</a></p>
+  <h2 class="display" data-i18n="aiSearch.heading">観光客に、見つけてもらえるサイトに</h2>
+  <p data-i18n="aiSearch.body">Google検索はもちろん、ChatGPTなどのAI検索でも紹介されやすいサイトを制作します。</p>
+  <p class="feature-term-tag"><span data-i18n="aiSearch.termLabel">AI検索対策</span> <button class="info-tap" type="button" aria-label="AI検索対策とは？" data-i18n-aria-label="tooltips.aiSearchGeneralAriaLabel" data-tooltip="ChatGPTなどのAIに『渋谷でおすすめのレストランは？』と聞かれたとき、あなたのお店が紹介されやすくなるようにサイトを整えることです。" data-i18n-tooltip="tooltips.aiSearchGeneral"><span class="info-tap-icon" aria-hidden="true">ⓘ</span></button></p>
+  <p><a href="/restaurant-websites-tokyo" data-i18n="aiSearch.restaurantLink">飲食店向けの詳しい内容を見る</a></p>
 </section>
 
 <section class="global-reach">
-  <h2 class="display" data-i18n="globalReach.heading">Speak your customers' language.</h2>
-  <p data-i18n="globalReach.body">Your customers speak more than one language, shouldn't your website? Every Aura Sites project includes professional translation, done in partnership with Asiatis, a translation agency with over 25 years of experience across Japanese, English, and beyond. Your site won't just look great, it'll be understood correctly by everyone who visits.</p>
+  <h2 class="display" data-i18n="globalReach.heading">お客様の言葉で、話そう。</h2>
+  <p data-i18n="globalReach.body">お客様は、いくつもの言語を話します。あなたのサイトは、それに応えられていますか？Aura Sitesのすべてのプロジェクトには、プロフェッショナルな翻訳が含まれています。日本語・英語をはじめ25年以上の実績を持つ翻訳会社、Asiatisとの提携によるものです。見た目が美しいだけでなく、訪れるすべての方に正しく伝わるサイトをお届けします。</p>
 </section>
 
 <section class="faq" id="faq">
   <div class="faq-head">
-    <h2 class="display" data-i18n="faq.heading">Questions, answered</h2>
+    <h2 class="display" data-i18n="faq.heading">よくあるご質問</h2>
   </div>
   <div class="faq-list">
     <div class="faq-item">
       <button class="faq-question" type="button" aria-expanded="false">
-        <span data-i18n="faq.q1">How fast can you actually turn this around?</span>
+        <span data-i18n="faq.q1">実際のところ、どのくらいのスピードで対応できますか？</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a1">Turnaround depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary.</p>
+        <p data-i18n="faq.a1">納期はプランによって異なります。Launchサイトは通常3日以内に公開、Growサイトは1〜2週間以内に公開となります。Studioのビルドは案件ごとに幅が大きいため、個別にご相談のうえ決定します。</p>
       </div>
     </div>
     <div class="faq-item">
       <button class="faq-question" type="button" aria-expanded="false">
-        <span data-i18n="faq.q2">How many rounds of revisions do I get?</span>
+        <span data-i18n="faq.q2">修正は何回までお願いできますか？</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a2">Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your specific needs. Additional rounds can always be added if required.</p>
+        <p data-i18n="faq.a2">Launchプランには修正1回、Growプランには修正3回が含まれています。Studioは案件の内容に応じて個別に設定します。必要であれば、追加の修正回数をご用意することも可能です。</p>
       </div>
     </div>
     <div class="faq-item">
       <button class="faq-question" type="button" aria-expanded="false">
-        <span data-i18n="faq.q3">What do you need from me to get started?</span>
+        <span data-i18n="faq.q3">始めるにあたって、何を用意すればいいですか？</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a3">We begin with a short discovery call to understand your goals for the project. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps.</p>
+        <p data-i18n="faq.a3">まずは短いヒアリングを行い、ご要望を伺うところから始めます。そのうえで、ロゴ、写真、ブランドカラー、既存のテキスト、可能であればドメインやホスティングアカウントへのアクセス情報などがあるとスムーズです。まだお持ちでない場合も、私たちがサポートしますのでご安心ください。</p>
       </div>
     </div>
     <div class="faq-item">
       <button class="faq-question" type="button" aria-expanded="false">
-        <span data-i18n="faq.q4">How does payment work?</span>
+        <span data-i18n="faq.q4">お支払いはどのようになりますか？</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a4">We split the project fee in two: 50% to start, and the remaining 50% after you've reviewed and approved the finished site. If you cancel before we deliver the first design concept, you receive a full refund. Optional hosting is billed separately each month. Your timeline begins once we've received the deposit and the basic materials we need (text, photos, logo).</p>
+        <p data-i18n="faq.a4">制作費は2回に分けてお支払いいただきます。制作開始時に50％、完成したサイトをご確認・ご承認いただいた後に残りの50％です。最初のデザイン案をお渡しする前にキャンセルされた場合は、全額を返金いたします。ホスティング（任意）は、別途月額でのお支払いです。ご入金と、必要な素材（文章・写真・ロゴ）を確認できた時点から、制作期間が始まります。</p>
       </div>
     </div>
     <div class="faq-item">
       <button class="faq-question" type="button" aria-expanded="false">
-        <span data-i18n="faq.q5">What's your refund policy?</span>
+        <span data-i18n="faq.q5">返金についてのポリシーを教えてください。</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a5">If you cancel before we deliver the first concept, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue.</p>
+        <p data-i18n="faq.a5">最初のデザイン案(初稿デザイン)をお渡しする前にキャンセルされた場合、作業はほとんど発生していないため、全額返金いたします。初稿デザインの提出後は、それまでのデザイン・開発にかかった時間を完了した業務とみなすため、以降キャンセルされた場合でも返金の対象外となります。</p>
       </div>
     </div>
     <div class="faq-item">
       <button class="faq-question" type="button" aria-expanded="false">
-        <span data-i18n="faq.q6">Do you offer the website in other languages?</span>
+        <span data-i18n="faq.q6">他の言語にも対応してもらえますか？</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a6">Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated.</p>
+        <p data-i18n="faq.a6">はい、追加費用なしですべてのプロジェクトに含まれています。25年以上の実績を持つ翻訳会社Asiatisと提携し、機械翻訳ではない、海外のお客様にも自然かつ正確に伝わるサイトに仕上げます。</p>
       </div>
     </div>
     <div class="faq-item">
       <button class="faq-question" type="button" aria-expanded="false">
-        <span data-i18n="faq.q7">Can you guarantee my restaurant appears in ChatGPT?</span>
+        <span data-i18n="faq.q7">自分のお店がChatGPTに表示されることを保証してもらえますか？</span>
         <span class="faq-chevron">⌄</span>
       </button>
       <div class="faq-answer">
-        <p data-i18n="faq.a7">No one can guarantee that, because AI answers change by person and by day. What we do is make your site as easy as possible for AI to find, understand and recommend, and we can show you where you appear each month.</p>
+        <p data-i18n="faq.a7">それを保証できる人はいません。AIの回答は、聞く人や日によって変わるからです。私たちができるのは、AIがあなたのサイトをできるだけ見つけやすく、理解しやすく、紹介しやすい状態に整えることです。毎月、どのように紹介されているかをお見せすることもできます。</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FAQPage structured data for the section above. Kept static (not
-     regenerated by the i18n engine) since search and AI-answer crawlers
-     largely read the raw HTML without executing JS, so this mirrors the
-     page's default English FAQ copy for reliable indexing. -->
+<!-- FAQPage structured data for the FAQ section above, generated
+     per-language by scripts/build.mjs (see buildFaqJsonLd) from the
+     same faq.q1..q7/a1..a7 i18n keys the visible FAQ uses, so the two
+     can not drift apart. Not hand-edited here. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
+  "inLanguage": "ja",
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "How fast can you actually turn this around?",
+      "name": "実際のところ、どのくらいのスピードで対応できますか？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Turnaround depends on your tier. Launch sites typically go live within three days, Grow sites within one to two weeks, and Studio builds are scoped individually given how much they can vary."
+        "text": "納期はプランによって異なります。Launchサイトは通常3日以内に公開、Growサイトは1〜2週間以内に公開となります。Studioのビルドは案件ごとに幅が大きいため、個別にご相談のうえ決定します。"
       }
     },
     {
       "@type": "Question",
-      "name": "How many rounds of revisions do I get?",
+      "name": "修正は何回までお願いできますか？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Launch includes one round of revisions, Grow includes three, and Studio is scoped to fit your specific needs. Additional rounds can always be added if required."
+        "text": "Launchプランには修正1回、Growプランには修正3回が含まれています。Studioは案件の内容に応じて個別に設定します。必要であれば、追加の修正回数をご用意することも可能です。"
       }
     },
     {
       "@type": "Question",
-      "name": "What do you need from me to get started?",
+      "name": "始めるにあたって、何を用意すればいいですか？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We begin with a short discovery call to understand your goals for the project. From there, it helps to have your logo, photos, brand colors, existing copy, and access to your domain or hosting account if available. If you don't have these yet, we're happy to help fill in the gaps."
+        "text": "まずは短いヒアリングを行い、ご要望を伺うところから始めます。そのうえで、ロゴ、写真、ブランドカラー、既存のテキスト、可能であればドメインやホスティングアカウントへのアクセス情報などがあるとスムーズです。まだお持ちでない場合も、私たちがサポートしますのでご安心ください。"
       }
     },
     {
       "@type": "Question",
-      "name": "How does payment work?",
+      "name": "お支払いはどのようになりますか？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "We split the project fee in two: 50% to start, and the remaining 50% after you've reviewed and approved the finished site. If you cancel before we deliver the first design concept, you receive a full refund. Optional hosting is billed separately each month. Your timeline begins once we've received the deposit and the basic materials we need (text, photos, logo)."
+        "text": "制作費は2回に分けてお支払いいただきます。制作開始時に50％、完成したサイトをご確認・ご承認いただいた後に残りの50％です。最初のデザイン案をお渡しする前にキャンセルされた場合は、全額を返金いたします。ホスティング（任意）は、別途月額でのお支払いです。ご入金と、必要な素材（文章・写真・ロゴ）を確認できた時点から、制作期間が始まります。"
       }
     },
     {
       "@type": "Question",
-      "name": "What's your refund policy?",
+      "name": "返金についてのポリシーを教えてください。",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "If you cancel before we deliver the first concept, you'll receive a full refund, as minimal work will have taken place. Once the First Look is delivered, that design and development time represents completed work, so it becomes non-refundable from that point forward, even if you choose not to continue."
+        "text": "最初のデザイン案(初稿デザイン)をお渡しする前にキャンセルされた場合、作業はほとんど発生していないため、全額返金いたします。初稿デザインの提出後は、それまでのデザイン・開発にかかった時間を完了した業務とみなすため、以降キャンセルされた場合でも返金の対象外となります。"
       }
     },
     {
       "@type": "Question",
-      "name": "Do you offer the website in other languages?",
+      "name": "他の言語にも対応してもらえますか？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated."
+        "text": "はい、追加費用なしですべてのプロジェクトに含まれています。25年以上の実績を持つ翻訳会社Asiatisと提携し、機械翻訳ではない、海外のお客様にも自然かつ正確に伝わるサイトに仕上げます。"
       }
     },
     {
       "@type": "Question",
-      "name": "Can you guarantee my restaurant appears in ChatGPT?",
+      "name": "自分のお店がChatGPTに表示されることを保証してもらえますか？",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No one can guarantee that, because AI answers change by person and by day. What we do is make your site as easy as possible for AI to find, understand and recommend, and we can show you where you appear each month."
+        "text": "それを保証できる人はいません。AIの回答は、聞く人や日によって変わるからです。私たちができるのは、AIがあなたのサイトをできるだけ見つけやすく、理解しやすく、紹介しやすい状態に整えることです。毎月、どのように紹介されているかをお見せすることもできます。"
       }
     }
   ]
@@ -659,43 +672,43 @@
 </script>
 
 <section class="why-not-template">
-  <h2 class="display" data-i18n="whyNotTemplate.heading">Not another template</h2>
-  <p data-i18n="whyNotTemplate.body">Templates start with someone else's decisions already made. We start with yours, then build backward into a site shaped entirely around your business, not a theme you're renting.</p>
+  <h2 class="display" data-i18n="whyNotTemplate.heading">テンプレートは、使わない</h2>
+  <p data-i18n="whyNotTemplate.body">テンプレートは、すでに他人の判断で組み立てられています。私たちはあなたの意思から出発し、借り物のテーマではなく、あなたのビジネスのためだけに設計されたサイトを、逆算しながら形にしていきます。</p>
 </section>
 
 <footer id="site-footer">
   <div class="footer-top">
     <div class="footer-brand">
       <a href="#" class="aura-logo aura-logo--horizontal footer-logo" aria-label="Aura Sites, home">
-        <img src="assets/logo/aura-sites-icon.svg" alt="" width="32" height="32" class="aura-logo__mark">
+        <img src="/assets/logo/aura-sites-icon.svg" alt="" width="32" height="32" class="aura-logo__mark">
         <span class="aura-logo__word aura-font-display">AURA <span class="aura-logo__word--dim">SITES</span></span>
       </a>
-      <p class="footer-tagline" data-i18n="footer.tagline">Websites that feel handcrafted. At a pace that isn't.</p>
+      <p class="footer-tagline" data-i18n="footer.tagline">手仕事のような丁寧さを、驚くほどの速さで届けるウェブサイト。</p>
     </div>
     <div class="footer-links">
-      <a href="#work" data-i18n="nav.work">Work</a>
-      <a href="#process" data-i18n="nav.process">Process</a>
-      <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
-      <a href="#" class="js-open-quiz" data-i18n="nav.contact">Get started</a>
+      <a href="#work" data-i18n="nav.work">実績</a>
+      <a href="#process" data-i18n="nav.process">制作の流れ</a>
+      <a href="#pricing" data-i18n="nav.pricing">料金</a>
+      <a href="#" class="js-open-quiz" data-i18n="nav.contact">はじめる</a>
     </div>
     <a class="footer-email" href="mailto:aurasitesstudio@gmail.com">aurasitesstudio@gmail.com</a>
   </div>
   <div class="footer-bottom">
-    <span data-i18n="footer.copyright">© 2026 Aura Sites. All rights reserved.</span>
+    <span data-i18n="footer.copyright">© 2026 Aura Sites. 無断複写・転載を禁じます。</span>
     <span class="footer-bottom-sep" aria-hidden="true">&middot;</span>
-    <a class="footer-bottom-link" href="/about" data-i18n="footer.aboutLink">About</a>
+    <a class="footer-bottom-link" href="/about" data-i18n="footer.aboutLink">Aura Sitesについて</a>
     <span class="footer-bottom-sep" aria-hidden="true">&middot;</span>
-    <a class="footer-bottom-link" href="/restaurant-websites-tokyo" data-i18n="footer.restaurantPageLink">Restaurant websites in Tokyo</a>
+    <a class="footer-bottom-link" href="/restaurant-websites-tokyo" data-i18n="footer.restaurantPageLink">東京の飲食店向け英語ホームページ制作</a>
     <span class="footer-bottom-sep" aria-hidden="true">&middot;</span>
-    <a class="footer-bottom-link" href="/case-study-asiatis" data-i18n="footer.caseStudyLink">Case study: Asiatis</a>
+    <a class="footer-bottom-link" href="/case-study-asiatis" data-i18n="footer.caseStudyLink">制作事例：Asiatis</a>
     <span class="footer-bottom-sep" aria-hidden="true">&middot;</span>
-    <a class="footer-bottom-link" href="/privacy" data-i18n="footer.privacyLink">Privacy policy</a>
+    <a class="footer-bottom-link" href="/privacy" data-i18n="footer.privacyLink">プライバシーポリシー</a>
   </div>
 </footer>
 
 <div class="modal-overlay" id="quiz-overlay">
-  <div class="modal" id="quiz-modal" role="dialog" aria-modal="true" aria-label="Start a project" data-i18n-aria-label="quiz.modalAriaLabel">
-    <button class="modal-close" id="quiz-close" type="button" aria-label="Close" data-i18n-aria-label="quiz.closeAriaLabel">&times;</button>
+  <div class="modal" id="quiz-modal" role="dialog" aria-modal="true" aria-label="プロジェクトを始める" data-i18n-aria-label="quiz.modalAriaLabel">
+    <button class="modal-close" id="quiz-close" type="button" aria-label="閉じる" data-i18n-aria-label="quiz.closeAriaLabel">&times;</button>
 
     <div class="quiz-progress-track"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
     <div class="quiz-phase" id="quiz-phase">Basics</div>
@@ -703,80 +716,80 @@
     <div class="quiz-body" id="quiz-body">
 
       <div class="quiz-step" data-step="business-name">
-        <div class="quiz-question" data-i18n="quiz.businessName.question">What's your business called?</div>
-        <input type="text" class="quiz-input" data-field="businessName" placeholder="e.g. Aura Sites" data-i18n-placeholder="quiz.businessName.placeholder" autocomplete="off">
-        <div class="quiz-nav"><span></span><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
-        <button type="button" class="quiz-skip-to-booking" id="quiz-skip-to-booking" data-i18n="quiz.businessName.skipToBooking">Already know what you need? Skip straight to booking a call</button>
+        <div class="quiz-question" data-i18n="quiz.businessName.question">屋号やビジネス名を教えてください。</div>
+        <input type="text" class="quiz-input" data-field="businessName" placeholder="例：Aura Sites" data-i18n-placeholder="quiz.businessName.placeholder" autocomplete="off">
+        <div class="quiz-nav"><span></span><button class="btn primary quiz-next" data-i18n="quiz.common.next">次へ</button></div>
+        <button type="button" class="quiz-skip-to-booking" id="quiz-skip-to-booking" data-i18n="quiz.businessName.skipToBooking">すでにご要望がお決まりの方は、質問をスキップして通話を予約できます</button>
       </div>
 
       <div class="quiz-step" data-step="description">
-        <div class="quiz-question" data-i18n="quiz.description.question">Describe it in one line</div>
-        <input type="text" class="quiz-input" data-field="description" placeholder="e.g. A cozy neighborhood bakery specializing in sourdough" data-i18n-placeholder="quiz.description.placeholder" autocomplete="off">
-        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+        <div class="quiz-question" data-i18n="quiz.description.question">ひとことで説明してください</div>
+        <input type="text" class="quiz-input" data-field="description" placeholder="例：こだわりのサワードウを扱う、街の小さなベーカリー" data-i18n-placeholder="quiz.description.placeholder" autocomplete="off">
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">戻る</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">次へ</button></div>
       </div>
 
       <div class="quiz-step" data-step="email">
-        <div class="quiz-question" data-i18n="quiz.email.question">What's the best email to reach you at?</div>
+        <div class="quiz-question" data-i18n="quiz.email.question">ご連絡先のメールアドレスを教えてください</div>
         <input type="email" class="quiz-input" id="quiz-email" data-field="email" placeholder="you@example.com" data-i18n-placeholder="quiz.email.placeholder" autocomplete="email">
-        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">戻る</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">次へ</button></div>
       </div>
 
       <div class="quiz-step" data-step="size">
-        <div class="quiz-question" data-i18n="quiz.size.question">Roughly how big is this?</div>
+        <div class="quiz-question" data-i18n="quiz.size.question">だいたいどのくらいの規模ですか？</div>
         <div class="quiz-options quiz-options-stack" data-field="size">
-          <button class="option-card" data-value="one" data-i18n="quiz.size.one">One page</button>
-          <button class="option-card" data-value="few" data-i18n="quiz.size.few">A few pages (3 to 5)</button>
-          <button class="option-card" data-value="full" data-i18n="quiz.size.full">A full site (6+, maybe a blog)</button>
-          <button class="option-card" data-value="notsure" data-i18n="quiz.common.notSure">Not sure</button>
+          <button class="option-card" data-value="one" data-i18n="quiz.size.one">1ページ</button>
+          <button class="option-card" data-value="few" data-i18n="quiz.size.few">数ページ（3〜5ページ）</button>
+          <button class="option-card" data-value="full" data-i18n="quiz.size.full">本格的なサイト（6ページ以上、ブログを含む場合も）</button>
+          <button class="option-card" data-value="notsure" data-i18n="quiz.common.notSure">未定</button>
         </div>
-        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><span></span></div>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">戻る</button><span></span></div>
       </div>
 
       <div class="quiz-step" data-step="pages-checklist">
-        <div class="quiz-question" data-i18n="quiz.pagesChecklist.question">Which pages do you think you'll need?</div>
+        <div class="quiz-question" data-i18n="quiz.pagesChecklist.question">必要になりそうなページを教えてください。</div>
         <div class="quiz-checklist" id="quiz-pages-checklist">
-          <label class="check-card"><input type="checkbox" value="Home"><span data-i18n="quiz.pagesChecklist.home">Home</span></label>
-          <label class="check-card"><input type="checkbox" value="About"><span data-i18n="quiz.pagesChecklist.about">About</span></label>
-          <label class="check-card"><input type="checkbox" value="Services"><span data-i18n="quiz.pagesChecklist.services">Services</span></label>
-          <label class="check-card"><input type="checkbox" value="Pricing"><span data-i18n="quiz.pagesChecklist.pricing">Pricing</span></label>
-          <label class="check-card"><input type="checkbox" value="Testimonials"><span data-i18n="quiz.pagesChecklist.testimonials">Testimonials</span></label>
-          <label class="check-card"><input type="checkbox" value="Contact"><span data-i18n="quiz.pagesChecklist.contact">Contact</span></label>
-          <label class="check-card"><input type="checkbox" value="Blog"><span data-i18n="quiz.pagesChecklist.blog">Blog</span></label>
-          <label class="check-card"><input type="checkbox" value="FAQ"><span data-i18n="quiz.pagesChecklist.faq">FAQ</span></label>
+          <label class="check-card"><input type="checkbox" value="Home"><span data-i18n="quiz.pagesChecklist.home">ホーム</span></label>
+          <label class="check-card"><input type="checkbox" value="About"><span data-i18n="quiz.pagesChecklist.about">会社紹介</span></label>
+          <label class="check-card"><input type="checkbox" value="Services"><span data-i18n="quiz.pagesChecklist.services">サービス</span></label>
+          <label class="check-card"><input type="checkbox" value="Pricing"><span data-i18n="quiz.pagesChecklist.pricing">料金</span></label>
+          <label class="check-card"><input type="checkbox" value="Testimonials"><span data-i18n="quiz.pagesChecklist.testimonials">お客様の声</span></label>
+          <label class="check-card"><input type="checkbox" value="Contact"><span data-i18n="quiz.pagesChecklist.contact">お問い合わせ</span></label>
+          <label class="check-card"><input type="checkbox" value="Blog"><span data-i18n="quiz.pagesChecklist.blog">ブログ</span></label>
+          <label class="check-card"><input type="checkbox" value="FAQ"><span data-i18n="quiz.pagesChecklist.faq">よくある質問</span></label>
         </div>
-        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">戻る</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">次へ</button></div>
       </div>
 
       <div class="quiz-step" data-step="complexity">
-        <div class="quiz-question" data-i18n="quiz.complexity.question">Do you need online payments, bookings, or user logins?</div>
+        <div class="quiz-question" data-i18n="quiz.complexity.question">オンライン決済、予約機能、会員ログインなどは必要ですか？</div>
         <div class="quiz-options" data-field="complexity">
-          <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">Yes</button>
-          <button class="option-card" data-value="no" data-i18n="quiz.common.no">No</button>
+          <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">はい</button>
+          <button class="option-card" data-value="no" data-i18n="quiz.common.no">いいえ</button>
         </div>
-        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><span></span></div>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">戻る</button><span></span></div>
       </div>
 
       <div class="quiz-step" data-step="complexity-detail">
-        <div class="quiz-question" data-i18n="quiz.complexityDetail.question">Tell us a bit about that</div>
-        <textarea class="quiz-input" data-field="complexityDetail" rows="3" placeholder="e.g. Stripe checkout for 3 products, or a booking calendar" data-i18n-placeholder="quiz.complexityDetail.placeholder"></textarea>
-        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+        <div class="quiz-question" data-i18n="quiz.complexityDetail.question">詳しく教えてください</div>
+        <textarea class="quiz-input" data-field="complexityDetail" rows="3" placeholder="例：Stripeを使った商品3点の決済、予約カレンダーなど" data-i18n-placeholder="quiz.complexityDetail.placeholder"></textarea>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">戻る</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">次へ</button></div>
       </div>
 
       <div class="quiz-step" data-step="vibe">
-        <div class="quiz-question" data-i18n="quiz.vibe.question">Pick the vibe you're going for (choose as many as fit)</div>
+        <div class="quiz-question" data-i18n="quiz.vibe.question">目指す雰囲気を選んでください（複数選択可）</div>
         <div class="quiz-options quiz-options-grid" data-field="vibes" data-multi="true">
-          <button class="option-card" data-value="clean" data-i18n="quiz.vibe.clean" aria-pressed="false">Clean &amp; minimal</button>
-          <button class="option-card" data-value="warm" data-i18n="quiz.vibe.warm" aria-pressed="false">Warm &amp; friendly</button>
-          <button class="option-card" data-value="bold" data-i18n="quiz.vibe.bold" aria-pressed="false">Bold &amp; modern</button>
-          <button class="option-card" data-value="corporate" data-i18n="quiz.vibe.corporate" aria-pressed="false">Professional &amp; corporate</button>
-          <button class="option-card" data-value="other" data-i18n="quiz.vibe.other" aria-pressed="false">Something else</button>
+          <button class="option-card" data-value="clean" data-i18n="quiz.vibe.clean" aria-pressed="false">クリーン＆ミニマル</button>
+          <button class="option-card" data-value="warm" data-i18n="quiz.vibe.warm" aria-pressed="false">温かみ＆親しみやすさ</button>
+          <button class="option-card" data-value="bold" data-i18n="quiz.vibe.bold" aria-pressed="false">大胆＆モダン</button>
+          <button class="option-card" data-value="corporate" data-i18n="quiz.vibe.corporate" aria-pressed="false">フォーマル＆コーポレート</button>
+          <button class="option-card" data-value="other" data-i18n="quiz.vibe.other" aria-pressed="false">その他</button>
         </div>
-        <input type="text" class="quiz-input" id="quiz-vibe-other-input" data-field="vibeOther" hidden style="margin-top:16px;" placeholder="e.g. Minimal but playful, with a hand-drawn feel" data-i18n-placeholder="quiz.vibe.otherPlaceholder" autocomplete="off">
-        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">Next</button></div>
+        <input type="text" class="quiz-input" id="quiz-vibe-other-input" data-field="vibeOther" hidden style="margin-top:16px;" placeholder="例：ミニマルだけど遊び心のある、手描き風の雰囲気" data-i18n-placeholder="quiz.vibe.otherPlaceholder" autocomplete="off">
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">戻る</button><button class="btn primary quiz-next" data-i18n="quiz.common.next">次へ</button></div>
       </div>
 
       <div class="quiz-step" data-step="recommendation">
-        <div class="quiz-question" id="quiz-recommend-question" data-i18n="quiz.recommendation.question">Here's what we'd suggest</div>
+        <div class="quiz-question" id="quiz-recommend-question" data-i18n="quiz.recommendation.question">こちらのプランをご提案します</div>
         <div class="recommend-card" id="recommend-card">
           <div class="recommend-tier" id="recommend-tier">Grow</div>
           <div class="recommend-price" id="recommend-price">¥480,000〜</div>
@@ -784,77 +797,77 @@
           <div class="recommend-turnaround" id="recommend-turnaround">~1–2 week turnaround</div>
           <p class="recommend-blurb" id="recommend-blurb">A multi-page site with room to grow fits the Grow tier well.</p>
         </div>
-        <input type="text" class="quiz-input" id="quiz-name" placeholder="Your name" data-i18n-placeholder="quiz.recommendation.namePlaceholder" autocomplete="name" style="margin-top:24px;">
-        <p class="quiz-consent" data-i18n="quiz.recommendation.consent">By submitting, you agree to our <a href="/privacy" target="_blank" rel="noopener">privacy policy</a>.</p>
-        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">Back</button><button class="btn primary" id="quiz-submit" data-i18n="quiz.recommendation.submit">Submit</button></div>
+        <input type="text" class="quiz-input" id="quiz-name" placeholder="お名前" data-i18n-placeholder="quiz.recommendation.namePlaceholder" autocomplete="name" style="margin-top:24px;">
+        <p class="quiz-consent" data-i18n="quiz.recommendation.consent">送信すると、<a href="/privacy" target="_blank" rel="noopener">プライバシーポリシー</a>に同意したものとみなされます。</p>
+        <div class="quiz-nav"><button class="btn quiz-back" data-i18n="quiz.common.back">戻る</button><button class="btn primary" id="quiz-submit" data-i18n="quiz.recommendation.submit">送信</button></div>
       </div>
 
       <div class="quiz-step" data-step="post-submit">
-        <div class="quiz-question" data-i18n="quiz.postSubmit.question">You're in</div>
+        <div class="quiz-question" data-i18n="quiz.postSubmit.question">受付が完了しました</div>
 
-        <div class="quiz-subtext" data-i18n="quiz.hasLogo.question">Do you have a logo already?</div>
+        <div class="quiz-subtext" data-i18n="quiz.hasLogo.question">すでにロゴをお持ちですか？</div>
         <div class="quiz-options" data-field="hasLogo" id="post-submit-logo-options">
-          <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">Yes</button>
-          <button class="option-card" data-value="no" data-i18n="quiz.common.no">No</button>
+          <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">はい</button>
+          <button class="option-card" data-value="no" data-i18n="quiz.common.no">いいえ</button>
         </div>
 
         <div class="dropzone" id="quiz-logo-dropzone" tabindex="0" role="button" hidden style="margin-top:16px;">
           <input type="file" id="quiz-logo-file-input" multiple hidden>
-          <span class="dropzone-label" data-i18n="quiz.postSubmit.dropzoneLabel">Drag &amp; drop files here, or click to choose</span>
+          <span class="dropzone-label" data-i18n="quiz.postSubmit.dropzoneLabel">ここにファイルをドラッグ＆ドロップ、またはクリックして選択</span>
           <div class="dropzone-files" id="logo-dropzone-files"></div>
         </div>
 
         <div id="quiz-logo-design-block" hidden style="margin-top:16px;">
-          <div class="quiz-subtext" data-i18n="quiz.postSubmit.logoDesignQuestion">Would you like us to design one for you?</div>
+          <div class="quiz-subtext" data-i18n="quiz.postSubmit.logoDesignQuestion">ロゴのデザインもご依頼になりますか？</div>
           <div class="quiz-options" data-field="logoDesignRequest">
-            <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">Yes</button>
-            <button class="option-card" data-value="no" data-i18n="quiz.common.no">No</button>
+            <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">はい</button>
+            <button class="option-card" data-value="no" data-i18n="quiz.common.no">いいえ</button>
           </div>
         </div>
 
-        <p class="quiz-subtext" style="margin-top:24px;" data-i18n="quiz.postSubmit.subtext">Got any photos handy? Drop them now to speed things up, or skip and we'll sort it when we talk.</p>
+        <p class="quiz-subtext" style="margin-top:24px;" data-i18n="quiz.postSubmit.subtext">写真の準備はできていますか？今アップロードしていただくとスムーズです。まだの場合はスキップしていただいても、後ほどご相談の際に整理できます。</p>
 
         <div class="dropzone" id="quiz-dropzone" tabindex="0" role="button">
           <input type="file" id="quiz-file-input" multiple hidden>
-          <span class="dropzone-label" data-i18n="quiz.postSubmit.dropzoneLabel">Drag &amp; drop files here, or click to choose</span>
+          <span class="dropzone-label" data-i18n="quiz.postSubmit.dropzoneLabel">ここにファイルをドラッグ＆ドロップ、またはクリックして選択</span>
           <div class="dropzone-files" id="dropzone-files"></div>
         </div>
 
         <div id="quiz-no-photos">
-          <div class="quiz-subtext" style="margin-top:20px;" data-i18n="quiz.postSubmit.noPhotosLabel">Don't have photos yet?</div>
+          <div class="quiz-subtext" style="margin-top:20px;" data-i18n="quiz.postSubmit.noPhotosLabel">まだ写真がない場合は？</div>
           <div class="quiz-options" data-field="photoChoice">
-            <button class="option-card" data-value="stock" data-i18n="quiz.postSubmit.stockOption">Use stock photos</button>
-            <button class="option-card" data-value="ai" data-i18n="quiz.postSubmit.aiOption">Use AI-generated</button>
+            <button class="option-card" data-value="stock" data-i18n="quiz.postSubmit.stockOption">ストック写真を使う</button>
+            <button class="option-card" data-value="ai" data-i18n="quiz.postSubmit.aiOption">AI生成画像を使う</button>
           </div>
         </div>
 
-        <input type="text" class="quiz-input" id="quiz-domain" placeholder="Domain name, if you have one (optional)" data-i18n-placeholder="quiz.postSubmit.domainPlaceholder" autocomplete="off" style="margin-top:20px;">
+        <input type="text" class="quiz-input" id="quiz-domain" placeholder="ドメイン名（お持ちの場合、任意）" data-i18n-placeholder="quiz.postSubmit.domainPlaceholder" autocomplete="off" style="margin-top:20px;">
 
-        <div class="quiz-subtext" style="margin-top:20px;" data-i18n="quiz.postSubmit.hostingQuestion">Interested in hosting?</div>
+        <div class="quiz-subtext" style="margin-top:20px;" data-i18n="quiz.postSubmit.hostingQuestion">ホスティングにご興味はありますか？</div>
         <div class="quiz-options" data-field="hostingInterest">
-          <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">Yes</button>
-          <button class="option-card" data-value="no" data-i18n="quiz.common.no">No</button>
-          <button class="option-card" data-value="notsure" data-i18n="quiz.common.notSure">Not sure</button>
+          <button class="option-card" data-value="yes" data-i18n="quiz.common.yes">はい</button>
+          <button class="option-card" data-value="no" data-i18n="quiz.common.no">いいえ</button>
+          <button class="option-card" data-value="notsure" data-i18n="quiz.common.notSure">未定</button>
         </div>
 
-        <div class="quiz-nav"><button class="btn" id="quiz-skip-extras" data-i18n="quiz.postSubmit.skipBtn">Skip for now</button><button class="btn primary" id="quiz-finish-extras" data-i18n="quiz.postSubmit.finishBtn">Finish</button></div>
+        <div class="quiz-nav"><button class="btn" id="quiz-skip-extras" data-i18n="quiz.postSubmit.skipBtn">今はスキップ</button><button class="btn primary" id="quiz-finish-extras" data-i18n="quiz.postSubmit.finishBtn">完了</button></div>
       </div>
 
       <div class="quiz-step" data-step="thanks">
         <div class="quiz-question" id="quiz-thanks-heading">Thanks! Let's find a time to talk.</div>
-        <div class="quiz-nav"><span></span><button class="btn primary" id="quiz-thanks-continue" data-i18n="quiz.thanks.continueBtn">Continue</button></div>
+        <div class="quiz-nav"><span></span><button class="btn primary" id="quiz-thanks-continue" data-i18n="quiz.thanks.continueBtn">次へ</button></div>
       </div>
 
       <div class="quiz-step" data-step="booking">
-        <div class="quiz-question" id="quiz-booking-heading" data-i18n="quiz.booking.heading">Let's talk it through</div>
-        <p class="quiz-subtext" id="quiz-booking-subtext" data-i18n="quiz.booking.subtext">Book a quick discovery call, no obligation.</p>
-        <div class="quiz-question" id="quiz-booking-confirmed-heading" data-i18n="quiz.booking.confirmedHeading" hidden>You're all set</div>
-        <p class="quiz-subtext" id="quiz-booking-confirmed-subtext" data-i18n="quiz.booking.confirmedSubtext" hidden>Check your email for the confirmation and calendar invite.</p>
+        <div class="quiz-question" id="quiz-booking-heading" data-i18n="quiz.booking.heading">詳しくお話ししましょう</div>
+        <p class="quiz-subtext" id="quiz-booking-subtext" data-i18n="quiz.booking.subtext">気軽なディスカバリーコールを予約しましょう。参加は任意です。</p>
+        <div class="quiz-question" id="quiz-booking-confirmed-heading" data-i18n="quiz.booking.confirmedHeading" hidden>予約が完了しました</div>
+        <p class="quiz-subtext" id="quiz-booking-confirmed-subtext" data-i18n="quiz.booking.confirmedSubtext" hidden>確認メールとカレンダー招待をご確認ください。</p>
         <div class="quiz-cal-embed" id="quiz-cal-embed"></div>
         <div class="quiz-nav">
           <span></span>
-          <button class="btn" id="quiz-skip-booking" data-i18n="quiz.booking.skipBtn">Skip for now, I'll book later</button>
-          <button class="btn primary" id="quiz-booking-done" data-i18n="quiz.booking.doneBtn" hidden>Done</button>
+          <button class="btn" id="quiz-skip-booking" data-i18n="quiz.booking.skipBtn">今はスキップして、後で予約する</button>
+          <button class="btn primary" id="quiz-booking-done" data-i18n="quiz.booking.doneBtn" hidden>完了</button>
         </div>
       </div>
 
@@ -863,11 +876,11 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="js/scene.js"></script>
-<script src="js/i18n-strings.js"></script>
-<script src="js/i18n.js"></script>
-<script src="js/main.js"></script>
-<script src="js/reveal.js"></script>
+<script src="/js/scene.js"></script>
+<script src="/js/i18n-strings.js"></script>
+<script src="/js/i18n.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/reveal.js"></script>
 
 <!-- Cal.com embed loader (official @calcom/embed-core snippet). This just
      defines window.Cal and queues calls; the actual embed.js bundle isn't
@@ -902,7 +915,7 @@
   Cal("init", "discovery-call", { origin: "https://cal.com" });
 </script>
 
-<script src="js/quiz.js"></script>
+<script src="/js/quiz.js"></script>
 
 </body>
 </html>

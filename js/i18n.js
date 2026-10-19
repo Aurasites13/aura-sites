@@ -8,7 +8,15 @@ window.AuraI18n = (function () {
     return path.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : undefined), obj);
   }
 
+  // Each page is now a real, separate static file per language (see
+  // scripts/build.mjs), with the correct <html lang="..."> already baked
+  // in server-side -- that's the authoritative source of truth now, not
+  // a client-side guess. localStorage/navigator detection is kept only as
+  // a defensive fallback for the unlikely case that attribute is missing.
   function detectInitialLang() {
+    const pageLang = document.documentElement.getAttribute('lang');
+    if (pageLang === 'en' || pageLang === 'ja') return pageLang;
+
     let stored = null;
     try { stored = localStorage.getItem(STORAGE_KEY); } catch (e) { /* localStorage unavailable */ }
     if (stored === 'en' || stored === 'ja') return stored;
@@ -50,10 +58,6 @@ window.AuraI18n = (function () {
     document.querySelectorAll('[data-i18n-content]').forEach(el => {
       el.setAttribute('content', t(el.getAttribute('data-i18n-content')));
     });
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.lang === currentLang);
-      btn.setAttribute('aria-pressed', String(btn.dataset.lang === currentLang));
-    });
   }
 
   function setLang(lang, opts) {
@@ -90,6 +94,6 @@ window.AuraI18n = (function () {
 
 window.AuraI18n.init();
 
-document.querySelectorAll('.lang-btn').forEach(btn => {
-  btn.addEventListener('click', () => window.AuraI18n.setLang(btn.dataset.lang));
-});
+// The language toggle is now a normal link to the other language's own
+// URL (generated per-page by scripts/build.mjs), not a button that
+// swaps text client-side, so there's no click handler to wire up here.

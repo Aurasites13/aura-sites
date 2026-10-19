@@ -1,21 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-i18n="aboutPage.pageTitle">About | Aura Sites</title>
+<title data-i18n="aboutPage.pageTitle">Aura Sitesについて | Aura Sites</title>
 <link rel="canonical" href="https://aurasites.studio/about.html">
+<link rel="alternate" hreflang="ja" href="https://aurasites.studio/about.html">
+<link rel="alternate" hreflang="en" href="https://aurasites.studio/en/about.html">
+<link rel="alternate" hreflang="x-default" href="https://aurasites.studio/about.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="/css/style.css">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
+  "inLanguage": "ja",
   "itemListElement": [
-    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://aurasites.studio/" },
-    { "@type": "ListItem", "position": 2, "name": "About", "item": "https://aurasites.studio/about.html" }
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "ホーム",
+      "item": "https://aurasites.studio/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Aura Sitesについて",
+      "item": "https://aurasites.studio/about.html"
+    }
   ]
 }
 </script>
@@ -24,43 +38,43 @@
 
 <header class="legal-header">
   <a href="/" class="aura-logo aura-logo--horizontal" aria-label="Aura Sites, home">
-    <img src="assets/logo/aura-sites-icon.svg" alt="" width="34" height="34" class="aura-logo__mark">
+    <img src="/assets/logo/aura-sites-icon.svg" alt="" width="34" height="34" class="aura-logo__mark">
     <span class="aura-logo__word aura-font-display">AURA <span class="aura-logo__word--dim">SITES</span></span>
   </a>
-  <div class="lang-toggle" role="group" aria-label="Language" data-i18n-aria-label="nav.langToggleAriaLabel">
-    <button type="button" class="lang-btn" data-lang="en">EN</button>
+  <div class="lang-toggle" role="group" aria-label="言語" data-i18n-aria-label="nav.langToggleAriaLabel">
+    <a href="/en/about" class="lang-btn">EN</a>
     <span class="lang-sep">/</span>
-    <button type="button" class="lang-btn" data-lang="ja">JP</button>
+    <span class="lang-btn active" aria-current="page">JP</span>
   </div>
 </header>
 
 <main class="legal-doc">
   <nav class="legal-breadcrumb" aria-label="Breadcrumb">
-    <a href="/" data-i18n="aboutPage.breadcrumbHome">Home</a> / <span data-i18n="aboutPage.breadcrumbCurrent">About</span>
+    <a href="/" data-i18n="aboutPage.breadcrumbHome">ホーム</a> / <span data-i18n="aboutPage.breadcrumbCurrent">Aura Sitesについて</span>
   </nav>
-  <a href="/" class="legal-back" data-i18n="aboutPage.backLink">&larr; Back to home</a>
-  <h1 class="legal-title" data-i18n="aboutPage.title">About Aura Sites</h1>
-  <p class="legal-effective" data-i18n="aboutPage.lastUpdated">Last updated: October 19, 2026</p>
+  <a href="/" class="legal-back" data-i18n="aboutPage.backLink">&larr; ホームに戻る</a>
+  <h1 class="legal-title" data-i18n="aboutPage.title">Aura Sitesについて</h1>
+  <p class="legal-effective" data-i18n="aboutPage.lastUpdated">最終更新日：2026年10月19日</p>
 
-  <p class="legal-todo" data-i18n="aboutPage.photoTodo">TODO: add a founder photo here</p>
+  <p class="legal-todo" data-i18n="aboutPage.photoTodo">TODO：創業者の写真をここに追加</p>
 
-  <p data-i18n="aboutPage.intro">Aura Sites is run by Maximilien, a web designer and developer based in Tokyo, working in English, Japanese and French.</p>
+  <p data-i18n="aboutPage.intro">Aura Sitesは、東京を拠点に、英語・日本語・フランス語で活動するウェブデザイナー兼開発者のMaximilienが運営しています。</p>
 
-  <h2 data-i18n="aboutPage.whyHeading">Why Aura Sites exists</h2>
-  <p data-i18n="aboutPage.whyBody">Most small businesses in Japan, restaurants especially, are stuck choosing between an expensive agency, a generic template builder, or no real website at all. Aura Sites exists to build the middle option: a custom, handcrafted site, delivered fast, at a fixed price, with professional translation and AI search optimization included rather than sold as a confusing extra.</p>
+  <h2 data-i18n="aboutPage.whyHeading">Aura Sitesが生まれた理由</h2>
+  <p data-i18n="aboutPage.whyBody">日本の多くの小規模事業者、特に飲食店は、高額な制作会社か、汎用的なテンプレートビルダーか、あるいはまともなウェブサイトを持たないかという選択を迫られています。Aura Sitesは、その中間の選択肢を提供するために生まれました。オーダーメイドのサイトを、スピーディーに、固定価格で、プロの翻訳とAI検索対策を分かりにくい追加オプションとしてではなく、最初から含めてお届けします。</p>
 
-  <h2 data-i18n="aboutPage.approachHeading">How we work</h2>
-  <p data-i18n="aboutPage.approachBody">Every project starts from a blank canvas, not a template, and goes through the same process regardless of tier: a discovery call, a first look at the design, then a short path to launch. Translation is handled by Asiatis, a translation agency with over 25 years of experience, not machine translation.</p>
+  <h2 data-i18n="aboutPage.approachHeading">制作の進め方</h2>
+  <p data-i18n="aboutPage.approachBody">どのプロジェクトも、テンプレートではなく白紙の状態から始まり、プランに関わらず同じプロセスを踏みます。ヒアリング、デザイン初稿の確認、そして短期間での公開です。翻訳は機械翻訳ではなく、25年以上の実績を持つ翻訳会社Asiatisが担当します。</p>
 
-  <h2 data-i18n="aboutPage.basedHeading">Based in Tokyo</h2>
-  <p data-i18n="aboutPage.basedBody">Aura Sites is based in Tokyo and works with businesses across Japan, in person where useful and remotely everywhere else.</p>
+  <h2 data-i18n="aboutPage.basedHeading">拠点は東京</h2>
+  <p data-i18n="aboutPage.basedBody">Aura Sitesは東京を拠点に、日本各地の事業者と対応しています。可能な場合は対面で、それ以外はリモートで対応します。</p>
 </main>
 
 <footer class="legal-footer">
-  <span data-i18n="footer.copyright">© 2026 Aura Sites. All rights reserved.</span>
+  <span data-i18n="footer.copyright">© 2026 Aura Sites. 無断複写・転載を禁じます。</span>
 </footer>
 
-<script src="js/i18n-strings.js"></script>
-<script src="js/i18n.js"></script>
+<script src="/js/i18n-strings.js"></script>
+<script src="/js/i18n.js"></script>
 </body>
 </html>
