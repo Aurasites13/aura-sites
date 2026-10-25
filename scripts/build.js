@@ -52,6 +52,20 @@ function translate(lang, key) {
   let v = getPath(dict, key);
   if (v === undefined) v = getPath(AURA_I18N.en, key);
   if (v === undefined) v = key;
+  // A handful of pricing keys (the meishi prices) are stored as plain
+  // numbers, not formatted strings -- see the AuraFormatYen comment in
+  // js/i18n-strings.js. Format here so the single numeric source of
+  // truth reaches the page the same way whether it's resolved at build
+  // time (here) or at runtime (js/i18n.js's own t()).
+  if (typeof v === 'number') v = sandbox.window.AuraFormatYen(v);
+  return v;
+}
+// Raw (unformatted) lookup for JSON-LD, which wants the bare number for
+// an Offer's price, not the ¥-formatted display string.
+function rawValue(lang, key) {
+  const dict = AURA_I18N[lang] || AURA_I18N.en;
+  let v = getPath(dict, key);
+  if (v === undefined) v = getPath(AURA_I18N.en, key);
   return v;
 }
 function stripHtml(s) {
@@ -131,6 +145,40 @@ function buildServiceJsonLd(lang) {
         tierOffer('launch', '180000'),
         tierOffer('grow', '480000'),
         tierOffer('studio', null)
+      ]
+    }
+  });
+}
+// Business card (meishi) design, modeled as its own Service rather than
+// folded into the website OfferCatalog above, since it's a distinct
+// service a client can buy with or without a website. The three
+// per-unit surcharges (extra staff, premium paper, reprints) describe
+// modifiers on an order rather than standalone purchasable offers, so
+// they're left out of structured data and only appear in the visible
+// copy. No @id fields, matching the rest of this file's JSON-LD.
+function buildCardDesignJsonLd(lang) {
+  const cardOffer = (priceKey, nameKey) => ({
+    '@type': 'Offer',
+    name: translate(lang, nameKey),
+    price: String(rawValue(lang, `pricing.${priceKey}`)),
+    priceCurrency: 'JPY'
+  });
+  return wrapJsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: translate(lang, 'meishi.heading'),
+    provider: { '@type': 'ProfessionalService', name: 'Aura Sites' },
+    areaServed: 'JP',
+    inLanguage: lang,
+    description: stripHtml(translate(lang, 'meishi.lead')),
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: translate(lang, 'meishi.heading'),
+      itemListElement: [
+        cardOffer('cardDesign', 'meishi.card1Name'),
+        cardOffer('cardDesignPrint', 'meishi.card2Name'),
+        cardOffer('cardAddonDesign', 'meishi.card3Name'),
+        cardOffer('cardAddonPrint', 'meishi.card3AddonPrintName')
       ]
     }
   });
@@ -283,6 +331,7 @@ function buildPage(page, lang) {
   // placeholder for)
   html = html.replace('<!--__JSONLD_PROFESSIONAL_SERVICE__-->', () => buildProfessionalServiceJsonLd(lang));
   html = html.replace('<!--__JSONLD_SERVICE__-->', () => buildServiceJsonLd(lang));
+  html = html.replace('<!--__JSONLD_CARD_SERVICE__-->', () => buildCardDesignJsonLd(lang));
   html = html.replace('<!--__JSONLD_FAQ__-->', () => buildFaqJsonLd(lang));
   if (page.breadcrumbKey) {
     html = html.replace('<!--__JSONLD_BREADCRUMB__-->', () => buildBreadcrumbJsonLd(lang, page.slug, page.breadcrumbKey));

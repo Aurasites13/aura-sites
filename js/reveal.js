@@ -35,6 +35,7 @@
     { id: 'pricing-head', container: document.querySelector('.pricing-head'), items: document.querySelectorAll('.pricing-head > *') },
     { id: 'pricing-cards', container: document.querySelector('.pricing-grid'), items: document.querySelectorAll('.pricing-grid > .price-card') },
     { id: 'hosting-addon', container: document.querySelector('.hosting-addon'), items: [document.querySelector('.hosting-addon')] },
+    { id: 'meishi-addon', container: document.querySelector('.meishi-addon'), items: [document.querySelector('.meishi-addon')] },
     { id: 'faq-head', container: document.querySelector('.faq-head'), items: document.querySelectorAll('.faq-head > *') },
     { id: 'faq-items', container: document.querySelector('.faq-list'), items: document.querySelectorAll('.faq-list > .faq-item') },
     { id: 'footer', container: document.querySelector('footer'), items: [document.querySelector('footer')] }

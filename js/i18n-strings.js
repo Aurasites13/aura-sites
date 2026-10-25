@@ -3,6 +3,18 @@
 // Japanese values are placeholders that mirror English until real
 // translations are provided, section by section. Fill in the `ja` object
 // below in place, key by key; nothing else in the codebase needs to change.
+//
+// A handful of keys (the business card prices under `pricing`) hold a
+// plain number instead of a string -- the single source of truth for a
+// yen amount, so it's never hardcoded as formatted text anywhere else.
+// Both the build script (scripts/build.js, server-side) and this file's
+// own t()/applyToDom() (js/i18n.js, client-side) format a number through
+// AuraFormatYen below before it reaches the page, so the two can never
+// drift out of sync with each other.
+window.AuraFormatYen = function (n) {
+  var s = String(Math.round(Number(n)));
+  return '¥' + s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
 window.AURA_I18N = {
   en: {
     meta: {
@@ -87,6 +99,7 @@ window.AURA_I18N = {
       point3Body: "With your permission, we showcase your business in our portfolio and on social media.",
       button: "Claim a founding spot",
       note: "Limited to five projects.",
+      meishiLine: "First five clients: card design included free",
       quotesHeading: "What founding clients say",
       // Empty until real founding-client testimonials exist. See the
       // comment above #founding-quotes in index.html -- add {text, attr}
@@ -98,6 +111,17 @@ window.AURA_I18N = {
       body: "Fixed packages, not open-ended quotes, so you know what you're getting before we start.",
       foundingLabel: "Founding rate, first five projects",
       paymentNote: "Project fees are paid in two parts: 50% to start, 50% after you approve the finished site. Optional hosting is billed monthly.",
+      // Business card (meishi) design prices, in yen. Plain numbers, not
+      // formatted strings -- see the AuraFormatYen comment above. Reused
+      // by the meishi section and its JSON-LD; the questionnaire doesn't
+      // read these (no meishi question yet).
+      cardDesign: 15000,
+      cardDesignPrint: 19800,
+      cardAddonDesign: 8000,
+      cardAddonPrint: 11800,
+      extraStaff: 3000,
+      premiumHandling: 2000,
+      reprintHandling: 1500,
       launch: {
         name: "Launch",
         desc: "A single-page or small brand site, done right.",
@@ -191,11 +215,32 @@ window.AURA_I18N = {
       q6: "Do you offer the website in other languages?",
       a6: "Yes, this is included in every project, not an extra cost. We partner with Asiatis, a translation agency with over 25 years of experience, to make sure your site reads naturally and accurately for international customers, not just machine-translated.",
       q7: "Can you guarantee my restaurant appears in ChatGPT?",
-      a7: "No one can guarantee that, because AI answers change by person and by day. What we do is make your site as easy as possible for AI to find, understand and recommend, and we can show you where you appear each month."
+      a7: "No one can guarantee that, because AI answers change by person and by day. What we do is make your site as easy as possible for AI to find, understand and recommend, and we can show you where you appear each month.",
+      q8: "Can I order business cards without a website?",
+      a8: "Yes. Cards can be ordered on their own, and are discounted when added to a website plan."
     },
     whyNotTemplate: {
       heading: "Not another template",
       body: "Templates start with someone else's decisions already made. We start with yours, then build backward into a site shaped entirely around your business, not a theme you're renting."
+    },
+    meishi: {
+      heading: "Business Card Design",
+      lead: "Bilingual Japanese/English meishi designed to match your website. Order the design only, or let us handle printing and delivery too.",
+      highlightTag: "Best value with a website",
+      card1Name: "Card design",
+      card1Body: "Japanese front, English back / up to 2 revision rounds / print-ready files",
+      card2Name: "Design + 100 printed cards",
+      card2Body: "Everything above, printed on standard stock and delivered to your home or office",
+      card3Name: "Add-on with any website plan",
+      card3AddonPrintName: "Add-on with 100 printed cards",
+      card3BodyPrefix: "Uses your site's logo, colors and fonts / QR code linking to your site / ",
+      card3BodySuffix: " with 100 printed cards",
+      extrasHeading: "Extras",
+      extra1Prefix: "Additional staff, same design: ",
+      extra1Suffix: " per person (100 cards)",
+      extra2Prefix: "Premium paper or foil: printing cost + ",
+      extra3Prefix: "Reprints: printing cost + ",
+      note: "Note: English text is checked by a professional translator."
     },
     footer: {
       tagline: "Websites that feel handcrafted. At a pace that isn't.",
@@ -488,6 +533,7 @@ window.AURA_I18N = {
       point3Body: "ご了承いただければ、ポートフォリオやSNSで貴店・貴社をご紹介します。",
       button: "モニターに申し込む",
       note: "募集は先着5件までです。",
+      meishiLine: "先着5社限定：名刺デザイン無料",
       quotesHeading: "モニターのお客様の声",
       quotes: []
     },
@@ -496,6 +542,13 @@ window.AURA_I18N = {
       body: "料金は固定パッケージ制。青天井の見積もりではないので、始める前に内容をしっかりご確認いただけます。",
       foundingLabel: "モニター価格・先着5件",
       paymentNote: "制作費は2回に分けて、着手時に50％、完成後のご承認をいただいてから残り50％をお支払いいただきます。ホスティング（任意）は別途月額です。",
+      cardDesign: 15000,
+      cardDesignPrint: 19800,
+      cardAddonDesign: 8000,
+      cardAddonPrint: 11800,
+      extraStaff: 3000,
+      premiumHandling: 2000,
+      reprintHandling: 1500,
       launch: {
         name: "Launch",
         desc: "1ページ、または小規模なブランドサイトを、確かな品質で。",
@@ -589,11 +642,32 @@ window.AURA_I18N = {
       q6: "他の言語にも対応してもらえますか？",
       a6: "はい、追加費用なしですべてのプロジェクトに含まれています。25年以上の実績を持つ翻訳会社Asiatisと提携し、機械翻訳ではない、海外のお客様にも自然かつ正確に伝わるサイトに仕上げます。",
       q7: "自分のお店がChatGPTに表示されることを保証してもらえますか？",
-      a7: "それを保証できる人はいません。AIの回答は、聞く人や日によって変わるからです。私たちができるのは、AIがあなたのサイトをできるだけ見つけやすく、理解しやすく、紹介しやすい状態に整えることです。毎月、どのように紹介されているかをお見せすることもできます。"
+      a7: "それを保証できる人はいません。AIの回答は、聞く人や日によって変わるからです。私たちができるのは、AIがあなたのサイトをできるだけ見つけやすく、理解しやすく、紹介しやすい状態に整えることです。毎月、どのように紹介されているかをお見せすることもできます。",
+      q8: "名刺だけの依頼もできますか？",
+      a8: "はい。サイト制作なしでもご依頼いただけます。サイトと同時にご依頼いただくと、割引価格でお作りします。"
     },
     whyNotTemplate: {
       heading: "テンプレートは、使わない",
       body: "テンプレートは、すでに他人の判断で組み立てられています。私たちはあなたの意思から出発し、借り物のテーマではなく、あなたのビジネスのためだけに設計されたサイトを、逆算しながら形にしていきます。"
+    },
+    meishi: {
+      heading: "名刺デザイン",
+      lead: "Webサイトと統一したデザインで、日英バイリンガルの名刺をお作りします。デザインのみ、または印刷・お届けまでまとめてご依頼いただけます。",
+      highlightTag: "サイトと一緒がお得",
+      card1Name: "名刺デザイン",
+      card1Body: "表面日本語・裏面英語のデザイン／修正2回まで／入稿用データ一式",
+      card2Name: "デザイン＋印刷100枚",
+      card2Body: "上記に加え、標準用紙で印刷し、ご自宅またはオフィスへお届けします",
+      card3Name: "サイト制作と同時にご依頼",
+      card3AddonPrintName: "サイト制作と同時にご依頼（印刷100枚込み）",
+      card3BodyPrefix: "サイトのロゴ・配色・フォントを使用／サイトへのQRコード付き／印刷100枚込みは",
+      card3BodySuffix: "",
+      extrasHeading: "オプション",
+      extra1Prefix: "追加スタッフ分（同じデザイン）：1名につき",
+      extra1Suffix: "（100枚）",
+      extra2Prefix: "高級紙・箔押しなど：印刷実費＋",
+      extra3Prefix: "増刷：印刷実費＋",
+      note: "注記：英語表記はプロの翻訳者が確認します。"
     },
     footer: {
       tagline: "手仕事のような丁寧さを、驚くほどの速さで届けるウェブサイト。",

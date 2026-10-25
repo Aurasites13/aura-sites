@@ -782,6 +782,100 @@ h1 em{
   .hosting-addon-price{ text-align:left; }
 }
 
+/* ---- business card (meishi) design add-on -----------------------------
+   Deliberately lighter than .price-card: smaller type scale, no hover
+   lift, no border glow, transparent fill instead of --bg-2, so it reads
+   as a secondary add-on to the website plans above rather than a fourth
+   tier competing with Launch/Grow/Studio. */
+.meishi-addon{
+  width:100%;
+  max-width:1000px;
+  margin-top:40px;
+  padding-top:36px;
+  border-top:1px solid var(--line);
+}
+.meishi-addon-head{
+  text-align:center;
+  max-width:560px;
+  margin:0 auto 28px;
+}
+.meishi-addon-title{
+  font-family:'Space Grotesk', sans-serif;
+  font-size:20px;
+  font-weight:600;
+  margin-bottom:10px;
+}
+.meishi-addon-head p{
+  color: var(--ink-dim);
+  font-size:14px;
+  line-height:1.6;
+}
+.meishi-cards{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:16px;
+  margin-bottom:24px;
+}
+.meishi-card{
+  position:relative;
+  padding:20px 18px;
+  border-radius:12px;
+  border:1px solid var(--line);
+}
+.meishi-card-highlight{
+  border-color: rgba(77,232,255,0.3);
+}
+.meishi-card-tag{
+  display:inline-block;
+  font-size:11px;
+  color: var(--cyan);
+  background: rgba(77,232,255,0.1);
+  padding:3px 10px;
+  border-radius:100px;
+  margin-bottom:10px;
+}
+.meishi-card-name{
+  font-family:'Space Grotesk', sans-serif;
+  font-size:15px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+.meishi-card-price{
+  font-family:'Space Grotesk', sans-serif;
+  font-size:20px;
+  font-weight:600;
+  color: var(--cyan);
+  margin-bottom:10px;
+}
+.meishi-card-body{
+  font-size:13px;
+  line-height:1.6;
+  color: var(--ink-dim);
+}
+.meishi-extras{
+  font-size:13px;
+  color: var(--ink-dim);
+  margin-bottom:18px;
+}
+.meishi-extras-heading{
+  font-size:12px;
+  font-weight:600;
+  color: var(--ink);
+  text-transform:uppercase;
+  letter-spacing:0.02em;
+  margin-bottom:8px;
+}
+.meishi-extras ul{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.meishi-note{
+  font-size:12px;
+  color: var(--ink-dim);
+}
+
 /* ---- info-tap tooltips ---- */
 .info-tap{
   display:inline-flex;
@@ -1026,6 +1120,12 @@ h1 em{
   font-size:14px;
   line-height:1.6;
   color: var(--ink-dim);
+}
+.founding-bonus{
+  text-align:center;
+  font-size:14px;
+  color: var(--cyan);
+  margin-bottom:24px;
 }
 .founding-cta{
   text-align:center;

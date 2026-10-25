@@ -25,14 +25,23 @@ window.AuraI18n = (function () {
     return navLang.startsWith('ja') ? 'ja' : 'en';
   }
 
+  // A few pricing keys (the meishi prices) are stored as a plain number
+  // rather than a formatted string -- see the AuraFormatYen comment in
+  // js/i18n-strings.js. Format here so re-applying translations client
+  // side (e.g. after a future language switch) can't overwrite the
+  // ¥-formatted text scripts/build.js already rendered with a bare number.
+  function formatIfNumber(v) {
+    return (typeof v === 'number') ? window.AuraFormatYen(v) : v;
+  }
+
   // t(key): looks up a dot-path key in the current language, falling back to
   // English, then to the key itself, so a missing translation never renders blank.
   function t(key) {
     const dict = window.AURA_I18N[currentLang] || window.AURA_I18N.en;
     const val = getPath(dict, key);
-    if (val !== undefined) return val;
+    if (val !== undefined) return formatIfNumber(val);
     const fallback = getPath(window.AURA_I18N.en, key);
-    return fallback !== undefined ? fallback : key;
+    return formatIfNumber(fallback !== undefined ? fallback : key);
   }
 
   function applyToDom() {

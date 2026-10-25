@@ -360,6 +360,7 @@
       <p data-i18n="founding.point3Body">ご了承いただければ、ポートフォリオやSNSで貴店・貴社をご紹介します。</p>
     </div>
   </div>
+  <p class="founding-bonus" data-i18n="founding.meishiLine">先着5社限定：名刺デザイン無料</p>
   <div class="founding-cta">
     <button class="btn primary js-open-quiz" data-program="founding" data-i18n="founding.button">モニターに申し込む</button>
     <div class="founding-note" data-i18n="founding.note">募集は先着5件までです。</div>
@@ -455,6 +456,88 @@
       <span class="hosting-period" data-i18n="hosting.period"></span>
     </div>
   </div>
+
+  <div class="meishi-addon" id="business-cards">
+    <div class="meishi-addon-head">
+      <h3 class="meishi-addon-title" data-i18n="meishi.heading">名刺デザイン</h3>
+      <p data-i18n="meishi.lead">Webサイトと統一したデザインで、日英バイリンガルの名刺をお作りします。デザインのみ、または印刷・お届けまでまとめてご依頼いただけます。</p>
+    </div>
+    <div class="meishi-cards">
+      <div class="meishi-card">
+        <div class="meishi-card-name" data-i18n="meishi.card1Name">名刺デザイン</div>
+        <div class="meishi-card-price" data-i18n="pricing.cardDesign">¥15,000</div>
+        <p class="meishi-card-body" data-i18n="meishi.card1Body">表面日本語・裏面英語のデザイン／修正2回まで／入稿用データ一式</p>
+      </div>
+      <div class="meishi-card">
+        <div class="meishi-card-name" data-i18n="meishi.card2Name">デザイン＋印刷100枚</div>
+        <div class="meishi-card-price" data-i18n="pricing.cardDesignPrint">¥19,800</div>
+        <p class="meishi-card-body" data-i18n="meishi.card2Body">上記に加え、標準用紙で印刷し、ご自宅またはオフィスへお届けします</p>
+      </div>
+      <div class="meishi-card meishi-card-highlight">
+        <span class="meishi-card-tag" data-i18n="meishi.highlightTag">サイトと一緒がお得</span>
+        <div class="meishi-card-name" data-i18n="meishi.card3Name">サイト制作と同時にご依頼</div>
+        <div class="meishi-card-price" data-i18n="pricing.cardAddonDesign">¥8,000</div>
+        <p class="meishi-card-body"><span data-i18n="meishi.card3BodyPrefix">サイトのロゴ・配色・フォントを使用／サイトへのQRコード付き／印刷100枚込みは</span><span data-i18n="pricing.cardAddonPrint">¥11,800</span><span data-i18n="meishi.card3BodySuffix"></span></p>
+      </div>
+    </div>
+    <div class="meishi-extras">
+      <div class="meishi-extras-heading" data-i18n="meishi.extrasHeading">オプション</div>
+      <ul>
+        <li><span data-i18n="meishi.extra1Prefix">追加スタッフ分（同じデザイン）：1名につき</span><span data-i18n="pricing.extraStaff">¥3,000</span><span data-i18n="meishi.extra1Suffix">（100枚）</span></li>
+        <li><span data-i18n="meishi.extra2Prefix">高級紙・箔押しなど：印刷実費＋</span><span data-i18n="pricing.premiumHandling">¥2,000</span></li>
+        <li><span data-i18n="meishi.extra3Prefix">増刷：印刷実費＋</span><span data-i18n="pricing.reprintHandling">¥1,500</span></li>
+      </ul>
+    </div>
+    <p class="meishi-note" data-i18n="meishi.note">注記：英語表記はプロの翻訳者が確認します。</p>
+  </div>
+
+  <!-- Structured data for the business card design service above.
+       Generated per-language by scripts/build.js (see
+       buildCardDesignJsonLd) -- not hand-edited here. -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "名刺デザイン",
+  "provider": {
+    "@type": "ProfessionalService",
+    "name": "Aura Sites"
+  },
+  "areaServed": "JP",
+  "inLanguage": "ja",
+  "description": "Webサイトと統一したデザインで、日英バイリンガルの名刺をお作りします。デザインのみ、または印刷・お届けまでまとめてご依頼いただけます。",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "名刺デザイン",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "名刺デザイン",
+        "price": "15000",
+        "priceCurrency": "JPY"
+      },
+      {
+        "@type": "Offer",
+        "name": "デザイン＋印刷100枚",
+        "price": "19800",
+        "priceCurrency": "JPY"
+      },
+      {
+        "@type": "Offer",
+        "name": "サイト制作と同時にご依頼",
+        "price": "8000",
+        "priceCurrency": "JPY"
+      },
+      {
+        "@type": "Offer",
+        "name": "サイト制作と同時にご依頼（印刷100枚込み）",
+        "price": "11800",
+        "priceCurrency": "JPY"
+      }
+    ]
+  }
+}
+</script>
 
   <!-- TODO: re-enable once a price is set for the "Monthly AI visibility
        report" add-on. Hidden (not deleted) on request since it had no real
@@ -598,6 +681,15 @@
         <p data-i18n="faq.a7">それを保証できる人はいません。AIの回答は、聞く人や日によって変わるからです。私たちができるのは、AIがあなたのサイトをできるだけ見つけやすく、理解しやすく、紹介しやすい状態に整えることです。毎月、どのように紹介されているかをお見せすることもできます。</p>
       </div>
     </div>
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false">
+        <span data-i18n="faq.q8">名刺だけの依頼もできますか？</span>
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq.a8">はい。サイト制作なしでもご依頼いただけます。サイトと同時にご依頼いただくと、割引価格でお作りします。</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -665,6 +757,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "それを保証できる人はいません。AIの回答は、聞く人や日によって変わるからです。私たちができるのは、AIがあなたのサイトをできるだけ見つけやすく、理解しやすく、紹介しやすい状態に整えることです。毎月、どのように紹介されているかをお見せすることもできます。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "名刺だけの依頼もできますか？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "はい。サイト制作なしでもご依頼いただけます。サイトと同時にご依頼いただくと、割引価格でお作りします。"
       }
     }
   ]

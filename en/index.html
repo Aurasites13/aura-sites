@@ -360,6 +360,7 @@
       <p data-i18n="founding.point3Body">With your permission, we showcase your business in our portfolio and on social media.</p>
     </div>
   </div>
+  <p class="founding-bonus" data-i18n="founding.meishiLine">First five clients: card design included free</p>
   <div class="founding-cta">
     <button class="btn primary js-open-quiz" data-program="founding" data-i18n="founding.button">Claim a founding spot</button>
     <div class="founding-note" data-i18n="founding.note">Limited to five projects.</div>
@@ -455,6 +456,88 @@
       <span class="hosting-period" data-i18n="hosting.period">/month</span>
     </div>
   </div>
+
+  <div class="meishi-addon" id="business-cards">
+    <div class="meishi-addon-head">
+      <h3 class="meishi-addon-title" data-i18n="meishi.heading">Business Card Design</h3>
+      <p data-i18n="meishi.lead">Bilingual Japanese/English meishi designed to match your website. Order the design only, or let us handle printing and delivery too.</p>
+    </div>
+    <div class="meishi-cards">
+      <div class="meishi-card">
+        <div class="meishi-card-name" data-i18n="meishi.card1Name">Card design</div>
+        <div class="meishi-card-price" data-i18n="pricing.cardDesign">¥15,000</div>
+        <p class="meishi-card-body" data-i18n="meishi.card1Body">Japanese front, English back / up to 2 revision rounds / print-ready files</p>
+      </div>
+      <div class="meishi-card">
+        <div class="meishi-card-name" data-i18n="meishi.card2Name">Design + 100 printed cards</div>
+        <div class="meishi-card-price" data-i18n="pricing.cardDesignPrint">¥19,800</div>
+        <p class="meishi-card-body" data-i18n="meishi.card2Body">Everything above, printed on standard stock and delivered to your home or office</p>
+      </div>
+      <div class="meishi-card meishi-card-highlight">
+        <span class="meishi-card-tag" data-i18n="meishi.highlightTag">Best value with a website</span>
+        <div class="meishi-card-name" data-i18n="meishi.card3Name">Add-on with any website plan</div>
+        <div class="meishi-card-price" data-i18n="pricing.cardAddonDesign">¥8,000</div>
+        <p class="meishi-card-body"><span data-i18n="meishi.card3BodyPrefix">Uses your site's logo, colors and fonts / QR code linking to your site / </span><span data-i18n="pricing.cardAddonPrint">¥11,800</span><span data-i18n="meishi.card3BodySuffix"> with 100 printed cards</span></p>
+      </div>
+    </div>
+    <div class="meishi-extras">
+      <div class="meishi-extras-heading" data-i18n="meishi.extrasHeading">Extras</div>
+      <ul>
+        <li><span data-i18n="meishi.extra1Prefix">Additional staff, same design: </span><span data-i18n="pricing.extraStaff">¥3,000</span><span data-i18n="meishi.extra1Suffix"> per person (100 cards)</span></li>
+        <li><span data-i18n="meishi.extra2Prefix">Premium paper or foil: printing cost + </span><span data-i18n="pricing.premiumHandling">¥2,000</span></li>
+        <li><span data-i18n="meishi.extra3Prefix">Reprints: printing cost + </span><span data-i18n="pricing.reprintHandling">¥1,500</span></li>
+      </ul>
+    </div>
+    <p class="meishi-note" data-i18n="meishi.note">Note: English text is checked by a professional translator.</p>
+  </div>
+
+  <!-- Structured data for the business card design service above.
+       Generated per-language by scripts/build.js (see
+       buildCardDesignJsonLd) -- not hand-edited here. -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Business Card Design",
+  "provider": {
+    "@type": "ProfessionalService",
+    "name": "Aura Sites"
+  },
+  "areaServed": "JP",
+  "inLanguage": "en",
+  "description": "Bilingual Japanese/English meishi designed to match your website. Order the design only, or let us handle printing and delivery too.",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Business Card Design",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "Card design",
+        "price": "15000",
+        "priceCurrency": "JPY"
+      },
+      {
+        "@type": "Offer",
+        "name": "Design + 100 printed cards",
+        "price": "19800",
+        "priceCurrency": "JPY"
+      },
+      {
+        "@type": "Offer",
+        "name": "Add-on with any website plan",
+        "price": "8000",
+        "priceCurrency": "JPY"
+      },
+      {
+        "@type": "Offer",
+        "name": "Add-on with 100 printed cards",
+        "price": "11800",
+        "priceCurrency": "JPY"
+      }
+    ]
+  }
+}
+</script>
 
   <!-- TODO: re-enable once a price is set for the "Monthly AI visibility
        report" add-on. Hidden (not deleted) on request since it had no real
@@ -598,6 +681,15 @@
         <p data-i18n="faq.a7">No one can guarantee that, because AI answers change by person and by day. What we do is make your site as easy as possible for AI to find, understand and recommend, and we can show you where you appear each month.</p>
       </div>
     </div>
+    <div class="faq-item">
+      <button class="faq-question" type="button" aria-expanded="false">
+        <span data-i18n="faq.q8">Can I order business cards without a website?</span>
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-answer">
+        <p data-i18n="faq.a8">Yes. Cards can be ordered on their own, and are discounted when added to a website plan.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -665,6 +757,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "No one can guarantee that, because AI answers change by person and by day. What we do is make your site as easy as possible for AI to find, understand and recommend, and we can show you where you appear each month."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I order business cards without a website?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Cards can be ordered on their own, and are discounted when added to a website plan."
       }
     }
   ]
