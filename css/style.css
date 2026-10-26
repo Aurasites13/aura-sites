@@ -875,6 +875,14 @@ h1 em{
   font-size:12px;
   color: var(--ink-dim);
 }
+.pricing-tax-note{
+  width:100%;
+  max-width:1000px;
+  margin-top:20px;
+  font-size:12px;
+  color: var(--ink-dim);
+  text-align:center;
+}
 
 /* ---- info-tap tooltips ---- */
 .info-tap{
@@ -1529,6 +1537,11 @@ textarea.quiz-input{ resize:vertical; min-height:88px; line-height:1.5; }
    pair the pricing cards use (and #recommend-founding-label reuses the
    pricing cards' own .price-founding-label class), so no separate styling
    is needed here beyond this flex layout. */
+.recommend-tax-note{
+  font-size:11px;
+  color: var(--ink-dim);
+  margin-bottom:10px;
+}
 .recommend-turnaround{
   font-size:13px;
   color: var(--ink-dim);

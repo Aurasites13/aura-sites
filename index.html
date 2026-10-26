@@ -491,6 +491,12 @@
     <p class="meishi-note" data-i18n="meishi.note">注記：英語表記はプロの翻訳者が確認します。</p>
   </div>
 
+  <!-- Covers every price on this page (website tiers, hosting, and the
+       meishi section above), so it sits after all of them, not scoped
+       to any one block. Same pricing.taxNote key is reused verbatim on
+       the quiz's recommendation screen -- see #recommend-tax-note. -->
+  <p class="pricing-tax-note" data-i18n="pricing.taxNote">表示価格はすべてお支払い総額です（追加の消費税はかかりません）</p>
+
   <!-- Structured data for the business card design service above.
        Generated per-language by scripts/build.js (see
        buildCardDesignJsonLd) -- not hand-edited here. -->
@@ -514,25 +520,49 @@
         "@type": "Offer",
         "name": "名刺デザイン",
         "price": "15000",
-        "priceCurrency": "JPY"
+        "priceCurrency": "JPY",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "15000",
+          "priceCurrency": "JPY",
+          "valueAddedTaxIncluded": true
+        }
       },
       {
         "@type": "Offer",
         "name": "デザイン＋印刷100枚",
         "price": "19800",
-        "priceCurrency": "JPY"
+        "priceCurrency": "JPY",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "19800",
+          "priceCurrency": "JPY",
+          "valueAddedTaxIncluded": true
+        }
       },
       {
         "@type": "Offer",
         "name": "サイト制作と同時にご依頼",
         "price": "8000",
-        "priceCurrency": "JPY"
+        "priceCurrency": "JPY",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "8000",
+          "priceCurrency": "JPY",
+          "valueAddedTaxIncluded": true
+        }
       },
       {
         "@type": "Offer",
         "name": "サイト制作と同時にご依頼（印刷100枚込み）",
         "price": "11800",
-        "priceCurrency": "JPY"
+        "priceCurrency": "JPY",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "11800",
+          "priceCurrency": "JPY",
+          "valueAddedTaxIncluded": true
+        }
       }
     ]
   }
@@ -582,14 +612,26 @@
         "name": "Launch",
         "description": "1ページ、または小規模なブランドサイトを、確かな品質で。",
         "price": "180000",
-        "priceCurrency": "JPY"
+        "priceCurrency": "JPY",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "180000",
+          "priceCurrency": "JPY",
+          "valueAddedTaxIncluded": true
+        }
       },
       {
         "@type": "Offer",
         "name": "Grow",
         "description": "成長するビジネスのための、本格的な複数ページサイト。",
         "price": "480000",
-        "priceCurrency": "JPY"
+        "priceCurrency": "JPY",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "480000",
+          "priceCurrency": "JPY",
+          "valueAddedTaxIncluded": true
+        }
       },
       {
         "@type": "Offer",
@@ -894,6 +936,7 @@
           <div class="recommend-tier" id="recommend-tier">Grow</div>
           <div class="recommend-price" id="recommend-price">¥480,000〜</div>
           <div class="price-founding-label" id="recommend-founding-label" hidden>Founding rate, first five projects</div>
+          <p class="recommend-tax-note" id="recommend-tax-note" data-i18n="pricing.taxNote">表示価格はすべてお支払い総額です（追加の消費税はかかりません）</p>
           <div class="recommend-turnaround" id="recommend-turnaround">~1–2 week turnaround</div>
           <p class="recommend-blurb" id="recommend-blurb">A multi-page site with room to grow fits the Grow tier well.</p>
         </div>

@@ -128,6 +128,16 @@ function buildServiceJsonLd(lang) {
     if (price) {
       offer.price = price;
       offer.priceCurrency = 'JPY';
+      // Additive alongside the price/priceCurrency shorthand above, not a
+      // replacement for it -- Aura Sites is tax-exempt, so the listed
+      // price is already the final total (see pricing.taxNote on the
+      // page itself).
+      offer.priceSpecification = {
+        '@type': 'PriceSpecification',
+        price,
+        priceCurrency: 'JPY',
+        valueAddedTaxIncluded: true
+      };
     }
     return offer;
   };
@@ -157,12 +167,22 @@ function buildServiceJsonLd(lang) {
 // they're left out of structured data and only appear in the visible
 // copy. No @id fields, matching the rest of this file's JSON-LD.
 function buildCardDesignJsonLd(lang) {
-  const cardOffer = (priceKey, nameKey) => ({
-    '@type': 'Offer',
-    name: translate(lang, nameKey),
-    price: String(rawValue(lang, `pricing.${priceKey}`)),
-    priceCurrency: 'JPY'
-  });
+  const cardOffer = (priceKey, nameKey) => {
+    const price = String(rawValue(lang, `pricing.${priceKey}`));
+    return {
+      '@type': 'Offer',
+      name: translate(lang, nameKey),
+      price,
+      priceCurrency: 'JPY',
+      // See the matching comment in buildServiceJsonLd's tierOffer.
+      priceSpecification: {
+        '@type': 'PriceSpecification',
+        price,
+        priceCurrency: 'JPY',
+        valueAddedTaxIncluded: true
+      }
+    };
+  };
   return wrapJsonLd({
     '@context': 'https://schema.org',
     '@type': 'Service',

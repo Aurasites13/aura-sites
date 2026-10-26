@@ -111,6 +111,11 @@ window.AURA_I18N = {
       body: "Fixed packages, not open-ended quotes, so you know what you're getting before we start.",
       foundingLabel: "Founding rate, first five projects",
       paymentNote: "Project fees are paid in two parts: 50% to start, 50% after you approve the finished site. Optional hosting is billed monthly.",
+      // Reused in exactly two places: once below the last pricing block on
+      // the pricing page, once under the suggested price on the
+      // questionnaire's recommendation screen. Not duplicated as literal
+      // text anywhere else.
+      taxNote: "All prices shown are the total you pay. No additional consumption tax.",
       // Business card (meishi) design prices, in yen. Plain numbers, not
       // formatted strings -- see the AuraFormatYen comment above. Reused
       // by the meishi section and its JSON-LD; the questionnaire doesn't
@@ -542,6 +547,7 @@ window.AURA_I18N = {
       body: "料金は固定パッケージ制。青天井の見積もりではないので、始める前に内容をしっかりご確認いただけます。",
       foundingLabel: "モニター価格・先着5件",
       paymentNote: "制作費は2回に分けて、着手時に50％、完成後のご承認をいただいてから残り50％をお支払いいただきます。ホスティング（任意）は別途月額です。",
+      taxNote: "表示価格はすべてお支払い総額です（追加の消費税はかかりません）",
       cardDesign: 15000,
       cardDesignPrint: 19800,
       cardAddonDesign: 8000,
